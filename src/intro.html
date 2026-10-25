@@ -1,0 +1,154 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+:root{--bg:#0C0C0D;--surf:#18181A;--line:#2A2A2D;--red:#E3342F;--red2:#FF5A4F;--ink:#F3F3F3;--mut:#8C8C90}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1920px;height:1080px;background:var(--bg);color:var(--ink);font-family:'Noto Sans CJK SC',sans-serif;overflow:hidden;position:relative}
+.L{position:absolute;inset:0;opacity:0}
+#bug{position:absolute;top:44px;left:72px;font-weight:900;font-size:28px;opacity:1;z-index:20}
+#bug span{color:var(--red)}
+#cnt{position:absolute;top:40px;right:72px;font-weight:900;font-size:34px;z-index:20}
+#cnt small{color:rgba(255,255,255,.55);font-weight:500}
+/* site */
+#browser{position:absolute;left:150px;top:170px;width:1160px;height:690px;border-radius:18px;overflow:hidden;background:#141416;border:1px solid var(--line)}
+.bar{height:46px;background:#1E1E21;display:flex;align-items:center;gap:8px;padding:0 18px}
+.bar b{width:12px;height:12px;border-radius:50%;background:#3A3A3E}
+.url{margin-left:14px;flex:1;height:26px;border-radius:7px;background:#121214;font-size:15px;color:#6E6E73;display:flex;align-items:center;padding:0 12px}
+.st{position:relative;height:644px;background:#111113}
+.st nav{display:flex;justify-content:space-between;padding:24px 44px;font-size:17px;color:#BDBDC2}
+.st .logo{font-weight:900;color:#fff;font-size:21px}
+.st .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;padding:26px 44px}
+.st h2{font-size:52px;line-height:1.08;font-weight:900;letter-spacing:-.015em}
+.st p{font-size:19px;line-height:1.5;color:#9C9CA1;margin:18px 0 28px}
+.st .cta{display:inline-block;background:var(--red);color:#fff;font-weight:700;font-size:20px;padding:16px 30px;border-radius:10px}
+.st .img{height:360px;border-radius:16px;background:linear-gradient(160deg,#2B2B2F,#1B1B1E);position:relative;overflow:hidden;border:1px solid var(--line)}
+.st .img i{position:absolute;left:24%;top:15%;width:52%;height:70%;border:12px solid #E9E9EC;border-radius:6px;background:linear-gradient(180deg,#3A3F48,#20232A)}
+.st .img u{position:absolute;left:calc(50% - 6px);top:15%;width:12px;height:70%;background:#E9E9EC}
+.st .trust{display:flex;gap:32px;margin-top:30px;font-size:15px;color:#8C8C90}
+.st .trust b{display:block;font-size:26px;color:#fff}
+.mk{position:absolute;width:46px;height:46px;border-radius:50%;background:var(--red);color:#fff;font-weight:900;font-size:21px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px rgba(227,52,47,.25);transform:scale(0)}
+#leads{position:absolute;left:1360px;top:300px;width:420px;padding:30px;border-radius:18px;background:var(--surf);border:1px solid var(--line)}
+#leads .t{font-size:22px;color:var(--mut)}
+#leads .n{font-size:150px;font-weight:900;line-height:1;margin:8px 0 18px;color:var(--red)}
+/* intro */
+#name{position:absolute;left:0;right:0;top:330px;text-align:center;font-size:220px;font-weight:900;letter-spacing:-.02em}
+#name span{display:inline-block}
+#role{position:absolute;left:0;right:0;top:600px;text-align:center;font-size:38px;color:var(--mut)}
+#role b{color:var(--ink);font-weight:700}
+#srcs{position:absolute;left:0;right:0;top:600px;display:flex;justify-content:center;gap:70px}
+#srcs div{font-size:46px;font-weight:700;opacity:0;position:relative}
+#srcs div:after{content:"";position:absolute;left:0;bottom:-12px;height:5px;background:var(--red);width:var(--w,0%)}
+/* path */
+#pathL svg{position:absolute;left:0;top:0}
+.node{position:absolute;top:380px;width:300px;margin-left:-150px;text-align:center;opacity:0}
+.node .c{width:64px;height:64px;border-radius:50%;margin:0 auto 22px;background:var(--bg);border:5px solid var(--ink)}
+.node .w{font-size:40px;font-weight:700}
+.loss{position:absolute;top:640px;width:300px;margin-left:-150px;text-align:center;font-size:28px;color:var(--red2);font-weight:700;opacity:0}
+/* twelve */
+#grid{position:absolute;left:330px;top:300px;display:grid;grid-template-columns:repeat(6,190px);gap:24px}
+.cell{height:190px;border-radius:20px;background:var(--surf);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:76px;font-weight:900;color:#4A4A4F;position:relative;opacity:0}
+.cell .ck{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0}
+#costly{position:absolute;left:330px;top:780px;font-size:44px;font-weight:700;opacity:0}
+#costly b{color:var(--red2)}
+#wipe{position:absolute;top:0;bottom:0;left:0;width:0;background:var(--red);z-index:15}
+#next{position:absolute;inset:0;z-index:16;opacity:0;display:flex;flex-direction:column;justify-content:center;padding-left:160px}
+#next .k{font-size:44px;color:#FFD3CF;font-weight:700}
+#next .h{font-size:150px;font-weight:900;line-height:1.05;color:#fff;letter-spacing:-.02em}
+/* subs */
+#sub{position:absolute;left:0;right:0;bottom:56px;text-align:center;z-index:30}
+#sub span{display:inline-block;font-size:40px;font-weight:700;background:rgba(0,0,0,.72);padding:10px 26px;border-radius:12px;max-width:1500px}
+</style></head><body>
+<div id="bug">Eli<span>'</span>s</div>
+<div id="cnt"><span id="cn">0</span><small>/12</small></div>
+
+<div class="L" id="siteL">
+ <div id="browser"><div class="bar"><b></b><b></b><b></b><div class="url">teplydom.ru</div></div>
+ <div class="st"><nav><span class="logo">Тёплый дом</span><span>Окна &nbsp;&nbsp; Балконы &nbsp;&nbsp; Отзывы</span><span>+7 900 000-00-00</span></nav>
+ <div class="hero"><div><h2>Окна, в которых тихо и тепло</h2><p>Премиальные профили, авторский дизайн и внимание к каждой детали вашего дома.</p><span class="cta">Узнать больше</span>
+ <div class="trust"><span><b>2014</b>год основания</span><span><b>Премиум</b>материалы</span></div></div>
+ <div class="img"><i></i><u></u></div></div></div>
+ <div id="mks"></div></div>
+ <div id="leads"><div class="t">Заявок за месяц</div><div class="n" id="ln">0</div>
+ <svg width="360" height="90"><path id="flat" d="M0 70 L360 70" stroke="#E3342F" stroke-width="5" fill="none" stroke-dasharray="360" stroke-dashoffset="360"/></svg></div>
+</div>
+
+<div class="L" id="introL"><div id="name"></div><div id="role">разработчик сайтов &nbsp; <b>@zybyv</b></div>
+ <div id="srcs"><div>Google</div><div>Nielsen Norman Group</div><div>Стэнфорд</div><div>Baymard</div></div></div>
+
+<div class="L" id="pathL"><svg width="1920" height="1080" id="psvg"></svg><div id="nodes"></div></div>
+
+<div class="L" id="twL"><div id="grid"></div><div id="costly">№12 &nbsp;<b>самая дорогая ошибка</b></div></div>
+
+<div id="wipe"></div>
+<div id="next"><div class="k">Ошибка 1 из 12</div><div class="h">Медленная<br>загрузка</div></div>
+<div id="sub"><span id="st"></span></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const seg=(t,a,b)=>cl((t-a)/(b-a));
+const eo=x=>x>=1?1:1-Math.pow(2,-10*x);         // expo out
+const eio=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;  // quad in-out
+const fadeWin=(t,a,b,f=.45)=>Math.min(eo(seg(t,a,a+f)),1-seg(t,b-f*.8,b));
+
+// markers on site: positions within browser
+const mpos=[[60,120],[300,72],[560,100],[1080,72],[380,250],[150,420],[420,470],[90,560],[700,180],[960,300],[820,520],[1060,560]];
+mpos.forEach((p,i)=>{const d=document.createElement('div');d.className='mk';d.textContent=i+1;d.style.left=(150+p[0])+'px';d.style.top=(170+p[1])+'px';$('mks').appendChild(d)});
+// name letters
+"Eli's".split('').forEach(ch=>{const s=document.createElement('span');s.textContent=ch;if(ch=="'")s.style.color='#E3342F';$('name').appendChild(s)});
+// path
+const NX=[330,743,1176,1590], NW=['Заходит','Понимает','Верит','Покупает'], NT=[18.3,19.4,20.8,21.9];
+NX.forEach((x,i)=>{const n=document.createElement('div');n.className='node';n.style.left=x+'px';n.innerHTML='<div class="c"></div><div class="w">'+NW[i]+'</div>';$('nodes').appendChild(n);
+ if(i<3){const l=document.createElement('div');l.className='loss';l.style.left=((x+NX[i+1])/2)+'px';l.textContent='уходят';$('nodes').appendChild(l)}});
+const ns='http://www.w3.org/2000/svg';
+const line=document.createElementNS(ns,'line');line.setAttribute('x1',NX[0]);line.setAttribute('x2',NX[3]);line.setAttribute('y1',412);line.setAttribute('y2',412);line.setAttribute('stroke','#3A3A3E');line.setAttribute('stroke-width',6);$('psvg').appendChild(line);
+const prog=document.createElementNS(ns,'line');prog.setAttribute('x1',NX[0]);prog.setAttribute('y1',412);prog.setAttribute('y2',412);prog.setAttribute('stroke','#F3F3F3');prog.setAttribute('stroke-width',6);$('psvg').appendChild(prog);
+// dots: deterministic pseudo-random
+let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+const DOTS=[];for(let i=0;i<70;i++){const r=rnd();const drop=r<.38?0:r<.6?1:r<.75?2:3;DOTS.push({st:17.6+i*0.085,drop,dy:(rnd()-.5)*26,sp:420+rnd()*120});}
+DOTS.forEach(d=>{const c=document.createElementNS(ns,'circle');c.setAttribute('r',8);d.el=c;$('psvg').appendChild(c)});
+// grid
+for(let i=0;i<12;i++){const c=document.createElement('div');c.className='cell';c.innerHTML='<span>'+(i+1)+'</span><div class="ck"><svg width="90" height="90" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#F3F3F3" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';$('grid').appendChild(c)}
+
+const SUBS=[[0.2,2.4,'Сайт может быть красивым и дорогим'],[2.4,4.9,'и при этом не приносить ни одной заявки.'],[5.0,7.3,'Обычно дело в одной из двенадцати ошибок,'],[7.3,9.4,'и почти каждую видно за минуту.'],[9.6,11.6,"Я Eli's, я делаю сайты."],[11.7,13.6,'Под каждой ошибкой стоит исследование:'],[13.6,15.9,'Google, Nielsen Norman Group, Стэнфорд, Baymard.'],[16.1,18.0,'Пойдём по пути клиента.'],[18.0,20.6,'Он заходит, пытается понять, что вы предлагаете,'],[20.6,22.6,'решает, верить ли вам, и покупает.'],[22.6,24.4,'На каждом шаге сайт может его потерять.'],[24.6,26.9,'Последняя, двенадцатая ошибка самая дорогая.'],[26.9,29.3,'Из-за неё сайт не продаёт, даже когда остальные исправлены.']];
+
+window.render=function(t){
+ // site scene 0-9.6
+ const sA=fadeWin(t,0,9.6,.7); $('siteL').style.opacity=sA;
+ const z=.94+.06*eo(seg(t,0,1.2)) - .05*eio(seg(t,9.0,9.6));
+ $('browser').style.transform=`scale(${z})`;
+ $('leads').style.opacity=eo(seg(t,2.3,3.0)); $('leads').style.transform=`translateY(${30*(1-eo(seg(t,2.3,3.0)))}px)`;
+ $('flat').setAttribute('stroke-dashoffset',360*(1-eio(seg(t,2.8,4.4))));
+ document.querySelectorAll('.mk').forEach((m,i)=>{const a=seg(t,5.1+i*0.24,5.1+i*0.24+.35);const s=a<1?eo(a)*(1+.25*Math.sin(a*Math.PI)):1;m.style.transform=`scale(${s})`});
+ // intro 9.6-16
+ $('introL').style.opacity=fadeWin(t,9.6,16.0,.4);
+ [...$('name').children].forEach((s,i)=>{const a=eo(seg(t,9.75+i*.07,10.35+i*.07));s.style.transform=`translateY(${(1-a)*120}px)`;s.style.opacity=a});
+ const up=eio(seg(t,11.6,12.2));
+ $('name').style.transform=`translateY(${-150*up}px) scale(${1-.35*up})`;
+ $('role').style.opacity=eo(seg(t,10.4,10.9))*(1-up);
+ [...$('srcs').children].forEach((s,i)=>{const a0=12.2+i*0.75;const a=eo(seg(t,a0,a0+.4));s.style.opacity=a;s.style.transform=`translateY(${(1-a)*40}px)`;s.style.setProperty('--w',(100*eio(seg(t,a0+.2,a0+.7)))+'%')});
+ $('srcs').style.transform=`translateY(${-60*up}px)`;
+ // path 16-24.6
+ $('pathL').style.opacity=fadeWin(t,16.0,24.6,.4);
+ const px=NX[0]+(NX[3]-NX[0])*eio(seg(t,16.4,22.0));
+ prog.setAttribute('x2',px);
+ document.querySelectorAll('.node').forEach((n,i)=>{const a=eo(seg(t,NT[i]-.6,NT[i]));n.style.opacity=.25+.75*a;n.querySelector('.c').style.borderColor=a>.5?'#F3F3F3':'#3A3A3E';n.style.transform=`scale(${.9+.1*a})`});
+ document.querySelectorAll('.loss').forEach((l,i)=>{const a=eo(seg(t,22.7+i*.35,23.2+i*.35));l.style.opacity=a;l.style.transform=`translateY(${(1-a)*20}px)`});
+ DOTS.forEach(d=>{const age=t-d.st;if(age<0){d.el.setAttribute('opacity',0);return}
+  let x=NX[0]+age*d.sp, y=412+d.dy, op=1, col='#F3F3F3';
+  const stopX=d.drop<3?(NX[d.drop]+NX[d.drop+1])/2:NX[3]+40;
+  if(x>stopX){const over=(x-stopX)/d.sp; if(d.drop<3){x=stopX+over*60;y+=over*over*900;col='#E3342F';op=cl(1-over*1.3)}else{x=stopX;op=cl(1-over*3)}}
+  d.el.setAttribute('cx',x);d.el.setAttribute('cy',y);d.el.setAttribute('fill',col);d.el.setAttribute('opacity',op)});
+ // twelve 24.6-30
+ $('twL').style.opacity=eo(seg(t,24.6,25.0));
+ [...$('grid').children].forEach((c,i)=>{const a=eo(seg(t,24.7+i*.06,25.1+i*.06));c.style.opacity=a;c.style.transform=`translateY(${(1-a)*30}px)`;
+  if(i<11){const k=eo(seg(t,26.9+i*.12,27.2+i*.12));c.querySelector('.ck').style.opacity=k;c.querySelector('span').style.opacity=1-k;c.style.background=k>.5?'#232326':'#18181A'}
+  else{const r=eo(seg(t,25.6,26.2));c.style.borderColor=r>.5?'#E3342F':'#2A2A2D';c.style.color=r>.5?'#FF5A4F':'#4A4A4F';const p=t>26.2?1+.06*Math.sin((t-26.2)*5):1;c.style.transform+=` scale(${p})`;c.style.boxShadow=r>.5?`0 0 ${40+20*Math.sin(t*5)}px rgba(227,52,47,.45)`:'none'}});
+ $('costly').style.opacity=eo(seg(t,25.9,26.5));
+ // wipe + next 29.0-30
+ const w=eio(seg(t,28.9,29.45));$('wipe').style.width=(1920*w)+'px';
+ $('next').style.opacity=eo(seg(t,29.35,29.75));$('next').style.transform=`translateX(${40*(1-eo(seg(t,29.35,29.9)))}px)`;
+ $('cn').textContent=t>29.4?'1':'0';
+ // subs
+ const s=SUBS.find(s=>t>=s[0]&&t<s[1]);$('st').textContent=s?s[2]:'';$('sub').style.opacity=s?1:0;
+};
+render(0);
+</script></body></html>

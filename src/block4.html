@@ -1,0 +1,191 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+:root{--bg:#0C0C0D;--surf:#18181A;--surf2:#202023;--line:#2A2A2D;--red:#E3342F;--red2:#FF5A4F;--ink:#F3F3F3;--mut:#8C8C90}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1920px;height:1080px;background:var(--bg);color:var(--ink);font-family:'Noto Sans CJK SC',sans-serif;overflow:hidden;position:relative}
+.L{position:absolute;inset:0;opacity:0}
+#bug{position:absolute;top:44px;left:72px;font-weight:900;font-size:28px;z-index:35}
+#bug span{color:var(--red)}
+#cnt{position:absolute;top:40px;right:72px;font-weight:900;font-size:34px;z-index:35}
+#cnt small{color:rgba(255,255,255,.55);font-weight:500}
+#steps{position:absolute;top:40px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:20}
+#steps span{font-size:20px;padding:7px 18px;border-radius:999px;background:#1C1C1F;color:#6A6A6F;font-weight:500}
+#steps span.on{background:var(--red);color:#fff}
+#ttl{position:absolute;top:108px;left:72px;font-size:26px;color:var(--mut);font-weight:500;z-index:20}
+#src{position:absolute;top:104px;right:72px;font-size:19px;color:#B5B5BA;background:#1A1A1D;border:1px solid var(--line);border-radius:10px;padding:8px 16px;z-index:20;opacity:0;white-space:nowrap}
+#sub{position:absolute;left:0;right:0;bottom:50px;text-align:center;z-index:40}
+#sub span{display:inline-block;font-size:40px;font-weight:700;background:rgba(0,0,0,.75);padding:10px 26px;border-radius:12px;max-width:1600px}
+#card{position:absolute;inset:0;z-index:30;background:var(--red);display:flex;flex-direction:column;justify-content:center;padding-left:160px;clip-path:inset(0 0 0 0)}
+#card .k{font-size:44px;color:#FFD3CF;font-weight:700}
+#card .h{font-size:150px;font-weight:900;line-height:1.05;color:#fff;letter-spacing:-.02em}
+/* browser */
+.br{position:absolute;border-radius:16px;overflow:hidden;background:#141416;border:1px solid var(--line)}
+.br .bar{height:42px;background:#1E1E21;display:flex;align-items:center;gap:8px;padding:0 16px}
+.br .bar b{width:11px;height:11px;border-radius:50%;background:#3A3A3E}
+.br .url{margin-left:12px;flex:1;height:24px;border-radius:7px;background:#121214;font-size:14px;color:#6E6E73;display:flex;align-items:center;padding:0 12px}
+.vp{position:absolute;top:42px;left:0;right:0;bottom:0;overflow:hidden}
+/* dark good site, designed at 1160x650 then scaled */
+.gs{position:absolute;left:0;top:0;width:1160px;height:650px;background:#111113;transform-origin:0 0}
+.gs nav{display:flex;justify-content:space-between;padding:24px 44px;font-size:17px;color:#BDBDC2}
+.gs .logo{font-weight:900;color:#fff;font-size:21px}
+.gs .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;padding:22px 44px}
+.gs h2{font-size:50px;line-height:1.08;font-weight:900;letter-spacing:-.015em}
+.gs p{font-size:19px;line-height:1.5;color:#9C9CA1;margin:16px 0 26px}
+.gs .cta{display:inline-block;background:var(--red);color:#fff;font-weight:700;font-size:20px;padding:16px 30px;border-radius:10px}
+.gs .img{height:340px;border-radius:16px;background:linear-gradient(160deg,#2B2B2F,#1B1B1E);position:relative;overflow:hidden;border:1px solid var(--line)}
+.gs .img i{position:absolute;left:24%;top:15%;width:52%;height:70%;border:12px solid #E9E9EC;border-radius:6px;background:linear-gradient(180deg,#3A3F48,#20232A)}
+.gs .img u{position:absolute;left:calc(50% - 6px);top:15%;width:12px;height:70%;background:#E9E9EC}
+.gs .trust{display:flex;gap:32px;margin-top:28px;font-size:15px;color:#8C8C90}
+.gs .trust b{display:block;font-size:26px;color:#fff}
+/* bad site */
+.bs{position:absolute;left:0;top:0;width:1160px;height:650px;transform-origin:0 0;background:linear-gradient(180deg,#FFF59A,#FFD84D);font-family:'Liberation Serif',serif;text-align:center;color:#222}
+.big{font-weight:900;letter-spacing:-.02em;line-height:1}
+.lbl{font-size:30px;color:var(--mut);font-weight:500}
+.chip{position:absolute;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:16px 22px;font-size:28px;font-weight:700;white-space:nowrap}
+.chip.r{border-color:var(--red);color:var(--red2)}
+.bars .row{display:flex;align-items:center;gap:20px;margin-bottom:26px}
+.bars .nm{width:420px;font-size:30px;font-weight:700;text-align:right}
+.bars .tr{flex:1;height:54px;background:#161618;border-radius:10px;position:relative;overflow:hidden}
+.bars .fl{position:absolute;left:0;top:0;bottom:0;border-radius:10px}
+.phone{position:absolute;width:300px;height:610px;border-radius:44px;background:#2A2A2D;padding:11px}
+.phone .scr{width:100%;height:100%;border-radius:34px;overflow:hidden;background:#111113;position:relative}
+.phone .notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:84px;height:22px;border-radius:12px;background:#000;z-index:5}
+.call{position:absolute;font-size:30px;font-weight:700;opacity:0;white-space:nowrap}
+.call small{display:block;font-size:22px;font-weight:500;color:var(--mut)}
+.call:before{content:"";position:absolute;left:-26px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--red)}
+</style></head><body>
+<div id="bug">Eli<span>'</span>s</div>
+<div id="steps"><span>Зашёл</span><span>Понял</span><span>Поверил</span><span class="on">Купил</span></div>
+<div id="cnt"><span id="cn">1</span><small>/12</small></div>
+<div id="ttl"></div>
+<div id="src"></div>
+<div id="stage"></div>
+<div id="card"><div class="k" id="ck"></div><div class="h" id="ch"></div></div>
+<div id="sub"><span id="st"></span></div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const seg=(t,a,b)=>cl((t-a)/(Math.max(b-a,1e-6)));
+const eo=x=>x>=1?1:1-Math.pow(2,-10*x);
+const eio=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+const win=(t,a,b,f=.45)=>cl(Math.min(eo(seg(t,a,a+f)),1-seg(t,b-f*.7,b)));
+function timeline(C,PRE,tail=1.6){const T=[],E=[];let tt=0;C.forEach((s,i)=>{tt+=PRE[i]||0.12;let w=0;s.split(/\s+/).forEach(x=>{w+=/\d+-\d+/.test(x)?6:/\d{4}/.test(x)?4.5:/\d/.test(x)?3:1});const d=w/2.55+.25;T.push(tt);tt+=d;E.push(tt)});return [T,E,tt+tail]}
+const st=document.getElementById('stage');
+const add=(h)=>{const d=document.createElement('div');d.className='L';d.innerHTML=h;st.appendChild(d);return d};
+function common(t,o){
+ let cv=null;o.CARDS.forEach(c=>{if(t>=c[0]&&t<c[1]+.5)cv=c});
+ if(cv){const inn=cv[0]<0?1:eio(seg(t,cv[0],cv[0]+.45)), out=eio(seg(t,cv[1],cv[1]+.45));
+  $('card').style.clipPath=`inset(0 ${100-100*inn}% 0 ${100*out}%)`;$('card').style.display='flex';$('ck').textContent=cv[2];$('ch').innerHTML=cv[3];
+  $('card').querySelector('.h').style.transform=`translateX(${cv[0]<0?0:40*(1-eo(seg(t,cv[0]+.3,cv[0]+.8)))}px)`}else $('card').style.display='none';
+ let n=o.N0;o.CARDS.forEach(c=>{if(t>=c[0]+.4)n=c[4]});$('cn').textContent=n;
+ let tl='';o.TTL.forEach(x=>{if(t>=x[0])tl=x[1]});$('ttl').textContent=tl;
+ const s=o.SRC.find(x=>t>=x[0]&&t<x[1]);$('src').style.opacity=s?eo(seg(t,s[0],s[0]+.5)):0;if(s)$('src').textContent='Источник: '+s[2];
+ let k=-1;for(let i=0;i<o.C.length;i++)if(t>=o.T[i]&&t<o.E[i]+.1)k=i;$('st').textContent=k>=0?o.C[k]:'';$('sub').style.opacity=k>=0?1:0;
+ const f=1-seg(t,o.DUR-.5,o.DUR);
+ if(o.full){document.body.style.opacity=f}else{['stage','ttl','src','sub'].forEach(id=>{$(id).style.opacity=(id=='src'||id=='sub')?(+$(id).style.opacity)*f:f})}
+}
+const browser=(x,y,w,h,url,inner)=>`<div class="br" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"><div class="bar"><b></b><b></b><b></b><div class="url">${url}</div></div><div class="vp">${inner}</div></div>`;
+const GS=s=>`<div class="gs" style="transform:scale(${s})"><nav><span class="logo">Тёплый дом</span><span>Окна &nbsp;&nbsp; Балконы &nbsp;&nbsp; Отзывы</span><span>+7 900 000-00-00</span></nav><div class="hero"><div><h2>Пластиковые окна с установкой за 3 дня</h2><p>Замер бесплатно. Цена фиксируется в договоре и не меняется после монтажа.</p><span class="cta">Рассчитать стоимость</span><div class="trust"><span><b>4,6</b>212 отзывов</span><span><b>10 лет</b>гарантии</span><span><b>3 дня</b>до установки</span></div></div><div class="img"><i></i><u></u></div></div></div>`;
+const BS=s=>`<div class="bs" style="transform:scale(${s})"><div style="background:#1B3FA6;color:#fff;display:flex;justify-content:center;gap:16px;font-size:15px;padding:7px;font-family:'Liberation Sans'"><u>Главная</u><u>О компании</u><u>Новости</u><u>Продукция</u><u>Услуги</u><u>Фотогалерея</u><u>Прайс</u><u>Вакансии</u><u>Контакты</u></div><div style="background:#E8222C;color:#FFF200;font-weight:700;font-size:17px;padding:6px;font-family:'Liberation Sans'">!!! АКЦИЯ !!! СКИДКИ ДО 50% !!! ЗВОНИТЕ !!!</div><div style="font-size:40px;font-weight:700;color:#C4141C;margin:26px 30px 6px;text-shadow:2px 2px 0 #fff">Добро пожаловать на официальный сайт<br>ООО «ТеплоДомСтройСервис»!!!</div><div style="font-family:'Lora';font-style:italic;font-size:21px;color:#2B5E1E">Мы рады приветствовать Вас на нашем сайте</div><div style="display:flex;justify-content:center;gap:22px;margin:26px 0"><div style="width:190px;height:130px;background:#7EC8E3;border:5px ridge #999;display:flex;align-items:center;justify-content:center;font-size:14px">фото_окна.jpg</div><div style="width:190px;height:130px;background:#9BDB6E;border:5px ridge #999;display:flex;align-items:center;justify-content:center;font-size:14px">рукопожатие.jpg</div><div style="width:190px;height:130px;background:#F2A2C0;border:5px ridge #999;display:flex;align-items:center;justify-content:center;font-size:14px">команда.jpg</div></div><div style="font-size:13px;color:#777;padding:0 90px;line-height:1.35;font-family:'DejaVu Sans'">Наша компания является динамично развивающимся предприятием, предоставляющим широкий спектр услуг в сфере остекления. Индивидуальный подход к каждому клиенту, высокое качество и доступные цены являются нашими главными приоритетами...</div><div style="margin-top:16px;display:inline-block;background:linear-gradient(#6BD16B,#1E8A1E);color:#fff;font-family:'Liberation Sans';font-weight:700;padding:10px 26px;border:2px outset #9f9;font-size:16px">ПОДРОБНЕЕ &gt;&gt;</div></div>`;
+const C=["Последний шаг.","Человек готов, осталось оставить заявку или оформить заказ,","и здесь его тоже можно потерять.",
+"Baymard Institute сводит данные десятков исследований:","в интернет-магазинах в среднем бросают около 70% корзин.","Чаще всего из-за неожиданных платежей:","доставка и комиссии всплывают в самом конце.","Так ответили 40% опрошенных.","Ещё 17% ушли, потому что оформление было длинным и сложным.",
+"По заявкам на услуги такой статистики нет, но логика та же:","каждое лишнее поле и каждый сюрприз в цене отсеивают людей.","Имя и телефон, остальное уточните в разговоре.",
+"И самая дорогая ошибка.","Покупают красивый шаблон, вставляют свои тексты","и потом подгоняют под него бизнес.","Работать нужно в обратном порядке.","Сначала задача, например 30 заявок в месяц на установку окон с рекламы.","Из неё понятно, что поставить на первый экран, нужен ли калькулятор и какая форма.",
+"А ещё у задачи есть цифра, которую можно измерить.","Без аналитики вы не узнаете, на каком экране уходят люди и где бросают форму.","Пока задачи нет, остальные одиннадцать ошибок приходится исправлять наугад,","поэтому эта ошибка и стоит дороже всех.",
+"Я собрал все двенадцать пунктов в чек-лист,","по нему свой сайт можно проверить минут за десять.","Там же шаблон, как сформулировать задачу сайта до разработки.","Всё это лежит в моём телеграм-канале,","ссылка в шапке профиля и в описании под видео."];
+const PRE={0:.6,3:.5,12:1.3,22:1.2};
+const [T,E,DUR]=timeline(C,PRE,6.0);window.DUR=DUR;
+// E11-A Baymard
+const A11=add(`<div style="position:absolute;left:160px;top:250px"><div class="lbl">Бросают корзину в интернет-магазинах</div><div class="big" id="b70" style="font-size:200px;color:var(--red2);margin-top:10px;opacity:0">≈70%</div></div>
+<div style="position:absolute;left:900px;top:260px;width:860px"><div class="lbl" id="rsn" style="opacity:0">Причины, которые можно исправить</div>
+<div class="bars" style="margin-top:30px"><div class="row" id="ra" style="opacity:0"><div class="nm" style="width:340px;font-size:28px;white-space:nowrap">неожиданные платежи</div><div class="tr"><div class="fl" id="fa" style="background:var(--red);width:0"></div></div><div style="width:110px;font-size:40px;font-weight:900">40%</div></div>
+<div class="row" id="rb" style="opacity:0"><div class="nm" style="width:340px;font-size:28px;white-space:nowrap">длинное оформление</div><div class="tr"><div class="fl" id="fb" style="background:#F3F3F3;width:0"></div></div><div style="width:110px;font-size:40px;font-weight:900">17%</div></div></div>
+<div id="rnote" style="font-size:20px;color:#5E5E63;margin-top:8px;opacity:0">Доли опрошенных, один человек мог назвать несколько причин</div></div>`);
+// E11-B checkout + form
+const fields=["Имя","Фамилия","Телефон","Email","Город","Адрес","Этаж","Тип дома","Как узнали о нас","Комментарий"];
+const B11=add(`<div style="position:absolute;left:160px;top:230px;width:720px;border-radius:18px;background:var(--surf);border:1px solid var(--line);padding:40px">
+<div style="font-size:36px;font-weight:900">Ваш заказ</div>
+<div style="display:flex;justify-content:space-between;font-size:28px;margin-top:30px;color:#BDBDC2"><span>Окно 1300×1400</span><span>18 300 ₽</span></div>
+<div id="ex1" style="display:flex;justify-content:space-between;font-size:28px;margin-top:16px;color:var(--red2);opacity:0"><span>Доставка</span><span>+1 500 ₽</span></div>
+<div id="ex2" style="display:flex;justify-content:space-between;font-size:28px;margin-top:16px;color:var(--red2);opacity:0"><span>Подъём на этаж</span><span>+900 ₽</span></div>
+<div style="height:2px;background:#2A2A2D;margin:26px 0"></div>
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:30px;color:var(--mut)">Итого</span><span class="big" id="tot" style="font-size:64px">18 300 ₽</span></div></div>
+<div id="frm" style="position:absolute;left:980px;top:230px;width:780px;border-radius:18px;background:var(--surf);border:1px solid var(--line);padding:34px 40px">
+<div style="font-size:34px;font-weight:900;margin-bottom:16px">Заявка на замер</div><div id="fl" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">`+
+fields.map((f,i)=>`<div class="fld" data-k="${i==0||i==2?1:0}" style="height:58px;border-radius:10px;border:2px solid #3A3A3E;font-size:22px;color:var(--mut);display:flex;align-items:center;padding:0 16px;overflow:hidden">${f}</div>`).join('')+`</div>
+<div style="margin-top:18px;background:var(--red);border-radius:12px;text-align:center;font-size:26px;font-weight:700;padding:16px">Отправить</div></div>
+<div id="nost" style="position:absolute;left:160px;top:820px;font-size:22px;color:#6A6A6F;opacity:0">Для услуг отдельной статистики нет, вывод по аналогии с магазинами</div>`);
+// E12-A template vs task
+const A12=add(`<div id="tpl" style="position:absolute;left:220px;top:300px;width:520px;height:420px;border-radius:18px;background:var(--surf);border:2px dashed #4A4A4F;padding:30px">
+<div style="height:30px;width:60%;background:#2A2A2D;border-radius:6px"></div><div style="height:110px;background:#232326;border-radius:10px;margin-top:20px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#6A6A6F">ваш текст здесь</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:20px">${'<div style="height:110px;background:#232326;border-radius:10px"></div>'.repeat(3)}</div><div id="tpll" style="font-size:24px;font-weight:700;margin-top:20px;color:#8C8C90">Красивый шаблон</div></div>
+<div id="biz" style="position:absolute;left:1180px;top:300px;width:520px;height:420px;border-radius:18px;background:var(--surf);border:2px solid #F3F3F3;padding:30px;display:flex;flex-direction:column;justify-content:center;align-items:center"><div id="bizh" style="font-size:52px;font-weight:900">Ваш бизнес</div><div id="bizs" style="font-size:26px;color:var(--mut);margin-top:12px;text-align:center">услуги, клиенты, задачи</div></div>
+<svg width="1920" height="1080" style="position:absolute;left:0;top:0"><defs><marker id="ah" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#E3342F"/></marker></defs>
+<line id="arr" x1="770" y1="510" x2="1150" y2="510" stroke="#E3342F" stroke-width="8" marker-end="url(#ah)" opacity="0"/></svg>
+<div id="arrl" style="position:absolute;left:0;right:0;top:770px;text-align:center;font-size:42px;font-weight:700;opacity:0"></div>`);
+// E12-B task tree
+const kids=["Первый экран","Калькулятор","Форма"];
+const B12=add(`<div id="task" style="position:absolute;left:460px;top:220px;width:1000px;border-radius:18px;background:var(--red);padding:30px 40px;opacity:0"><div style="font-size:24px;color:#FFD3CF;font-weight:700">Задача сайта</div><div style="font-size:44px;font-weight:900;line-height:1.2;margin-top:8px">30 заявок в месяц на установку окон с рекламы</div></div>
+<svg width="1920" height="1080" style="position:absolute;left:0;top:0">${[0,1,2].map(i=>`<path id="br${i}" d="M960 420 C960 500 ${430+i*530} 480 ${430+i*530} 580" stroke="#F3F3F3" stroke-width="5" fill="none" stroke-dasharray="600" stroke-dashoffset="600"/>`).join('')}</svg>
+${kids.map((k,i)=>`<div id="kd${i}" style="position:absolute;left:${430+i*530-220}px;top:590px;width:440px;border-radius:16px;background:var(--surf);border:1px solid var(--line);padding:28px;text-align:center;font-size:38px;font-weight:900;opacity:0">${k}</div>`).join('')}`);
+// E12-C funnel (example)
+const fun=[["Зашли на сайт",1000],["Досмотрели первый экран",620],["Открыли калькулятор",240],["Начали заполнять форму",90],["Отправили заявку",31]];
+const C12=add(`<div class="lbl" style="position:absolute;left:160px;top:210px">Воронка в аналитике <span style="color:#5E5E63">(пример)</span></div>
+<div style="position:absolute;left:160px;top:280px;width:1600px">`+fun.map((f,i)=>`<div class="frow" style="display:flex;align-items:center;gap:24px;margin-bottom:22px;opacity:0"><div style="width:480px;font-size:30px;font-weight:700;text-align:right">${f[0]}</div><div style="flex:1;height:70px;position:relative"><div class="ffl" data-w="${f[1]/10}" style="position:absolute;left:0;top:0;bottom:0;border-radius:10px;background:${i==2?'#E3342F':'#F3F3F3'};width:0"></div></div><div style="width:120px;font-size:36px;font-weight:900">${f[1]}</div></div>`).join('')+`</div>
+<div id="drop" style="position:absolute;left:960px;top:462px;font-size:30px;font-weight:700;color:var(--red2);opacity:0">← самый большой обрыв, чинить первым</div>`);
+// E12-D grid callback
+const D12=add(`<div id="gcap" style="position:absolute;left:0;right:0;top:760px;text-align:center;font-size:42px;font-weight:700;opacity:0"></div><div id="grid" style="position:absolute;left:330px;top:290px;display:grid;grid-template-columns:repeat(6,190px);gap:24px">`+
+[...Array(12)].map((_,i)=>`<div class="cell" style="height:190px;border-radius:20px;background:var(--surf);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:${i==11?40:76}px;font-weight:900;color:#6A6A6F;position:relative">${i==11?'<span class="tk">12</span>':i+1}</div>`).join('')+`</div>`);
+// Final: checklist + end card
+const items=["Загрузка быстрее 3 секунд","Удобно с телефона","Аккуратный дизайн","Оффер на первом экране","Одно главное действие","Текст о клиенте","Калькулятор или подбор","Отзывы и кейсы","Живые, неидеальные отзывы","Люди, адрес, без опечаток","Короткая форма, честная цена","Сайт под задачу и аналитика"];
+const F1=add(`<div style="position:absolute;left:160px;top:200px;width:980px;border-radius:20px;background:#F3F3F3;color:#111;padding:40px 46px">
+<div style="font-size:42px;font-weight:900">Чек-лист: 12 пунктов</div><div style="font-size:22px;color:#6A6A6F;margin-top:4px">проверка сайта за 10 минут</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 30px;margin-top:26px">`+items.map((x,i)=>`<div class="cli" style="display:flex;align-items:center;gap:14px;font-size:23px;font-weight:500"><span class="cb" style="flex:none;width:30px;height:30px;border-radius:7px;border:3px solid #111;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff"></span>${x}</div>`).join('')+`</div></div>
+<div id="tplc" style="position:absolute;left:1220px;top:330px;width:540px;border-radius:20px;background:var(--surf);border:1px solid var(--line);border-top:8px solid var(--red);padding:36px;opacity:0"><div class="lbl" style="font-size:24px">+ бонус</div><div style="font-size:40px;font-weight:900;line-height:1.2;margin-top:10px">Шаблон: задача сайта до разработки</div></div>`);
+const F2=add(`<div style="position:absolute;left:0;right:0;top:250px;text-align:center"><div class="big" style="font-size:200px">Eli<span style="color:var(--red)">'</span>s</div>
+<div style="font-size:52px;font-weight:700;margin-top:30px">@zybyv</div>
+<div id="ec1" style="display:inline-block;margin-top:50px;background:var(--red);border-radius:16px;padding:20px 40px;font-size:44px;font-weight:900">Чек-лист в Telegram-канале</div>
+<div id="ec2" style="font-size:34px;color:#BDBDC2;margin-top:28px">Ссылка в шапке профиля и в описании под видео</div></div>`);
+
+const CARDS=[[0,T[3]-.35,'Ошибка 11 из 12','Сложная форма<br>и сюрпризы в цене',11],[T[12]-1.25,T[12]+.35,'Ошибка 12 из 12','Шаблон<br>вместо задачи',12]];
+const SRC=[[T[3],T[9],'Baymard Institute, Cart Abandonment Rate (обзор 50 исследований)']];
+const TTL=[[0,'Ошибка 11. Сложная форма и сюрпризы в цене'],[T[12]-.5,'Ошибка 12. Шаблон вместо задачи'],[T[22]-.6,'Итог']];
+window.render=function(t){
+ common(t,{CARDS,SRC,TTL,N0:11,C,T,E,DUR,full:true});
+ if(t>T[22]-.6)$('cn').textContent='12';
+ A11.style.opacity=win(t,T[3]-.2,T[9]);
+ $('b70').style.opacity=eo(seg(t,T[4]+.8,T[4]+1.3));$('rsn').style.opacity=eo(seg(t,T[5],T[5]+.4));
+ $('ra').style.opacity=eo(seg(t,T[5]+.2,T[5]+.6));$('fa').style.width=(40/40*80*eio(seg(t,T[7],T[7]+1)))+'%';
+ $('rb').style.opacity=eo(seg(t,T[8],T[8]+.4));$('rnote').style.opacity=eo(seg(t,T[8]+.6,T[8]+1));$('fb').style.width=(17/40*80*eio(seg(t,T[8]+.3,T[8]+1.3)))+'%';
+ B11.style.opacity=win(t,T[9],T[12]-.9);
+ const x1=eo(seg(t,T[10]+.6,T[10]+1)),x2=eo(seg(t,T[10]+1.1,T[10]+1.5));$('ex1').style.opacity=x1;$('ex2').style.opacity=x2;
+ const tot=18300+(x1>.5?1500:0)+(x2>.5?900:0);$('tot').textContent=tot.toLocaleString('ru-RU').replace(/\u00a0/g,' ')+' ₽';$('tot').style.color=tot>18300?'#FF5A4F':'#F3F3F3';
+ const sh=eio(seg(t,T[11]+.2,T[11]+1));
+ document.querySelectorAll('.fld').forEach(f=>{const keep=f.dataset.k=='1';f.style.opacity=keep?1:1-sh;f.style.height=keep?(58+20*sh)+'px':(58*(1-sh))+'px';f.style.borderWidth=keep?'2px':(2*(1-sh))+'px';f.style.gridColumn=keep&&sh>.5?'1 / span 2':'';f.style.fontSize=keep?(22+6*sh)+'px':'22px';f.style.color=keep&&sh>.5?'#F3F3F3':''});
+ $('fl').style.rowGap=(12*(1-sh)+12*sh)+'px';
+ $('nost').style.opacity=eo(seg(t,T[9]+.3,T[9]+.8));
+ A12.style.opacity=win(t,T[12]+.3,T[16]);
+ const flip=eio(seg(t,T[15]+.2,T[15]+.9));
+ $('tpl').style.left=(220+960*flip)+'px';$('biz').style.left=(1180-960*flip)+'px';
+ $('arr').setAttribute('opacity',eo(seg(t,T[13]+.4,T[13]+.9)));
+ $('arrl').style.opacity=eo(seg(t,T[14],T[14]+.5));$('arrl').innerHTML=flip>.5?'Сначала задача, <span style="color:#FF5A4F">потом сайт</span>':'Бизнес подгоняют <span style="color:#FF5A4F">под шаблон</span>';
+ $('bizh').textContent=flip>.5?'Задача':'Ваш бизнес';$('bizs').textContent=flip>.5?'что сайт должен дать бизнесу':'услуги, клиенты, задачи';$('tpll').textContent=flip>.5?'Сайт под задачу':'Красивый шаблон';$('biz').style.borderColor=flip>.5?'#E3342F':'#F3F3F3';
+ B12.style.opacity=win(t,T[16],T[18]);
+ $('task').style.opacity=eo(seg(t,T[16]+.3,T[16]+.8));
+ [0,1,2].forEach(i=>{$('br'+i).setAttribute('stroke-dashoffset',600*(1-eio(seg(t,T[17]+.6+i*.9,T[17]+1.2+i*.9))));const a=eo(seg(t,T[17]+1+i*.9,T[17]+1.4+i*.9));$('kd'+i).style.opacity=a;$('kd'+i).style.transform=`translateY(${(1-a)*24}px)`});
+ C12.style.opacity=win(t,T[18],T[20]);
+ document.querySelectorAll('.frow').forEach((r,i)=>{const a=eo(seg(t,T[18]+.5+i*.45,T[18]+.9+i*.45));r.style.opacity=a;r.querySelector('.ffl').style.width=(+r.querySelector('.ffl').dataset.w*eio(a))+'%'});
+ $('drop').style.opacity=eo(seg(t,T[19]+1.2,T[19]+1.7));
+ D12.style.opacity=win(t,T[20],T[22]-.6);
+ document.querySelectorAll('#grid .cell').forEach((c,i)=>{if(i<11){const k=eo(seg(t,T[20]+.4+i*.12,T[20]+.7+i*.12));c.style.borderColor=k>.5?'#4A4A4F':'#2A2A2D';c.style.color=k>.5?'#F3F3F3':'#6A6A6F'}
+  else{const r=eo(seg(t,T[20]+.2,T[20]+.6));c.style.borderColor='#E3342F';c.style.color='#FF5A4F';c.style.boxShadow=`0 0 ${40+20*Math.sin(t*5)}px rgba(227,52,47,.45)`;c.querySelector('.tk').textContent=t>T[21]?'Задача':'12';c.style.fontSize=t>T[21]?'40px':'76px';c.style.transform=`scale(${1+.05*Math.sin(t*5)})`}});
+ $('gcap').style.opacity=eo(seg(t,T[20]+1.4,T[20]+1.9));$('gcap').innerHTML=t>T[21]?'Сначала задача, <span style="color:#FF5A4F">потом всё остальное</span>':'Без задачи одиннадцать пунктов чинят <span style="color:#FF5A4F">наугад</span>';
+ const fe=eo(seg(t,T[25],T[25]+.6));$('steps').style.opacity=1-fe;$('ttl').style.opacity=1-fe;
+ F1.style.opacity=win(t,T[22]-.2,T[25]+.2);
+ document.querySelectorAll('.cb').forEach((b,i)=>{const on=t>T[22]+.3+i*.22;b.style.background=on?'#E3342F':'transparent';b.style.borderColor=on?'#E3342F':'#111';b.textContent=on?'✓':''});
+ $('tplc').style.opacity=eo(seg(t,T[24],T[24]+.5));$('tplc').style.transform=`translateY(${(1-eo(seg(t,T[24],T[24]+.5)))*30}px)`;
+ F2.style.opacity=eo(seg(t,T[25],T[25]+.6));
+ $('ec1').style.transform=`scale(${.9+.1*eo(seg(t,T[25]+.3,T[25]+.8))})`;$('ec2').style.opacity=eo(seg(t,T[26],T[26]+.5));
+};
+render(0);
+
+</script></body></html>

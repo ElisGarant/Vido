@@ -1,0 +1,261 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+:root{--bg:#0C0C0D;--surf:#18181A;--surf2:#202023;--line:#2A2A2D;--red:#E3342F;--red2:#FF5A4F;--ink:#F3F3F3;--mut:#8C8C90}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1920px;height:1080px;background:var(--bg);color:var(--ink);font-family:'Noto Sans CJK SC',sans-serif;overflow:hidden;position:relative}
+.L{position:absolute;inset:0;opacity:0}
+#bug{position:absolute;top:44px;left:72px;font-weight:900;font-size:28px;z-index:35}
+#bug span{color:var(--red)}
+#cnt{position:absolute;top:40px;right:72px;font-weight:900;font-size:34px;z-index:35}
+#cnt small{color:rgba(255,255,255,.55);font-weight:500}
+#steps{position:absolute;top:40px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:20}
+#steps span{font-size:20px;padding:7px 18px;border-radius:999px;background:#1C1C1F;color:#6A6A6F;font-weight:500}
+#steps span.on{background:var(--red);color:#fff}
+#ttl{position:absolute;top:108px;left:72px;font-size:26px;color:var(--mut);font-weight:500;z-index:20}
+#src{position:absolute;top:104px;right:72px;font-size:19px;color:#B5B5BA;background:#1A1A1D;border:1px solid var(--line);border-radius:10px;padding:8px 16px;z-index:20;opacity:0;white-space:nowrap}
+#sub{position:absolute;left:0;right:0;bottom:50px;text-align:center;z-index:40}
+#sub span{display:inline-block;font-size:40px;font-weight:700;background:rgba(0,0,0,.75);padding:10px 26px;border-radius:12px;max-width:1600px}
+#card{position:absolute;inset:0;z-index:30;background:var(--red);display:flex;flex-direction:column;justify-content:center;padding-left:160px;clip-path:inset(0 0 0 0)}
+#card .k{font-size:44px;color:#FFD3CF;font-weight:700}
+#card .h{font-size:150px;font-weight:900;line-height:1.05;color:#fff;letter-spacing:-.02em}
+/* browser */
+.br{position:absolute;border-radius:16px;overflow:hidden;background:#141416;border:1px solid var(--line)}
+.br .bar{height:42px;background:#1E1E21;display:flex;align-items:center;gap:8px;padding:0 16px}
+.br .bar b{width:11px;height:11px;border-radius:50%;background:#3A3A3E}
+.br .url{margin-left:12px;flex:1;height:24px;border-radius:7px;background:#121214;font-size:14px;color:#6E6E73;display:flex;align-items:center;padding:0 12px}
+.vp{position:absolute;top:42px;left:0;right:0;bottom:0;overflow:hidden}
+/* dark good site, designed at 1160x650 then scaled */
+.gs{position:absolute;left:0;top:0;width:1160px;height:650px;background:#111113;transform-origin:0 0}
+.gs nav{display:flex;justify-content:space-between;padding:24px 44px;font-size:17px;color:#BDBDC2}
+.gs .logo{font-weight:900;color:#fff;font-size:21px}
+.gs .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;padding:22px 44px}
+.gs h2{font-size:50px;line-height:1.08;font-weight:900;letter-spacing:-.015em}
+.gs p{font-size:19px;line-height:1.5;color:#9C9CA1;margin:16px 0 26px}
+.gs .cta{display:inline-block;background:var(--red);color:#fff;font-weight:700;font-size:20px;padding:16px 30px;border-radius:10px}
+.gs .img{height:340px;border-radius:16px;background:linear-gradient(160deg,#2B2B2F,#1B1B1E);position:relative;overflow:hidden;border:1px solid var(--line)}
+.gs .img i{position:absolute;left:24%;top:15%;width:52%;height:70%;border:12px solid #E9E9EC;border-radius:6px;background:linear-gradient(180deg,#3A3F48,#20232A)}
+.gs .img u{position:absolute;left:calc(50% - 6px);top:15%;width:12px;height:70%;background:#E9E9EC}
+.gs .trust{display:flex;gap:32px;margin-top:28px;font-size:15px;color:#8C8C90}
+.gs .trust b{display:block;font-size:26px;color:#fff}
+/* bad site */
+.bs{position:absolute;left:0;top:0;width:1160px;height:650px;transform-origin:0 0;background:linear-gradient(180deg,#FFF59A,#FFD84D);font-family:'Liberation Serif',serif;text-align:center;color:#222}
+.big{font-weight:900;letter-spacing:-.02em;line-height:1}
+.lbl{font-size:30px;color:var(--mut);font-weight:500}
+.chip{position:absolute;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:16px 22px;font-size:28px;font-weight:700;white-space:nowrap}
+.chip.r{border-color:var(--red);color:var(--red2)}
+.bars .row{display:flex;align-items:center;gap:20px;margin-bottom:26px}
+.bars .nm{width:420px;font-size:30px;font-weight:700;text-align:right}
+.bars .tr{flex:1;height:54px;background:#161618;border-radius:10px;position:relative;overflow:hidden}
+.bars .fl{position:absolute;left:0;top:0;bottom:0;border-radius:10px}
+.phone{position:absolute;width:300px;height:610px;border-radius:44px;background:#2A2A2D;padding:11px}
+.phone .scr{width:100%;height:100%;border-radius:34px;overflow:hidden;background:#111113;position:relative}
+.phone .notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:84px;height:22px;border-radius:12px;background:#000;z-index:5}
+.call{position:absolute;font-size:30px;font-weight:700;opacity:0;white-space:nowrap}
+.call small{display:block;font-size:22px;font-weight:500;color:var(--mut)}
+.call:before{content:"";position:absolute;left:-26px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--red)}
+</style></head><body>
+<div id="bug">Eli<span>'</span>s</div>
+<div id="steps"><span class="on">Зашёл</span><span>Понял</span><span>Поверил</span><span>Купил</span></div>
+<div id="cnt"><span id="cn">1</span><small>/12</small></div>
+<div id="ttl"></div>
+<div id="src"></div>
+<div id="stage"></div>
+<div id="card"><div class="k" id="ck"></div><div class="h" id="ch"></div></div>
+<div id="sub"><span id="st"></span></div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const seg=(t,a,b)=>cl((t-a)/(Math.max(b-a,1e-6)));
+const eo=x=>x>=1?1:1-Math.pow(2,-10*x);
+const eio=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+const win=(t,a,b,f=.45)=>cl(Math.min(eo(seg(t,a,a+f)),1-seg(t,b-f*.7,b)));
+// ---------- narration timeline
+const C=["Первый шаг.","Человек ещё ничего не прочитал, а уже ушёл.",
+"Google проанализировал больше десяти тысяч мобильных сайтов.","Если страница грузится дольше трёх секунд,","53% визитов обрываются.",
+"Значит, половина вашей рекламы может уходить на людей,","которые так и не увидели первый экран.",
+"Чаще всего сайт тормозят тяжёлые картинки,","лишние скрипты и слабый хостинг.",
+"Проверить свой сайт можно бесплатно в PageSpeed Insights,","это займёт минуту.",
+"По данным Google, больше половины трафика приходит с телефонов,","а конверсия на мобильных ниже, чем на компьютере.",
+"Частая картина: сайт собрали и проверили на большом мониторе.","На телефоне кнопка уезжает за край,","текст мелкий,","а форму не заполнить пальцем.",
+"Откройте свой сайт с телефона прямо сейчас","и попробуйте оставить заявку одной рукой.",
+"Теперь дизайн.","В 2006 году команда Гитте Линдгаард из Карлтонского университета","показывала людям сайты на 50 миллисекунд,","это одна двадцатая секунды.",
+"Коллеги думали, что за такое время ничего нельзя разглядеть.","А оценки почти совпали с теми,","что люди ставили после долгого изучения.",
+"Потом включается эффект ореола.","Если первое впечатление плохое, человек ищет ему подтверждение","и пропускает ваши плюсы.",
+"Хороший продукт на устаревшем сайте проигрывает","ещё до того, как про него прочитали.",
+"И здесь есть популярный миф.","Во многих статьях пишут, что 75% людей","судят о компании по дизайну сайта.",
+"Я открыл первоисточник: исследование Би Джей Фогга из Стэнфорда, 2002 год.","Там 2684 человека оценивали сотню сайтов","и писали, почему доверяют им или нет.",
+"О визуальном оформлении было 46% всех комментариев.","Цифра скромнее, но дизайн всё равно оказался на первом месте","среди причин, по которым люди решали, доверять сайту или нет."];
+const PRE={0:.6,2:.5,11:1.3,19:1.3};
+const T=[],E=[];let tt=0;
+C.forEach((s,i)=>{tt+=PRE[i]||0.12;let w=0;s.split(/\s+/).forEach(x=>{w+=/\d{4}/.test(x)?4.5:/\d/.test(x)?3:1});const d=w/2.55+.25;T.push(tt);tt+=d;E.push(tt)});
+window.DUR=tt+1.6;
+// ---------- build stage
+const st=$('stage');
+const add=(h)=>{const d=document.createElement('div');d.className='L';d.innerHTML=h;st.appendChild(d);return d};
+const browser=(x,y,w,h,url,inner)=>`<div class="br" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"><div class="bar"><b></b><b></b><b></b><div class="url">${url}</div></div><div class="vp">${inner}</div></div>`;
+const GS=s=>`<div class="gs" style="transform:scale(${s})"><nav><span class="logo">Тёплый дом</span><span>Окна &nbsp;&nbsp; Балконы &nbsp;&nbsp; Отзывы</span><span>+7 900 000-00-00</span></nav><div class="hero"><div><h2>Пластиковые окна с установкой за 3 дня</h2><p>Замер бесплатно. Цена фиксируется в договоре и не меняется после монтажа.</p><span class="cta">Рассчитать стоимость</span><div class="trust"><span><b>4,6</b>212 отзывов</span><span><b>10 лет</b>гарантии</span><span><b>3 дня</b>до установки</span></div></div><div class="img"><i></i><u></u></div></div></div>`;
+const BS=s=>`<div class="bs" style="transform:scale(${s})"><div style="background:#1B3FA6;color:#fff;display:flex;justify-content:center;gap:16px;font-size:15px;padding:7px;font-family:'Liberation Sans'"><u>Главная</u><u>О компании</u><u>Новости</u><u>Продукция</u><u>Услуги</u><u>Фотогалерея</u><u>Прайс</u><u>Вакансии</u><u>Контакты</u></div><div style="background:#E8222C;color:#FFF200;font-weight:700;font-size:17px;padding:6px;font-family:'Liberation Sans'">!!! АКЦИЯ !!! СКИДКИ ДО 50% !!! ЗВОНИТЕ !!!</div><div style="font-size:40px;font-weight:700;color:#C4141C;margin:26px 30px 6px;text-shadow:2px 2px 0 #fff">Добро пожаловать на официальный сайт<br>ООО «ТеплоДомСтройСервис»!!!</div><div style="font-family:'Lora';font-style:italic;font-size:21px;color:#2B5E1E">Мы рады приветствовать Вас на нашем сайте</div><div style="display:flex;justify-content:center;gap:22px;margin:26px 0"><div style="width:190px;height:130px;background:#7EC8E3;border:5px ridge #999;display:flex;align-items:center;justify-content:center;font-size:14px">фото_окна.jpg</div><div style="width:190px;height:130px;background:#9BDB6E;border:5px ridge #999;display:flex;align-items:center;justify-content:center;font-size:14px">рукопожатие.jpg</div><div style="width:190px;height:130px;background:#F2A2C0;border:5px ridge #999;display:flex;align-items:center;justify-content:center;font-size:14px">команда.jpg</div></div><div style="font-size:13px;color:#777;padding:0 90px;line-height:1.35;font-family:'DejaVu Sans'">Наша компания является динамично развивающимся предприятием, предоставляющим широкий спектр услуг в сфере остекления. Индивидуальный подход к каждому клиенту, высокое качество и доступные цены являются нашими главными приоритетами...</div><div style="margin-top:16px;display:inline-block;background:linear-gradient(#6BD16B,#1E8A1E);color:#fff;font-family:'Liberation Sans';font-weight:700;padding:10px 26px;border:2px outset #9f9;font-size:16px">ПОДРОБНЕЕ &gt;&gt;</div></div>`;
+const gauge=(id,col)=>`<svg width="170" height="170" viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" fill="#111113" stroke="#2A2A2D" stroke-width="10"/><circle id="${id}a" cx="60" cy="60" r="50" fill="none" stroke="${col}" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 314" transform="rotate(-90 60 60)"/><text id="${id}t" x="60" y="71" text-anchor="middle" font-size="34" font-weight="900" fill="${col}" font-family="Noto Sans CJK SC">0</text></svg>`;
+const skel=`<div style="position:absolute;inset:0;background:#111113;padding:34px 40px"><div id="pbar" style="position:absolute;top:0;left:0;height:4px;background:var(--red);width:0"></div><div style="width:150px;height:20px;background:#1E1E21;border-radius:6px"></div><div style="display:grid;grid-template-columns:1.1fr .9fr;gap:30px;margin-top:40px"><div><div style="height:38px;background:#1E1E21;border-radius:8px;width:90%"></div><div style="height:38px;background:#1E1E21;border-radius:8px;width:66%;margin-top:14px"></div><div style="height:15px;background:#19191C;border-radius:6px;width:85%;margin-top:30px"></div><div style="height:15px;background:#19191C;border-radius:6px;width:60%;margin-top:12px"></div></div><div style="height:300px;background:#19191C;border-radius:14px;display:flex;align-items:center;justify-content:center"><svg id="spin" width="64" height="64" viewBox="0 0 50 50"><circle cx="25" cy="25" r="20" fill="none" stroke="#2A2A2D" stroke-width="5"/><path d="M25 5a20 20 0 0 1 20 20" fill="none" stroke="#8C8C90" stroke-width="5" stroke-linecap="round"/></svg></div></div></div>`;
+
+// E1-A: loading + 100 visitors
+let dots='';for(let i=0;i<100;i++){dots+=`<i id="v${i}" style="position:absolute;left:${(i%10)*62}px;top:${Math.floor(i/10)*62}px;width:40px;height:40px;border-radius:50%;background:#F3F3F3"></i>`}
+const A1=add(browser(110,230,880,560,'teplydom.ru',skel)+`<div id="timer" class="big" style="position:absolute;left:110px;top:820px;font-size:64px"></div>
+<div style="position:absolute;left:1130px;top:260px;width:620px;height:620px">${dots}</div>
+<div id="p53" style="position:absolute;left:1130px;top:200px;opacity:0"><span class="big" style="font-size:120px;color:var(--red2)">53%</span></div>`);
+// E1-B: budget
+const B1=add(`<div style="position:absolute;left:160px;top:330px;right:160px"><div class="lbl" style="margin-bottom:22px">Рекламный бюджет за месяц</div>
+<div style="height:120px;border-radius:16px;background:#161618;position:relative;overflow:hidden"><div id="bud" style="position:absolute;left:0;top:0;bottom:0;background:#F3F3F3;width:0"></div><div id="burn" style="position:absolute;left:0;top:0;bottom:0;background:var(--red);width:0"></div></div>
+<div style="display:flex;justify-content:space-between;margin-top:26px"><div id="bl1" style="font-size:40px;font-weight:700;color:var(--red2);opacity:0">может уйти на тех, кто не дождался</div><div id="bl2" style="font-size:40px;font-weight:700;opacity:0">увидели сайт</div></div></div>`);
+// E1-C: waterfall
+const rows=[["hero-фото.jpg","4,2 МБ",.95,1],["слайдер-2.jpg","3,1 МБ",.72,1],["скрипты и виджеты","18 шт.",.6,1],["ответ хостинга","1,8 с",.45,1]];
+const C1=add(`<div style="position:absolute;left:160px;top:250px;right:160px"><div class="lbl" style="margin-bottom:34px">Что грузит страницу <span style="color:#5E5E63">(пример: teplydom.ru)</span></div><div class="bars">`+rows.map((r,i)=>`<div class="row" id="wr${i}" style="opacity:0"><div class="nm">${r[0]}</div><div class="tr"><div class="fl" id="wf${i}" style="background:${i<2?'#E3342F':i==2?'#B42A26':'#8A211E'};width:0"></div></div><div style="width:170px;font-size:30px;font-weight:700">${r[1]}</div></div>`).join('')+`</div></div>`);
+// E1-D: pagespeed compare
+const D1=add(`<div class="lbl" style="position:absolute;left:110px;top:200px">PageSpeed Insights, бесплатная проверка</div>`+
+browser(110,260,820,500,'teplydom.ru',`<div style="position:absolute;inset:0;background:#111113"></div>`+skel.replace('id="pbar"','id="pbar2"').replace('id="spin"','id="spin2"'))+
+browser(990,260,820,500,'teplydom.ru',GS(.707))+
+`<div style="position:absolute;left:720px;top:560px">${gauge('g1','#E3342F')}</div><div style="position:absolute;left:1600px;top:560px">${gauge('g2','#F3F3F3')}</div>
+<div style="position:absolute;left:110px;top:790px;font-size:40px;font-weight:700;color:var(--red2)">Было: 4,8 секунды</div><div style="position:absolute;left:990px;top:790px;font-size:40px;font-weight:700">Стало: 0,9 секунды</div>`);
+
+// E2-A: traffic/conversion
+const A2=add(`<div style="position:absolute;left:160px;top:270px;right:160px">
+<div class="lbl" style="margin-bottom:24px">Трафик</div><div class="bars">
+<div class="row"><div class="nm">с телефонов</div><div class="tr"><div class="fl" id="t1" style="background:#F3F3F3;width:0"></div></div><div style="width:300px;white-space:nowrap;font-size:28px;font-weight:700" id="t1l">больше половины</div></div>
+<div class="row"><div class="nm">с компьютеров</div><div class="tr"><div class="fl" id="t2" style="background:#4A4A4F;width:0"></div></div><div style="width:260px"></div></div></div>
+<div class="lbl" style="margin:40px 0 24px" id="cvl">Конверсия</div><div class="bars" id="cvb">
+<div class="row"><div class="nm">на телефоне</div><div class="tr"><div class="fl" id="c1" style="background:var(--red);width:0"></div></div><div style="width:260px;font-size:28px;font-weight:700;color:var(--red2)">ниже</div></div>
+<div class="row"><div class="nm">на компьютере</div><div class="tr"><div class="fl" id="c2" style="background:#4A4A4F;width:0"></div></div><div style="width:260px"></div></div></div>
+<div style="font-size:20px;color:#5E5E63;margin-top:6px">Пропорции условные, точных долей в исследовании нет</div></div>`);
+// E2-B/C: monitor -> phone
+const P2=add(`<div id="mon" style="position:absolute;left:460px;top:220px;width:1000px;height:600px">${browser(0,0,1000,600,'teplydom.ru',GS(.862))}</div>
+<div id="badp" class="phone" style="left:300px;top:230px;opacity:0"><div class="scr"><div class="notch"></div>
+<div style="position:absolute;top:40px;left:0;width:1160px;height:650px">${GS(.41).replace('class="gs"','class="gs" ')}</div>
+<div style="position:absolute;top:292px;left:0;right:0;bottom:0;background:#111113;padding:16px 14px;font-size:9px;line-height:1.4;color:#8C8C90">Компания «Тёплый дом» работает на рынке с 2014 года и предлагает широкий ассортимент оконных конструкций из ПВХ, алюминия и дерева. Мы осуществляем полный цикл работ: замер, изготовление, доставку и монтаж. Для получения подробной информации заполните форму обратной связи ниже.
+<div style="margin-top:12px;display:grid;grid-template-columns:110px 110px 110px;gap:6px;width:350px"><div style="height:18px;border:1px solid #3A3A3E;font-size:8px;padding:3px">Имя</div><div style="height:18px;border:1px solid #3A3A3E;font-size:8px;padding:3px">Телефон</div><div style="height:18px;border:1px solid #3A3A3E;font-size:8px;padding:3px">Город</div></div>
+<div style="margin-top:8px;width:150px;margin-left:205px;background:var(--red);color:#fff;font-size:9px;padding:6px;text-align:center">Отправить заявку</div></div></div></div>
+<div class="call" id="k1" style="left:660px;top:300px">Кнопка за краем<small>не видно без прокрутки вбок</small></div>
+<div class="call" id="k2" style="left:660px;top:430px">Текст 9 px<small>приходится увеличивать</small></div>
+<div class="call" id="k3" style="left:660px;top:560px">Поля в ряд<small>в них не попасть пальцем</small></div>
+<div id="goodp" class="phone" style="left:1320px;top:230px;opacity:0"><div class="scr"><div class="notch"></div>
+<div style="padding:44px 18px 0"><div style="display:flex;justify-content:space-between;font-size:17px"><b>Тёплый дом</b><span>☰</span></div>
+<div style="height:120px;border-radius:12px;margin-top:14px;background:linear-gradient(160deg,#2B2B2F,#1B1B1E);border:1px solid #2A2A2D;position:relative"><i style="position:absolute;left:30%;top:14%;width:40%;height:72%;border:7px solid #E9E9EC;border-radius:4px"></i></div>
+<div style="font-size:23px;font-weight:900;line-height:1.12;margin-top:14px">Пластиковые окна с установкой за 3 дня</div>
+<div style="font-size:14px;color:#9C9CA1;margin-top:10px;line-height:1.45">Замер бесплатно. Цена фиксируется в договоре.</div>
+<div style="display:flex;gap:18px;margin-top:14px;font-size:12px;color:#8C8C90"><span><b style="display:block;font-size:18px;color:#fff">4,6</b>212 отзывов</span><span><b style="display:block;font-size:18px;color:#fff">10 лет</b>гарантии</span></div></div>
+<div id="zone" style="position:absolute;left:-60px;right:-60px;bottom:-170px;height:330px;border-radius:50%;background:radial-gradient(closest-side,rgba(227,52,47,.32),rgba(227,52,47,0));opacity:0"></div>
+<div id="gcta" style="position:absolute;left:14px;right:14px;bottom:18px;background:var(--red);color:#fff;font-weight:700;font-size:18px;text-align:center;padding:16px;border-radius:14px">Рассчитать стоимость</div></div></div>
+<div class="call" id="k4" style="left:1040px;top:730px;opacity:0;color:var(--ink)">Кнопка<small>под большим пальцем</small></div>`);
+
+// E3-A: 50ms
+const A3=add(`<div style="position:absolute;left:0;right:0;top:300px;text-align:center"><span class="big" id="ms" style="font-size:300px">50 мс</span><div id="ms2" class="lbl" style="font-size:44px;margin-top:20px;opacity:0">одна двадцатая секунды</div></div>
+<div id="flash" style="position:absolute;inset:0;background:#000;opacity:0;z-index:5">${browser(260,140,1400,784,'teplydom.ru',GS(1.207))}</div>`);
+// E3-B: ratings ≈
+const B3=add(`<div style="position:absolute;left:160px;top:300px;right:160px"><div class="lbl" style="margin-bottom:34px">Оценка привлекательности сайта</div><div class="bars">
+<div class="row"><div class="nm">показ 50 мс</div><div class="tr"><div class="fl" id="r1" style="background:var(--red);width:0"></div></div></div>
+<div class="row"><div class="nm">долгое изучение</div><div class="tr"><div class="fl" id="r2" style="background:#F3F3F3;width:0"></div></div></div></div>
+<div id="aprx" style="font-size:52px;font-weight:900;margin-top:30px;opacity:0;padding-left:440px">≈ почти одинаково</div></div>`);
+// E3-C: halo
+const plus=[["Гарантия 10 лет",300,300],["Свой цех",1340,330],["Цены ниже рынка",250,700],["Монтаж за 1 день",1300,720]];
+const C3=add(`<div id="bsw" style="position:absolute;left:560px;top:250px">${browser(0,0,800,490,'teplodomstroyservis.ru',BS(.69))}</div>`+plus.map((p,i)=>`<div class="chip" id="pl${i}" style="left:${p[1]}px;top:${p[2]}px;opacity:0;color:#F3F3F3"><span style="color:#6FCF97">+</span> ${p[0]}</div>`).join(''));
+// E3-D: compare
+const D3=add(browser(110,250,820,500,'teplodomstroyservis.ru',BS(.707))+browser(990,250,820,500,'teplydom.ru',GS(.707))+
+`<div style="position:absolute;left:110px;top:780px;font-size:38px;font-weight:700;color:var(--red2)">Проигрывает до прочтения</div><div style="position:absolute;left:990px;top:780px;font-size:38px;font-weight:700">Вызывает доверие сразу</div>`);
+// E3-E: myth articles
+const arts=[[120,240,-4],[700,290,3],[1280,230,-2],[400,580,2],[1000,600,-3]];
+const E3=add(arts.map((a,i)=>`<div id="ar${i}" style="position:absolute;left:${a[0]}px;top:${a[1]}px;width:520px;padding:24px 28px;border-radius:14px;background:#F3F3F3;box-shadow:0 20px 40px rgba(0,0,0,.5);color:#111;opacity:0;transform:rotate(${a[2]}deg)"><div style="height:10px;width:40%;background:#C9C9CE;border-radius:5px"></div><div style="font-size:29px;font-weight:900;line-height:1.2;margin-top:14px">75% людей судят о компании по дизайну сайта</div><div style="height:9px;width:85%;background:#DADADF;border-radius:5px;margin-top:16px"></div><div style="height:9px;width:62%;background:#DADADF;border-radius:5px;margin-top:9px"></div></div>`).join(''));
+// E3-F: paper
+const F3=add(`<div id="paper" style="position:absolute;left:180px;top:220px;width:820px;height:640px;background:#F3F3F3;color:#111;border-radius:10px;padding:56px 60px;font-family:'Liberation Serif',serif">
+<div style="font-size:42px;font-weight:700;line-height:1.2">How Do People Evaluate a Web Site’s Credibility?</div><div style="font-size:26px;margin-top:14px;font-style:italic">Results from a Large Study</div>
+<div style="font-size:24px;margin-top:30px">B. J. Fogg et al.<br>Stanford Persuasive Technology Lab, 2002</div>
+<div style="margin-top:40px">${'<div style="height:10px;background:#D4D4D9;border-radius:5px;margin-top:14px"></div>'.repeat(7)}</div></div>
+<div style="position:absolute;left:1120px;top:300px"><div class="big" id="n1" style="font-size:150px">0</div><div class="lbl" style="font-size:36px;margin-top:6px">участника</div>
+<div class="big" id="n2" style="font-size:150px;margin-top:50px">0</div><div class="lbl" style="font-size:36px;margin-top:6px">сайтов</div></div>`);
+// E3-G: 75 -> 46
+const G3=add(`<div style="position:absolute;top:270px;left:200px;display:flex;align-items:center;gap:100px">
+<div style="position:relative;font-size:300px;color:#3A3A3E" class="big">75%<div id="strike" style="position:absolute;left:-20px;top:50%;height:24px;background:var(--red);border-radius:12px;transform:rotate(-8deg);width:0"></div></div>
+<div class="big" id="n46" style="font-size:300px;opacity:0">46%</div></div>
+<div id="g3l" style="position:absolute;left:200px;top:640px;font-size:44px;font-weight:700;opacity:0">всех комментариев касались визуального оформления</div>`);
+// E3-H: ranking
+const H3=add(`<div style="position:absolute;left:160px;top:280px;right:160px"><div class="lbl" style="margin-bottom:34px">О чём писали участники, решая, доверять ли сайту</div><div class="bars">
+<div class="row"><div class="nm" style="color:var(--red2)">оформление</div><div class="tr"><div class="fl" id="h0" style="background:var(--red);width:0"></div></div><div style="width:150px;font-size:40px;font-weight:900">46%</div></div>`+
+[1,2,3,4].map(i=>`<div class="row"><div class="nm" style="color:#6A6A6F">${i==1?'другие причины':''}</div><div class="tr"><div class="fl" id="h${i}" style="background:#3A3A3E;width:0"></div></div><div style="width:150px"></div></div>`).join('')+`</div></div>`);
+
+const SRC=[[T[2],T[11]-0.9,'Google, The Need for Mobile Speed, 2016'],[T[11],T[13],'Think with Google'],[T[20],T[31],'Lindgaard et al., Behaviour & Information Technology, 2006'],[T[34],DUR,'Fogg et al., Stanford, 2002']];
+const CARDS=[[-1,T[2]-.35,'Ошибка 1 из 12','Медленная<br>загрузка',1],[T[11]-1.25,T[11]+.35,'Ошибка 2 из 12','Неудобно<br>на телефоне',2],[T[19]-1.25,T[19]+.45,'Ошибка 3 из 12','Дизайн, который<br>убивает доверие',3]];
+const TTL=[[0,'Ошибка 1. Медленная загрузка'],[T[11]-.5,'Ошибка 2. Неудобно на телефоне'],[T[19]-.4,'Ошибка 3. Дизайн, который убивает доверие']];
+
+window.render=function(t){
+ // card
+ let cv=null;CARDS.forEach(c=>{if(t>=c[0]&&t<c[1]+.5)cv=c});
+ if(cv){const inn=cv[0]<0?1:eio(seg(t,cv[0],cv[0]+.45)), out=eio(seg(t,cv[1],cv[1]+.45));
+  $('card').style.clipPath=`inset(0 ${100-100*inn}% 0 ${100*out}%)`;$('card').style.display='flex';$('ck').textContent=cv[2];$('ch').innerHTML=cv[3];
+  $('card').querySelector('.h').style.transform=`translateX(${cv[0]<0?0:40*(1-eo(seg(t,cv[0]+.3,cv[0]+.8)))}px)`}else $('card').style.display='none';
+ let n=1;CARDS.forEach(c=>{if(t>=c[0]+.4)n=c[4]});$('cn').textContent=n;
+ let tl='';TTL.forEach(x=>{if(t>=x[0])tl=x[1]});$('ttl').textContent=tl;
+ const s=SRC.find(x=>t>=x[0]&&t<x[1]);$('src').style.opacity=s?eo(seg(t,s[0],s[0]+.5)):0;if(s)$('src').textContent='Источник: '+s[2];
+ // E1-A
+ A1.style.opacity=win(t,T[2]-.3,T[5]);
+ const ld=seg(t,T[3],T[4]);$('timer').textContent=(3*ld).toFixed(1).replace('.',',')+' с';$('timer').style.color=ld>=1?'#FF5A4F':'#F3F3F3';
+ $('pbar').style.width=(30*ld)+'%';$('spin').style.transform=`rotate(${t*300}deg)`;
+ for(let i=0;i<100;i++){const el=$('v'+i);const lost=((i*37)%100)<53;const a=seg(t,T[4]+(i%13)*.03,T[4]+.5+(i%13)*.03);
+  if(lost){el.style.background=a>0?'#E3342F':'#F3F3F3';el.style.opacity=1-a*.85;el.style.transform=`translateY(${eio(a)*40}px) scale(${1-.4*a})`}
+  else{el.style.opacity=1;el.style.transform='none'}}
+ $('p53').style.opacity=eo(seg(t,T[4]+.2,T[4]+.7));
+ // E1-B
+ B1.style.opacity=win(t,T[5],T[7]);
+ $('bud').style.width=(100*eio(seg(t,T[5]+.1,T[5]+1)))+'%';$('burn').style.width=(50*eio(seg(t,T[5]+1.3,T[6]+.3)))+'%';
+ $('bl1').style.opacity=eo(seg(t,T[6],T[6]+.5));$('bl2').style.opacity=eo(seg(t,T[6]+.3,T[6]+.8));
+ // E1-C
+ C1.style.opacity=win(t,T[7],T[9]);
+ rows.forEach((r,i)=>{const a0=i<2?T[7]+.2+i*.35:T[8]+(i-2)*.6;const a=eo(seg(t,a0,a0+.6));$('wr'+i).style.opacity=a;$('wf'+i).style.width=(100*r[2]*a)+'%'});
+ // E1-D
+ D1.style.opacity=win(t,T[9],T[11]-.9);
+ $('spin2').style.transform=`rotate(${t*300}deg)`;$('pbar2').style.width='30%';
+ const g=eio(seg(t,T[9]+.6,T[10]+.4));[['g1',24],['g2',96]].forEach(([id,v])=>{const x=Math.round(v*g);$(id+'a').setAttribute('stroke-dasharray',`${x*3.14} 314`);$(id+'t').textContent=x});
+ // E2-A
+ A2.style.opacity=win(t,T[11],T[13]);
+ $('t1').style.width=(62*eio(seg(t,T[11]+.3,T[11]+1.2)))+'%';$('t2').style.width=(38*eio(seg(t,T[11]+.5,T[11]+1.4)))+'%';
+ const cvA=seg(t,T[12],T[12]+.4);$('cvl').style.opacity=cvA;$('cvb').style.opacity=cvA;
+ $('c1').style.width=(30*eio(seg(t,T[12]+.3,T[12]+1.2)))+'%';$('c2').style.width=(52*eio(seg(t,T[12]+.5,T[12]+1.4)))+'%';
+ // E2-B/C
+ P2.style.opacity=win(t,T[13],T[19]-1.1);
+ const sh=eio(seg(t,T[14]-.6,T[14]+.2));
+ $('mon').style.opacity=1-sh;$('mon').style.transform=`translate(${-300*sh}px,0) scale(${1-.65*sh})`;$('mon').style.transformOrigin='0 0';
+ $('badp').style.opacity=eo(seg(t,T[14]-.2,T[14]+.3));
+ [['k1',T[14]+.3],['k2',T[15]],['k3',T[16]]].forEach(([id,a])=>{const v=eo(seg(t,a,a+.45));$(id).style.opacity=v*(1-.6*seg(t,T[17],T[17]+.5));$(id).style.transform=`translateX(${(1-v)*-24}px)`});
+ const gp=eo(seg(t,T[17],T[17]+.6));$('goodp').style.opacity=gp;$('goodp').style.transform=`translateX(${(1-gp)*80}px)`;
+ $('badp').style.filter=`brightness(${1-.45*seg(t,T[17],T[17]+.5)})`;
+ const zz=eo(seg(t,T[18],T[18]+.5));$('zone').style.opacity=zz;$('k4').style.opacity=zz;
+ $('gcta').style.transform=`scale(${1+(t>T[18]?.035*Math.sin((t-T[18])*6):0)})`;
+ // E3-A
+ A3.style.opacity=win(t,T[19]+.3,T[23]);
+ $('ms').style.opacity=eo(seg(t,T[19]+.4,T[19]+.9));$('ms2').style.opacity=eo(seg(t,T[22],T[22]+.4));
+ const f1=T[21]+.5,f2=T[21]+1.3;const fl=(t>=f1&&t<f1+0.06)||(t>=f2&&t<f2+0.06);$('flash').style.opacity=fl?1:0;
+ // E3-B
+ B3.style.opacity=win(t,T[23],T[26]);
+ $('r1').style.width=(78*eio(seg(t,T[24],T[24]+1)))+'%';$('r2').style.width=(82*eio(seg(t,T[24]+.3,T[25]+.3)))+'%';$('aprx').style.opacity=eo(seg(t,T[25]+.2,T[25]+.7));
+ // E3-C
+ C3.style.opacity=win(t,T[26],T[29]);
+ plus.forEach((p,i)=>{const a=eo(seg(t,T[26]+.3+i*.3,T[26]+.7+i*.3));const dim=seg(t,T[28],T[28]+.6);const el=$('pl'+i);el.style.opacity=a*(1-.75*dim);el.style.textDecoration=dim>.3?'line-through':'none'});
+ $('bsw').style.transform=`scale(${1+.04*eio(seg(t,T[27],T[28]))})`;
+ // E3-D
+ D3.style.opacity=win(t,T[29],T[31]);
+ // E3-E
+ E3.style.opacity=win(t,T[31],T[34]);
+ arts.forEach((a,i)=>{const v=eo(seg(t,T[32]+i*.22,T[32]+.5+i*.22));$('ar'+i).style.opacity=v;$('ar'+i).style.transform=`rotate(${a[2]}deg) translateY(${(1-v)*50}px)`});
+ // E3-F
+ F3.style.opacity=win(t,T[34],T[37]);
+ $('paper').style.transform=`translateY(${(1-eo(seg(t,T[34],T[34]+.6)))*40}px)`;
+ $('n1').textContent=Math.round(2684*eio(seg(t,T[35],T[35]+1.4)));$('n2').textContent=Math.round(100*eio(seg(t,T[35]+.3,T[35]+1.5)));
+ // E3-G
+ G3.style.opacity=win(t,T[37],T[38]+.3);
+ $('strike').style.width=(110*eio(seg(t,T[37]+.1,T[37]+.6)))+'%';$('n46').style.opacity=eo(seg(t,T[37]+.6,T[37]+1.1));$('g3l').style.opacity=eo(seg(t,T[37]+1,T[37]+1.5));
+ // E3-H
+ H3.style.opacity=win(t,T[38]+.2,DUR,.6);
+ [92,58,50,31,29].forEach((w,i)=>{$('h'+i).style.width=(w*eio(seg(t,T[38]+.4+i*.12,T[38]+1.3+i*.12)))+'%'});
+ // subs
+ let k=-1;for(let i=0;i<C.length;i++)if(t>=T[i]&&t<E[i]+.1)k=i;$('st').textContent=k>=0?C[k]:'';$('sub').style.opacity=k>=0?1:0;
+ // end fade
+ {const f=1-seg(t,DUR-.5,DUR);['stage','ttl'].forEach(id=>$(id).style.opacity=f);$('src').style.opacity=(+$('src').style.opacity)*f;$('sub').style.opacity=(+$('sub').style.opacity)*f;}
+};
+render(0);
+</script></body></html>

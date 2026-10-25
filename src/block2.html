@@ -1,0 +1,258 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+:root{--bg:#0C0C0D;--surf:#18181A;--surf2:#202023;--line:#2A2A2D;--red:#E3342F;--red2:#FF5A4F;--ink:#F3F3F3;--mut:#8C8C90}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1920px;height:1080px;background:var(--bg);color:var(--ink);font-family:'Noto Sans CJK SC',sans-serif;overflow:hidden;position:relative}
+.L{position:absolute;inset:0;opacity:0}
+#bug{position:absolute;top:44px;left:72px;font-weight:900;font-size:28px;z-index:35}
+#bug span{color:var(--red)}
+#cnt{position:absolute;top:40px;right:72px;font-weight:900;font-size:34px;z-index:35}
+#cnt small{color:rgba(255,255,255,.55);font-weight:500}
+#steps{position:absolute;top:40px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:20}
+#steps span{font-size:20px;padding:7px 18px;border-radius:999px;background:#1C1C1F;color:#6A6A6F;font-weight:500}
+#steps span.on{background:var(--red);color:#fff}
+#ttl{position:absolute;top:108px;left:72px;font-size:26px;color:var(--mut);font-weight:500;z-index:20}
+#src{position:absolute;top:104px;right:72px;font-size:19px;color:#B5B5BA;background:#1A1A1D;border:1px solid var(--line);border-radius:10px;padding:8px 16px;z-index:20;opacity:0;white-space:nowrap}
+#sub{position:absolute;left:0;right:0;bottom:50px;text-align:center;z-index:40}
+#sub span{display:inline-block;font-size:40px;font-weight:700;background:rgba(0,0,0,.75);padding:10px 26px;border-radius:12px;max-width:1600px}
+#card{position:absolute;inset:0;z-index:30;background:var(--red);display:flex;flex-direction:column;justify-content:center;padding-left:160px;clip-path:inset(0 0 0 0)}
+#card .k{font-size:44px;color:#FFD3CF;font-weight:700}
+#card .h{font-size:150px;font-weight:900;line-height:1.05;color:#fff;letter-spacing:-.02em}
+/* browser */
+.br{position:absolute;border-radius:16px;overflow:hidden;background:#141416;border:1px solid var(--line)}
+.br .bar{height:42px;background:#1E1E21;display:flex;align-items:center;gap:8px;padding:0 16px}
+.br .bar b{width:11px;height:11px;border-radius:50%;background:#3A3A3E}
+.br .url{margin-left:12px;flex:1;height:24px;border-radius:7px;background:#121214;font-size:14px;color:#6E6E73;display:flex;align-items:center;padding:0 12px}
+.vp{position:absolute;top:42px;left:0;right:0;bottom:0;overflow:hidden}
+/* dark good site, designed at 1160x650 then scaled */
+.gs{position:absolute;left:0;top:0;width:1160px;height:650px;background:#111113;transform-origin:0 0}
+.gs nav{display:flex;justify-content:space-between;padding:24px 44px;font-size:17px;color:#BDBDC2}
+.gs .logo{font-weight:900;color:#fff;font-size:21px}
+.gs .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;padding:22px 44px}
+.gs h2{font-size:50px;line-height:1.08;font-weight:900;letter-spacing:-.015em}
+.gs p{font-size:19px;line-height:1.5;color:#9C9CA1;margin:16px 0 26px}
+.gs .cta{display:inline-block;background:var(--red);color:#fff;font-weight:700;font-size:20px;padding:16px 30px;border-radius:10px}
+.gs .img{height:340px;border-radius:16px;background:linear-gradient(160deg,#2B2B2F,#1B1B1E);position:relative;overflow:hidden;border:1px solid var(--line)}
+.gs .img i{position:absolute;left:24%;top:15%;width:52%;height:70%;border:12px solid #E9E9EC;border-radius:6px;background:linear-gradient(180deg,#3A3F48,#20232A)}
+.gs .img u{position:absolute;left:calc(50% - 6px);top:15%;width:12px;height:70%;background:#E9E9EC}
+.gs .trust{display:flex;gap:32px;margin-top:28px;font-size:15px;color:#8C8C90}
+.gs .trust b{display:block;font-size:26px;color:#fff}
+/* bad site */
+.bs{position:absolute;left:0;top:0;width:1160px;height:650px;transform-origin:0 0;background:linear-gradient(180deg,#FFF59A,#FFD84D);font-family:'Liberation Serif',serif;text-align:center;color:#222}
+.big{font-weight:900;letter-spacing:-.02em;line-height:1}
+.lbl{font-size:30px;color:var(--mut);font-weight:500}
+.chip{position:absolute;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:16px 22px;font-size:28px;font-weight:700;white-space:nowrap}
+.chip.r{border-color:var(--red);color:var(--red2)}
+.bars .row{display:flex;align-items:center;gap:20px;margin-bottom:26px}
+.bars .nm{width:420px;font-size:30px;font-weight:700;text-align:right}
+.bars .tr{flex:1;height:54px;background:#161618;border-radius:10px;position:relative;overflow:hidden}
+.bars .fl{position:absolute;left:0;top:0;bottom:0;border-radius:10px}
+.phone{position:absolute;width:300px;height:610px;border-radius:44px;background:#2A2A2D;padding:11px}
+.phone .scr{width:100%;height:100%;border-radius:34px;overflow:hidden;background:#111113;position:relative}
+.phone .notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:84px;height:22px;border-radius:12px;background:#000;z-index:5}
+.call{position:absolute;font-size:30px;font-weight:700;opacity:0;white-space:nowrap}
+.call small{display:block;font-size:22px;font-weight:500;color:var(--mut)}
+.call:before{content:"";position:absolute;left:-26px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--red)}
+</style></head><body>
+<div id="bug">Eli<span>'</span>s</div>
+<div id="steps"><span>Зашёл</span><span class="on">Понял</span><span>Поверил</span><span>Купил</span></div>
+<div id="cnt"><span id="cn">1</span><small>/12</small></div>
+<div id="ttl"></div>
+<div id="src"></div>
+<div id="stage"></div>
+<div id="card"><div class="k" id="ck"></div><div class="h" id="ch"></div></div>
+<div id="sub"><span id="st"></span></div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const seg=(t,a,b)=>cl((t-a)/(Math.max(b-a,1e-6)));
+const eo=x=>x>=1?1:1-Math.pow(2,-10*x);
+const eio=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+const win=(t,a,b,f=.45)=>cl(Math.min(eo(seg(t,a,a+f)),1-seg(t,b-f*.7,b)));
+const C=["Человек остался.","Теперь ему нужно понять, что вы предлагаете и зачем это ему.",
+"Nielsen Norman Group, одна из самых известных компаний в исследованиях юзабилити,","изучала, сколько люди остаются на странице.","Больше всего уходят в первые 10 секунд.",
+"Их вывод: если за эти 10 секунд человек не понял, что получит,","нескольких минут его внимания у вас не будет.",
+"Посмотрите на свой первый экран.","Если там «Добро пожаловать» или «Мы команда профессионалов»,","человек так и не узнал, чем вы занимаетесь.",
+"Рабочая формула простая: что вы делаете, для кого и с каким результатом.","Например: «Сайты для стоматологий с онлайн-записью за 14 дней».",
+"По данным той же Nielsen Norman Group,","люди успевают прочитать примерно четверть текста на странице.","Остальное они пролистывают.",
+"С кнопками та же история.","«Позвонить», «Написать», «Скачать прайс», «Подписаться» и «Узнать больше»","на одном экране заставляют человека выбирать.",
+"Закон Хика, его сформулировали психологи ещё в 1950-х:","чем больше вариантов, тем дольше решение.","А пока человек выбирает, он вполне может закрыть вкладку.","На одном экране оставляйте одно главное действие.",
+"Откройте раздел «О нас» на типичном сайте:","год основания, миссия, ценности, фото офиса.","Клиент пришёл со своей задачей и ищет на странице её,","а находит вашу историю.",
+"Есть простой тест.","Посчитайте, сколько раз в тексте стоит «мы» и сколько раз «вы».","Если «мы» больше, перепишите блоки с точки зрения клиента:","что он получит, сколько это займёт и что будет после заявки.",
+"Часто сайт работает как визитка: картинки, текст, телефон и больше ничего.","А человек хочет сразу понять, подходит ли ему и сколько это стоит.","Для этого нужен калькулятор стоимости, фильтры в каталоге или подбор по параметрам.",
+"Baymard Institute девять месяцев изучал,","как люди ищут товары в каталогах интернет-магазинов.","На сайтах со слабыми списками и фильтрами","пользователи бросали поиск в 67-90% случаев.","Там, где их немного доработали, бросали в 17-33%.","По оценке Baymard, это до четырёх раз больше заявок.",
+"С калькулятором логика та же.","Человек сам считает цену и приходит к вам уже с цифрой в голове,","и разговор начинается с дела."];
+const PRE={0:.6,2:.5,12:1.3,22:1.3,30:1.3};
+const T=[],E=[];let tt=0;
+C.forEach((s,i)=>{tt+=PRE[i]||0.12;let w=0;s.split(/\s+/).forEach(x=>{w+=/\d+-\d+/.test(x)?6:/\d{4}/.test(x)?4.5:/\d/.test(x)?3:1});const d=w/2.55+.25;T.push(tt);tt+=d;E.push(tt)});
+window.DUR=tt+1.6;
+const st=$('stage');
+const add=(h)=>{const d=document.createElement('div');d.className='L';d.innerHTML=h;st.appendChild(d);return d};
+const browser=(x,y,w,h,url,inner)=>`<div class="br" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"><div class="bar"><b></b><b></b><b></b><div class="url">${url}</div></div><div class="vp">${inner}</div></div>`;
+const GS=s=>`<div class="gs" style="transform:scale(${s})"><nav><span class="logo">Тёплый дом</span><span>Окна &nbsp;&nbsp; Балконы &nbsp;&nbsp; Отзывы</span><span>+7 900 000-00-00</span></nav><div class="hero"><div><h2>Пластиковые окна с установкой за 3 дня</h2><p>Замер бесплатно. Цена фиксируется в договоре и не меняется после монтажа.</p><span class="cta">Рассчитать стоимость</span><div class="trust"><span><b>4,6</b>212 отзывов</span><span><b>10 лет</b>гарантии</span><span><b>3 дня</b>до установки</span></div></div><div class="img"><i></i><u></u></div></div></div>`;
+const BS=s=>`<div class="bs" style="transform:scale(${s})"><div style="background:#1B3FA6;color:#fff;display:flex;justify-content:center;gap:16px;font-size:15px;padding:7px;font-family:'Liberation Sans'"><u>Главная</u><u>О компании</u><u>Новости</u><u>Продукция</u><u>Услуги</u><u>Фотогалерея</u><u>Прайс</u><u>Вакансии</u><u>Контакты</u></div><div style="background:#E8222C;color:#FFF200;font-weight:700;font-size:17px;padding:6px;font-family:'Liberation Sans'">!!! АКЦИЯ !!! СКИДКИ ДО 50% !!! ЗВОНИТЕ !!!</div><div style="font-size:40px;font-weight:700;color:#C4141C;margin:26px 30px 6px;text-shadow:2px 2px 0 #fff">Добро пожаловать на официальный сайт<br>ООО «ТеплоДомСтройСервис»!!!</div><div style="font-family:'Lora';font-style:italic;font-size:21px;color:#2B5E1E">Мы рады приветствовать Вас на нашем сайте</div><div style="display:flex;justify-content:center;gap:22px;margin:26px 0"><div style="width:190px;height:130px;background:#7EC8E3;border:5px ridge #999;display:flex;align-items:center;justify-content:center;font-size:14px">фото_окна.jpg</div><div style="width:190px;height:130px;background:#9BDB6E;border:5px ridge #999;display:flex;align-items:center;justify-content:center;font-size:14px">рукопожатие.jpg</div><div style="width:190px;height:130px;background:#F2A2C0;border:5px ridge #999;display:flex;align-items:center;justify-content:center;font-size:14px">команда.jpg</div></div><div style="font-size:13px;color:#777;padding:0 90px;line-height:1.35;font-family:'DejaVu Sans'">Наша компания является динамично развивающимся предприятием, предоставляющим широкий спектр услуг в сфере остекления. Индивидуальный подход к каждому клиенту, высокое качество и доступные цены являются нашими главными приоритетами...</div><div style="margin-top:16px;display:inline-block;background:linear-gradient(#6BD16B,#1E8A1E);color:#fff;font-family:'Liberation Sans';font-weight:700;padding:10px 26px;border:2px outset #9f9;font-size:16px">ПОДРОБНЕЕ &gt;&gt;</div></div>`;// ---------- E4-A: leave curve (NN/g)
+let pts=[];for(let s=0;s<=30;s+=.5){const y=Math.pow(s+1,-0.55);pts.push([s,y])}
+const cx=s=>200+s*48, cy=y=>820-y*520;
+const pathD=pts.map((p,i)=>(i?'L':'M')+cx(p[0]).toFixed(1)+' '+cy(p[1]).toFixed(1)).join(' ');
+const A4=add(`<div class="lbl" style="position:absolute;left:200px;top:220px">Вероятность, что человек уйдёт со страницы</div>
+<svg width="1920" height="1080" style="position:absolute;left:0;top:0">
+<rect id="z10" x="${cx(0)}" y="280" width="0" height="540" fill="rgba(227,52,47,.16)"/>
+<line x1="200" y1="820" x2="${cx(30)}" y2="820" stroke="#3A3A3E" stroke-width="3"/>
+${[0,10,20,30].map(s=>`<text x="${cx(s)}" y="866" fill="#8C8C90" font-size="28" text-anchor="middle" font-family="Noto Sans CJK SC">${s} с</text>`).join('')}
+<path id="curve" d="${pathD}" fill="none" stroke="#F3F3F3" stroke-width="7" stroke-linecap="round" stroke-dasharray="3000" stroke-dashoffset="3000"/>
+</svg>
+<div id="z10l" style="position:absolute;left:${cx(0)+24}px;top:300px;font-size:40px;font-weight:900;color:var(--red2);opacity:0">первые 10 секунд</div>
+<div id="nnv" style="position:absolute;left:1000px;top:420px;width:760px;font-size:40px;font-weight:700;line-height:1.3;opacity:0">Понял ценность за 10 секунд, <span style="color:var(--red2)">остаётся на минуты</span></div>`);
+// ---------- E4-B: vague hero + countdown
+const vague=`<div class="gs" style="transform:scale(.862)"><nav><span class="logo">Тёплый дом</span><span>Главная &nbsp;&nbsp; О нас &nbsp;&nbsp; Контакты</span><span>+7 900 000-00-00</span></nav>
+<div style="text-align:center;padding-top:90px"><div style="font-size:64px;font-weight:900">Добро пожаловать!</div><div style="font-size:30px;color:#9C9CA1;margin-top:20px">Мы команда профессионалов с многолетним опытом</div><div style="display:inline-block;margin-top:40px;border:2px solid #3A3A3E;color:#BDBDC2;font-size:22px;padding:14px 30px;border-radius:10px">Узнать больше</div></div></div>`;
+const B4=add(browser(160,230,1000,600,'teplydom.ru',vague)+`
+<div style="position:absolute;left:1260px;top:300px"><svg width="300" height="300" viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" fill="none" stroke="#2A2A2D" stroke-width="9"/><circle id="cdr" cx="60" cy="60" r="50" fill="none" stroke="#E3342F" stroke-width="9" stroke-linecap="round" stroke-dasharray="314 314" transform="rotate(-90 60 60)"/><text id="cdt" x="60" y="72" text-anchor="middle" font-size="36" font-weight="900" fill="#F3F3F3" font-family="Noto Sans CJK SC">10</text></svg>
+<div id="q4" style="font-size:40px;font-weight:700;color:var(--red2);margin-top:20px;opacity:0;width:420px">Так чем вы занимаетесь?</div></div>`);
+// ---------- E4-C: formula
+const F=[["Что вы делаете","Сайты"],["Для кого","для стоматологий"],["Какой результат","с онлайн-записью за 14 дней"]];
+const C4=add(`<div style="position:absolute;left:160px;right:160px;top:300px;display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:30px">`+
+F.map((f,i)=>`<div id="fo${i}" style="opacity:0"><div style="height:8px;border-radius:4px;background:${i==2?'var(--red)':'#F3F3F3'};margin-bottom:20px"></div><div class="lbl">${f[0]}</div><div id="fe${i}" style="font-size:52px;font-weight:900;line-height:1.15;margin-top:18px;opacity:0;${i==2?'color:var(--red2)':''}">${f[1]}</div></div>`).join('')+`</div>`);
+// ---------- E5-A: wall of text, quarter read
+const lorem="Компания «Тёплый дом» более десяти лет работает на рынке светопрозрачных конструкций и за это время зарекомендовала себя как надёжный партнёр для частных и корпоративных клиентов. Мы используем профильные системы ведущих европейских производителей, стеклопакеты с энергосберегающим напылением и фурнитуру, прошедшую сертификацию. Каждый проект начинается с консультации и выезда замерщика, который учитывает особенности проёма, стен и откосов. После согласования спецификации изделие изготавливается на собственном производстве с контролем качества на каждом этапе. Монтаж выполняется бригадой с опытом, по ГОСТ, с использованием пароизоляционных лент и качественной монтажной пены. По завершении работ проводится уборка, а клиент получает гарантийный талон и рекомендации по уходу. Также мы предлагаем отделку откосов, установку подоконников, отливов, москитных сеток и сервисное обслуживание окон любых производителей.";
+const A5=add(browser(160,220,1600,640,'teplydom.ru',`<div style="position:absolute;inset:0;background:#111113;padding:44px 60px"><div style="font-size:40px;font-weight:900;margin-bottom:22px">О компании</div><div style="position:relative;font-size:27px;line-height:1.55;color:#BDBDC2">${lorem}<div id="blur" style="position:absolute;inset:0;backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);background:linear-gradient(180deg,rgba(17,17,19,0) 0%,rgba(17,17,19,0) 24%,rgba(17,17,19,.0) 24%)"></div></div></div>`)+
+`<div id="q25" class="big" style="position:absolute;right:200px;top:640px;font-size:150px;color:var(--red2);opacity:0;text-shadow:0 0 40px #000">≈ ¼</div>`);
+// ---------- E5-B: five buttons
+const btns=["Позвонить","Написать","Скачать прайс","Подписаться","Узнать больше"];
+const B5=add(browser(160,220,1600,620,'teplydom.ru',`<div style="position:absolute;inset:0;background:#111113;padding:60px 70px"><div style="font-size:60px;font-weight:900;line-height:1.1;width:1100px">Пластиковые окна с установкой за 3 дня</div>
+<div style="display:flex;flex-wrap:wrap;gap:18px;margin-top:50px;width:1300px">`+btns.map((b,i)=>`<div id="bt${i}" style="font-size:28px;font-weight:700;padding:18px 30px;border-radius:12px;border:2px solid ${i%2?'#F3F3F3':'#E3342F'};${i%2?'':'background:#E3342F;'}opacity:0">${b}</div>`).join('')+`</div>
+<div id="one" style="position:absolute;left:70px;top:250px;font-size:34px;font-weight:700;padding:24px 44px;border-radius:14px;background:#E3342F;opacity:0">Рассчитать стоимость</div></div>`)+
+`<svg id="cur" width="44" height="56" viewBox="0 0 22 28" style="position:absolute;left:0;top:0;opacity:0;z-index:6"><path d="M2 2 L2 22 L7.5 17 L11 25.5 L14.5 24 L11 15.8 L18.5 15.8 Z" fill="#F3F3F3" stroke="#0C0C0D" stroke-width="1.5"/></svg>
+<div id="closet" style="position:absolute;left:1580px;top:236px;width:44px;height:44px;border-radius:10px;background:var(--red);color:#fff;font-size:30px;font-weight:900;display:flex;align-items:center;justify-content:center;opacity:0">×</div>`);
+// ---------- E5-C: Hick curve
+const hx=n=>300+n*230, hy=n=>800-Math.log2(n+1)*170;
+const C5=add(`<div class="lbl" style="position:absolute;left:300px;top:220px">Время на решение, закон Хика</div>
+<svg width="1920" height="1080" style="position:absolute;left:0;top:0"><line x1="300" y1="800" x2="1560" y2="800" stroke="#3A3A3E" stroke-width="3"/>
+<path id="hk" d="${[...Array(51)].map((_,i)=>{const n=i/10;return (i?'L':'M')+hx(n).toFixed(1)+' '+hy(n).toFixed(1)}).join(' ')}" fill="none" stroke="#E3342F" stroke-width="7" stroke-dasharray="2000" stroke-dashoffset="2000"/>
+${[1,2,3,4,5].map(n=>`<circle id="hp${n}" cx="${hx(n)}" cy="${hy(n)}" r="14" fill="#F3F3F3" opacity="0"/><text x="${hx(n)}" y="848" fill="#8C8C90" font-size="28" text-anchor="middle" font-family="Noto Sans CJK SC">${n}</text>`).join('')}
+</svg><div style="position:absolute;left:1600px;top:780px;font-size:26px;color:var(--mut)">кнопок</div>
+<div id="hf" style="position:absolute;left:1220px;top:240px;font-size:44px;font-weight:700;opacity:0">T = b · log₂(n + 1)</div>`);
+// ---------- E6-A: about page
+const ab=[["2014","год основания"],["Наша миссия","делать мир теплее"],["Ценности","качество, честность, команда"],["Фото офиса",""]];
+const A6=add(`<div style="position:absolute;left:160px;top:210px;font-size:30px;color:var(--mut)">teplydom.ru / о нас</div><div style="position:absolute;left:160px;top:270px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;width:1600px">`+
+ab.map((a,i)=>`<div id="ab${i}" style="height:300px;border-radius:18px;background:var(--surf);border:1px solid var(--line);padding:30px;opacity:0">${i==3?'<div style="height:100%;border-radius:12px;background:linear-gradient(160deg,#2B2B2F,#1B1B1E);display:flex;align-items:flex-end;padding:18px;font-size:26px;font-weight:700">Фото офиса</div>':`<div style="font-size:${i==0?84:40}px;font-weight:900;line-height:1.1">${a[0]}</div><div style="font-size:26px;color:var(--mut);margin-top:16px">${a[1]}</div>`}</div>`).join('')+`</div>
+<div id="need" style="position:absolute;left:160px;top:640px;display:flex;align-items:center;gap:22px;opacity:0"><div style="width:80px;height:80px;border-radius:50%;background:#2A2A2D;display:flex;align-items:center;justify-content:center;font-size:40px">?</div><div style="font-size:44px;font-weight:700;background:#F3F3F3;color:#111;padding:20px 30px;border-radius:24px 24px 24px 6px">Мне нужно тёплое окно на кухню до холодов</div></div>
+<div id="nf" style="position:absolute;left:262px;top:770px;font-size:36px;font-weight:700;color:var(--red2);opacity:0">Ответа на сайте нет</div>`);
+// ---------- E6-B: мы/вы test (counts computed from text)
+const weTxt="Мы работаем с 2014 года. Мы используем лучшие профили, и мы гордимся нашей командой. Наши мастера знают своё дело, а мы контролируем каждый этап. Мы ценим доверие клиентов, поэтому мы даём гарантию. Если вам нужно окно, мы будем рады помочь.";
+const toks=weTxt.split(/(\s+)/);let wN=0,vN=0;
+const marked=toks.map(x=>{const c=x.toLowerCase().replace(/[.,]/g,'');if(['мы','наши','нашей','наш'].includes(c)){wN++;return `<span class="we" data-i="${wN}">${x}</span>`}if(['вы','вам','вас','ваш'].includes(c)){vN++;return `<span class="you" data-i="${vN}">${x}</span>`}return x}).join('');
+const B6=add(`<div style="position:absolute;left:160px;top:240px;width:1000px;font-size:38px;line-height:1.6;color:#BDBDC2" id="wtx">${marked}</div>
+<div style="position:absolute;left:1280px;top:250px"><div class="lbl">«мы», «наши»</div><div class="big" id="wn" style="font-size:150px;color:var(--red2)">0</div><div class="lbl" style="margin-top:30px">«вы», «вам»</div><div class="big" id="vn" style="font-size:150px">0</div></div>
+<div id="rw" style="position:absolute;inset:0;opacity:0;background:var(--bg)"><div class="lbl" style="position:absolute;left:160px;top:220px">Те же блоки с точки зрения клиента</div>
+<div style="position:absolute;left:160px;top:300px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px;width:1600px">`+
+[["Что получите","Окно, которое не продувает и не потеет зимой"],["Сколько займёт","3 дня от замера до монтажа"],["Что после заявки","Перезвоним за 15 минут и назначим замер"]].map((r,i)=>`<div id="rw${i}" style="height:330px;border-radius:18px;background:var(--surf);border:1px solid var(--line);border-top:8px solid ${i==0?'#E3342F':'#F3F3F3'};padding:34px;opacity:0"><div class="lbl">${r[0]}</div><div style="font-size:44px;font-weight:900;line-height:1.2;margin-top:18px">${r[1]}</div></div>`).join('')+`</div></div>`);
+// ---------- E7-A/B: business-card site + tools
+const card=`<div class="gs" style="transform:scale(.862)"><div style="height:430px;background:linear-gradient(160deg,#2B2B2F,#1B1B1E);position:relative"><i style="position:absolute;left:38%;top:16%;width:24%;height:70%;border:12px solid #E9E9EC;border-radius:6px"></i></div><div style="text-align:center;padding-top:40px"><div style="font-size:40px;font-weight:900">Тёплый дом</div><div style="font-size:24px;color:#9C9CA1;margin-top:10px">Окна и балконы. Звоните: +7 900 000-00-00</div></div></div>`;
+const tools=[["Калькулятор","цена за 30 секунд"],["Фильтры","по размеру и типу"],["Подбор","по задаче клиента"]];
+const A7=add(`<div id="cardw" style="position:absolute;left:160px;top:230px;width:1000px;height:600px">${browser(0,0,1000,600,'teplydom.ru',card)}</div>
+<div id="q7" style="position:absolute;left:1240px;top:300px;font-size:48px;font-weight:900;line-height:1.25;opacity:0">Подходит ли мне?<br><span style="color:var(--red2)">Сколько стоит?</span></div>
+<div style="position:absolute;left:1240px;top:520px;display:flex;flex-direction:column;gap:18px">`+tools.map((x,i)=>`<div id="tl${i}" style="opacity:0;display:flex;align-items:baseline;gap:18px;background:var(--surf);border:1px solid var(--line);border-left:6px solid var(--red);border-radius:12px;padding:16px 24px"><span style="font-size:34px;font-weight:900">${x[0]}</span><span style="font-size:24px;color:var(--mut)">${x[1]}</span></div>`).join('')+`</div>`);
+// ---------- E7-C: Baymard ranges
+const bxs=p=>160+p*14.5;
+const C7=add(`<div class="lbl" style="position:absolute;left:160px;top:220px">Бросали поиск товара, % пользователей</div>
+<svg width="1920" height="1080" style="position:absolute;left:0;top:0"><line x1="${bxs(0)}" y1="700" x2="${bxs(100)}" y2="700" stroke="#3A3A3E" stroke-width="3"/>
+${[0,25,50,75,100].map(p=>`<text x="${bxs(p)}" y="746" fill="#8C8C90" font-size="26" text-anchor="middle" font-family="Noto Sans CJK SC">${p}%</text>`).join('')}
+<rect id="rb1" x="${bxs(67)}" y="330" width="0" height="90" rx="12" fill="#E3342F"/>
+<rect id="rb2" x="${bxs(17)}" y="520" width="0" height="90" rx="12" fill="#F3F3F3"/></svg>
+<div id="rl1" style="position:absolute;left:160px;top:340px;font-size:34px;font-weight:700;opacity:0;width:780px">Слабые списки и фильтры <span style="color:var(--red2);font-size:44px;font-weight:900">67–90%</span></div>
+<div id="rl2" style="position:absolute;left:${bxs(36)}px;top:530px;font-size:34px;font-weight:700;opacity:0">Немного доработанные <span style="font-size:44px;font-weight:900">17–33%</span></div>
+<div id="x4" style="position:absolute;right:160px;top:800px;font-size:64px;font-weight:900;opacity:0">до <span style="color:var(--red2)">4×</span> больше заявок</div>`);
+// ---------- E7-D: calculator
+const D7=add(`<div style="position:absolute;left:160px;top:220px;width:980px;height:640px;border-radius:20px;background:var(--surf);border:1px solid var(--line);padding:46px 54px">
+<div style="font-size:44px;font-weight:900">Калькулятор окна</div>
+${[["Ширина","cw"],["Высота","chh"]].map(([n,id])=>`<div style="margin-top:44px"><div style="display:flex;justify-content:space-between;font-size:28px;color:#BDBDC2"><span>${n}</span><b id="${id}v" style="color:#fff">0 мм</b></div><div style="height:10px;border-radius:5px;background:#2A2A2D;margin-top:18px;position:relative"><div id="${id}f" style="position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--red)"></div><div id="${id}k" style="position:absolute;top:-13px;width:36px;height:36px;border-radius:50%;background:#fff;margin-left:-18px"></div></div></div>`).join('')}
+<div style="display:flex;gap:14px;margin-top:44px">${["1 створка","2 створки","3 створки"].map((x,i)=>`<div id="sv${i}" style="font-size:26px;font-weight:700;padding:14px 24px;border-radius:10px;border:2px solid #3A3A3E">${x}</div>`).join('')}</div>
+<div style="margin-top:44px;display:flex;align-items:baseline;gap:18px"><span style="font-size:30px;color:var(--mut)">Примерная цена</span><span class="big" id="pr" style="font-size:72px">0 ₽</span></div></div>
+<div id="lead" style="position:absolute;left:1220px;top:360px;width:540px;border-radius:18px;background:#F3F3F3;color:#111;padding:34px;opacity:0"><div style="font-size:24px;color:#6A6A6F">Новая заявка</div><div style="font-size:34px;font-weight:900;line-height:1.25;margin-top:10px" id="ldt">Окно</div><div style="font-size:26px;margin-top:14px;color:#333">«Когда сможете приехать на замер?»</div></div>
+<div id="dl" style="position:absolute;left:1220px;top:650px;font-size:40px;font-weight:700;opacity:0;width:560px">Разговор начинается <span style="color:var(--red2)">с дела</span></div>`);
+
+const SRC=[[T[2],T[12]-0.9,'Nielsen Norman Group, How Long Do Users Stay on Web Pages, 2011'],[T[12],T[18],'Nielsen Norman Group'],[T[18],T[22]-0.9,'Hick, 1952; Hyman, 1953'],[T[33],T[39],'Baymard Institute, Product Lists & Filtering']];
+const CARDS=[[0,T[2]-.35,'Ошибка 4 из 12','Нет оффера<br>на первом экране',4],[T[12]-1.25,T[12]+.35,'Ошибка 5 из 12','Стена текста<br>и пять кнопок',5],[T[22]-1.25,T[22]+.35,'Ошибка 6 из 12','Сайт о вас,<br>а клиент ищет себя',6],[T[30]-1.25,T[30]+.35,'Ошибка 7 из 12','Сайт-визитка<br>без калькулятора',7]];
+const TTL=[[0,'Ошибка 4. Нет оффера на первом экране'],[T[12]-.5,'Ошибка 5. Стена текста и пять кнопок'],[T[22]-.5,'Ошибка 6. Сайт о вас, а клиент ищет себя'],[T[30]-.5,'Ошибка 7. Сайт-визитка без калькулятора']];
+
+window.render=function(t){
+ let cv=null;CARDS.forEach(c=>{if(t>=c[0]&&t<c[1]+.5)cv=c});
+ if(cv){const inn=cv[0]<0?1:eio(seg(t,cv[0],cv[0]+.45)), out=eio(seg(t,cv[1],cv[1]+.45));
+  $('card').style.clipPath=`inset(0 ${100-100*inn}% 0 ${100*out}%)`;$('card').style.display='flex';$('ck').textContent=cv[2];$('ch').innerHTML=cv[3];
+  $('card').querySelector('.h').style.transform=`translateX(${cv[0]<0?0:40*(1-eo(seg(t,cv[0]+.3,cv[0]+.8)))}px)`}else $('card').style.display='none';
+ let n=4;CARDS.forEach(c=>{if(t>=c[0]+.4)n=c[4]});$('cn').textContent=n;
+ let tl='';TTL.forEach(x=>{if(t>=x[0])tl=x[1]});$('ttl').textContent=tl;
+ const s=SRC.find(x=>t>=x[0]&&t<x[1]);$('src').style.opacity=s?eo(seg(t,s[0],s[0]+.5)):0;if(s)$('src').textContent='Источник: '+s[2];
+ // E4-A
+ A4.style.opacity=win(t,T[2]-.3,T[7]);
+ $('curve').setAttribute('stroke-dashoffset',3000*(1-eio(seg(t,T[2]+.3,T[3]+1.2))));
+ $('z10').setAttribute('width',480*eio(seg(t,T[4],T[4]+.7)));$('z10l').style.opacity=eo(seg(t,T[4]+.3,T[4]+.8));
+ $('nnv').style.opacity=eo(seg(t,T[5]+.3,T[5]+.9));
+ // E4-B
+ B4.style.opacity=win(t,T[7],T[10]);
+ const cd=seg(t,T[7]+.4,T[10]-.2);$('cdr').setAttribute('stroke-dasharray',`${314*(1-cd)} 314`);$('cdt').textContent=Math.ceil(10*(1-cd));
+ $('q4').style.opacity=eo(seg(t,T[9],T[9]+.5));
+ // E4-C
+ C4.style.opacity=win(t,T[10],T[12]-.9);
+ F.forEach((f,i)=>{const a=eo(seg(t,T[10]+1.4+i*.9,T[10]+1.9+i*.9));$('fo'+i).style.opacity=a;$('fo'+i).style.transform=`translateY(${(1-a)*30}px)`;
+  const b=eo(seg(t,T[11]+.8+i*.9,T[11]+1.3+i*.9));$('fe'+i).style.opacity=b;$('fe'+i).style.transform=`translateY(${(1-b)*20}px)`});
+ // E5-A
+ A5.style.opacity=win(t,T[12],T[15]);
+ const bl=eio(seg(t,T[13]+.3,T[13]+1.3));$('blur').style.backdropFilter=`blur(${7*bl}px)`;$('blur').style.webkitBackdropFilter=`blur(${7*bl}px)`;
+ $('blur').style.background=`linear-gradient(180deg,rgba(17,17,19,0) 0%,rgba(17,17,19,0) 23%,rgba(17,17,19,${.55*bl}) 26%)`;
+ $('blur').style.maskImage=`linear-gradient(180deg,transparent 0%,transparent 23%,#000 26%)`;$('blur').style.webkitMaskImage=$('blur').style.maskImage;
+ $('q25').style.opacity=eo(seg(t,T[13]+1.2,T[13]+1.7));
+ // E5-B
+ B5.style.opacity=win(t,T[15],T[18]);
+ btns.forEach((b,i)=>{const a=eo(seg(t,T[16]+i*.55,T[16]+i*.55+.35));const m=eio(seg(t,T[21],T[21]+.5));$('bt'+i).style.opacity=a*(1-m);$('bt'+i).style.transform=`scale(${.8+.2*a})`});
+ const BX=[[400,560],[650,560],[900,560],[1180,560],[1430,560]];const cu=seg(t,T[17],T[18]);
+ const k=Math.min(4,Math.floor(cu*6)),kk=Math.min(4,k+1),fr=eio(cu*6-k);
+ const cxp=BX[k][0]+(BX[(k*3+2)%5][0]-BX[k][0])*fr, cyp=BX[k][1]+20*Math.sin(cu*20);
+ $('cur').style.opacity=t>T[17]&&t<T[18]+.3?1:0;$('cur').style.transform=`translate(${cxp}px,${cyp}px)`;
+ // E5-C
+ C5.style.opacity=win(t,T[18],T[20]+.1);
+ $('hk').setAttribute('stroke-dashoffset',2000*(1-eio(seg(t,T[18]+.4,T[19]+.6))));
+ const hpg=eio(seg(t,T[18]+.4,T[19]+.6));[1,2,3,4,5].forEach(n=>{$('hp'+n).setAttribute('opacity',hpg>=n/5-.005?1:0)});$('hf').style.opacity=eo(seg(t,T[19],T[19]+.5));
+ // E5-D: tab close then one button (reuse B5 layer)
+ if(t>=T[20]-.1&&t<T[22]-.9){B5.style.opacity=win(t,T[20],T[22]-.9);btns.forEach((b,i)=>{$('bt'+i).style.opacity=1-eio(seg(t,T[21],T[21]+.5))});$('cur').style.opacity=t<T[21]?1:0;
+  const cc=eio(seg(t,T[20]+.2,T[20]+1.2));$('cur').style.transform=`translate(${1430+(1600-1430)*cc}px,${560+(252-560)*cc}px)`;}
+ $('closet').style.opacity=(t>T[20]+1.1&&t<T[21])?1:0;
+ $('one').style.opacity=eo(seg(t,T[21]+.3,T[21]+.8));$('one').style.transform=`scale(${.9+.1*eo(seg(t,T[21]+.3,T[21]+.8))})`;
+ // E6-A
+ A6.style.opacity=win(t,T[22],T[26]);
+ ab.forEach((a,i)=>{const v=eo(seg(t,T[23]+i*.5,T[23]+i*.5+.45));$('ab'+i).style.opacity=v*(1-.6*seg(t,T[25],T[25]+.5));$('ab'+i).style.transform=`translateY(${(1-v)*30}px)`});
+ $('need').style.opacity=eo(seg(t,T[24],T[24]+.5));$('nf').style.opacity=eo(seg(t,T[25],T[25]+.5));
+ // E6-B
+ B6.style.opacity=win(t,T[26],T[30]-.9);
+ const wc=seg(t,T[27]+.2,T[27]+2.2);let wi=0,vi=0;
+ document.querySelectorAll('#wtx .we').forEach(e=>{const on=+e.dataset.i<=Math.ceil(wc*wN)&&wc>0;e.style.color=on?'#FF5A4F':'';e.style.fontWeight=on?900:'';if(on)wi++});
+ document.querySelectorAll('#wtx .you').forEach(e=>{const on=wc>=.98;e.style.color=on?'#fff':'';e.style.textDecoration=on?'underline':'';if(on)vi++});
+ $('wn').textContent=wi;$('vn').textContent=vi;
+ const rw=eo(seg(t,T[28]+.6,T[28]+1.1));$('rw').style.opacity=rw;
+ [0,1,2].forEach(i=>{const a=eo(seg(t,T[29]+i*.7,T[29]+i*.7+.45));$('rw'+i).style.opacity=a;$('rw'+i).style.transform=`translateY(${(1-a)*30}px)`});
+ // E7-A/B
+ A7.style.opacity=win(t,T[30],T[33]);
+ $('q7').style.opacity=eo(seg(t,T[31],T[31]+.5));
+ tools.forEach((x,i)=>{const a=eo(seg(t,T[32]+.5+i*.8,T[32]+.95+i*.8));$('tl'+i).style.opacity=a;$('tl'+i).style.transform=`translateX(${(1-a)*40}px)`});
+ // E7-C
+ C7.style.opacity=win(t,T[33],T[39]);
+ $('rb1').setAttribute('width',(90-67)*14.5*eio(seg(t,T[35]+.3,T[36]+.6)));$('rl1').style.opacity=eo(seg(t,T[36],T[36]+.5));
+ $('rb2').setAttribute('width',(33-17)*14.5*eio(seg(t,T[37],T[37]+.8)));$('rl2').style.opacity=eo(seg(t,T[37]+.4,T[37]+.9));
+ $('x4').style.opacity=eo(seg(t,T[38]+.3,T[38]+.8));
+ // E7-D
+ D7.style.opacity=win(t,T[39],DUR,.6);
+ const wv=Math.round((600+700*eio(seg(t,T[39]+.3,T[40]+.3)))/10)*10, hv=Math.round((800+600*eio(seg(t,T[39]+1.2,T[40]+1.4)))/10)*10;
+ const wp=(wv-400)/1400,hp=(hv-400)/1400;
+ $('cwv').textContent=wv+' мм';$('chhv').textContent=hv+' мм';$('cwf').style.width=(wp*100)+'%';$('cwk').style.left=(wp*100)+'%';$('chhf').style.width=(hp*100)+'%';$('chhk').style.left=(hp*100)+'%';
+ const sash=t>T[40]+.8?1:0;[0,1,2].forEach(i=>{const on=i==sash;$('sv'+i).style.background=on?'#E3342F':'transparent';$('sv'+i).style.borderColor=on?'#E3342F':'#3A3A3E'});
+ const price=Math.round((wv*hv/1e6*7800+(sash?2600:0)+1500)/100)*100;
+ $('pr').textContent=price.toLocaleString('ru-RU').replace(/\u00a0/g,' ')+' ₽';
+ const ld=eo(seg(t,T[40]+1.4,T[40]+1.9));$('lead').style.opacity=ld;$('lead').style.transform=`translateY(${(1-ld)*40}px)`;
+ $('ldt').textContent=`Окно ${wv}×${hv}, ${sash?2:1} ${sash?'створки':'створка'}, примерно ${$('pr').textContent}`;
+ $('dl').style.opacity=eo(seg(t,T[41],T[41]+.5));
+ let kk2=-1;for(let i=0;i<C.length;i++)if(t>=T[i]&&t<E[i]+.1)kk2=i;$('st').textContent=kk2>=0?C[kk2]:'';$('sub').style.opacity=kk2>=0?1:0;
+ {const f=1-seg(t,DUR-.5,DUR);['stage','ttl'].forEach(id=>$(id).style.opacity=f);$('src').style.opacity=(+$('src').style.opacity)*f;$('sub').style.opacity=(+$('sub').style.opacity)*f;}
+};
+render(0);
+
+</script></body></html>
