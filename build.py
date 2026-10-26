@@ -6,7 +6,7 @@ Playwright снимает кадры 1920x1080 @30fps, ffmpeg собирает M
   python build.py block3       # одна часть
   python build.py --check block2 12.5 40   # контрольные кадры в check/
 """
-import asyncio, base64, os, subprocess, sys, wave
+import asyncio, base64, os, shutil, subprocess, sys, wave
 import numpy as np
 from playwright.async_api import async_playwright
 
@@ -78,8 +78,8 @@ async def duration(pg):
 
 async def render_part(p, name):
     br, pg = await open_page(p, name)
-    n = int(await duration(pg) * FPS) + 1 if name != "intro" else 30 * FPS
-    out = os.path.join(ROOT, "frames", name); os.makedirs(out, exist_ok=True)
+    n = int(await duration(pg) * FPS) + 1
+    out = os.path.join(ROOT, "frames", name); shutil.rmtree(out, ignore_errors=True); os.makedirs(out)
     cdp = await pg.context.new_cdp_session(pg)
     for i in range(n):
         await pg.evaluate(f"render({i / FPS})")
@@ -89,8 +89,8 @@ async def render_part(p, name):
     events = await pg.evaluate("sfxEvents()")
     await br.close()
     os.makedirs(os.path.join(ROOT, "out"), exist_ok=True)
-    sfx = os.path.join(ROOT, "out", name + "_sfx.wav"); write_sfx(events, n / FPS, sfx)
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", f"{out}/%05d.jpg",
+    sfx = os.path.join(ROOT, "out", name + "_sfx.wav"); await asyncio.to_thread(write_sfx, events, n / FPS, sfx)
+    await asyncio.to_thread(subprocess.run, ["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", f"{out}/%05d.jpg",
         "-i", sfx, "-shortest",
         "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18", "-preset", "medium", "-r", str(FPS),
         "-c:a", "aac", "-movflags", "+faststart", os.path.join(ROOT, "out", name + ".mp4")], check=True)
@@ -98,12 +98,17 @@ async def render_part(p, name):
 async def subs(p, name):
     br, pg = await open_page(p, name)
     if name == "intro":
-        rows = await pg.evaluate("SUBS.map(s=>[s[0],s[1],s[2]])"); d = 30.0
+        rows = await pg.evaluate("SUBS.map(s=>[s[0],s[1],s[2]])"); d = await duration(pg)
+        ttl = [[0, "Вступление"]]
     else:
         C, T, E = await pg.evaluate("[C,T,E]"); d = await duration(pg)
         rows = [[a, b + .1, c] for c, a, b in zip(C, T, E)]
+        ttl = await pg.evaluate("TTL")
     await br.close()
-    return rows, d
+    return rows, d, ttl
+
+def mmss(x):
+    x = int(x); return f"{x // 60}:{x % 60:02d}"
 
 def ts(x):
     ms = int(round(x * 1000))
@@ -118,16 +123,24 @@ async def main():
                 await pg.evaluate(f"render({t})"); await pg.screenshot(path=f"check/{name}_{t:07.2f}.png")
             await br.close(); return
         parts = args or PARTS
-        for name in parts: await render_part(p, name)
+        # части рендерятся параллельно, по одной вкладке Chromium на часть
+        sem = asyncio.Semaphore(int(os.environ.get("JOBS", 3)))
+        async def one(name):
+            async with sem: await render_part(p, name)
+        await asyncio.gather(*(one(n) for n in parts))
         if args: return
         # склейка + общие субтитры
         lst = os.path.join(ROOT, "out", "list.txt")
         open(lst, "w").write("".join(f"file '{os.path.join(ROOT, 'out', n + '.mp4')}'\n" for n in PARTS))
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", lst,
                         "-c", "copy", os.path.join(ROOT, "out", "full.mp4")], check=True)
-        off, k, lines = 0.0, 1, []
+        off, k, lines, chap = 0.0, 1, [], []
         for name in PARTS:
-            rows, d = await subs(p, name)
+            rows, d, ttl = await subs(p, name)
+            # главы YouTube: начинаем чуть раньше заголовка, чтобы попасть на красную карточку
+            for a, title in ttl:
+                title = "Чек-лист" if title == "Итог" else title.replace("Ошибка ", "")
+                chap.append(f"{mmss(max(a + off - (0 if title == 'Чек-лист' else .8), 0))} {title}")
             part = []
             for a, b, c in rows:
                 lines.append(f"{k}\n{ts(a + off)} --> {ts(b + off)}\n{c}\n"); k += 1
@@ -138,6 +151,7 @@ async def main():
                 "-of", "csv=p=0", os.path.join(ROOT, "out", name + ".mp4")]).decode())
             off += dur
         open(os.path.join(ROOT, "out", "full.srt"), "w", encoding="utf-8").write("\n".join(lines))
+        open(os.path.join(ROOT, "out", "chapters.txt"), "w", encoding="utf-8").write("\n".join(chap) + "\n")
         print("готово: out/full.mp4, out/full.srt")
 
 asyncio.run(main())

@@ -48,6 +48,8 @@ body{width:1920px;height:1080px;background:var(--bg);color:var(--ink);font-famil
 .cell .ck{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0}
 #costly{position:absolute;left:330px;top:780px;font-size:44px;font-weight:700;opacity:0}
 #costly b{color:var(--red2)}
+#ckl{position:absolute;left:330px;top:776px;font-size:44px;font-weight:700;opacity:0}
+#ckl span{background:var(--red);border-radius:12px;padding:4px 18px;margin-right:10px}
 #wipe{position:absolute;top:0;bottom:0;left:0;width:0;background:var(--red);z-index:15}
 #next{position:absolute;inset:0;z-index:16;opacity:0;display:flex;flex-direction:column;justify-content:center;padding-left:160px}
 #next .k{font-size:44px;color:#FFD3CF;font-weight:700}
@@ -75,7 +77,7 @@ body{width:1920px;height:1080px;background:var(--bg);color:var(--ink);font-famil
 
 <div class="L" id="pathL"><svg width="1920" height="1080" id="psvg"></svg><div id="nodes"></div></div>
 
-<div class="L" id="twL"><div id="grid"></div><div id="costly">№12 &nbsp;<b>самая дорогая ошибка</b></div></div>
+<div class="L" id="twL"><div id="grid"></div><div id="costly">№12 &nbsp;<b>самая дорогая ошибка</b></div><div id="ckl"><span>Чек-лист</span> 12 пунктов &nbsp;·&nbsp; ссылка в описании</div></div>
 
 <div id="wipe"></div>
 <div id="next"><div class="k">Ошибка 1 из 12</div><div class="h">Медленная<br>загрузка</div></div>
@@ -108,7 +110,8 @@ DOTS.forEach(d=>{const c=document.createElementNS(ns,'circle');c.setAttribute('r
 // grid
 for(let i=0;i<12;i++){const c=document.createElement('div');c.className='cell';c.innerHTML='<span>'+(i+1)+'</span><div class="ck"><svg width="90" height="90" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#F3F3F3" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';$('grid').appendChild(c)}
 
-const SUBS=[[0.2,2.4,'Сайт может быть красивым и дорогим'],[2.4,4.9,'и при этом не приносить ни одной заявки.'],[5.0,7.3,'Обычно дело в одной из двенадцати ошибок,'],[7.3,9.4,'и почти каждую видно за минуту.'],[9.6,11.6,"Я Eli's, я делаю сайты."],[11.7,13.6,'Под каждой ошибкой стоит исследование:'],[13.6,15.9,'Google, Nielsen Norman Group, Стэнфорд, Baymard.'],[16.1,18.0,'Пойдём по пути клиента.'],[18.0,20.6,'Он заходит, пытается понять, что вы предлагаете,'],[20.6,22.6,'решает, верить ли вам, и покупает.'],[22.6,24.4,'На каждом шаге сайт может его потерять.'],[24.6,26.9,'Последняя, двенадцатая ошибка самая дорогая.'],[26.9,29.3,'Из-за неё сайт не продаёт, даже когда остальные исправлены.']];
+const SUBS=[[0.2,2.4,'Сайт может быть красивым и дорогим'],[2.4,4.9,'и при этом не приносить ни одной заявки.'],[5.0,7.3,'Обычно дело в одной из двенадцати ошибок,'],[7.3,9.4,'и почти каждую видно за минуту.'],[9.6,11.6,"Я Eli's, я делаю сайты."],[11.7,13.6,'Под каждой ошибкой стоит исследование:'],[13.6,15.9,'Google, Nielsen Norman Group, Стэнфорд, Baymard.'],[16.1,18.0,'Пойдём по пути клиента.'],[18.0,20.6,'Он заходит, пытается понять, что вы предлагаете,'],[20.6,22.6,'решает, верить ли вам, и покупает.'],[22.6,24.4,'На каждом шаге сайт может его потерять.'],[24.6,26.9,'Последняя, двенадцатая ошибка самая дорогая.'],[26.9,29.3,'Из-за неё сайт не продаёт, даже когда остальные исправлены.'],[29.4,32.4,'Чек-лист на все 12 пунктов будет в конце, ссылка уже в описании.']];
+const WIPE=32.4;window.DUR=WIPE+1.1;
 
 // звуковые акценты вступления: [время, тип, громкость]
 window.SFX=[[0.05,'hit',.5],[2.25,'swish',.7],
@@ -117,7 +120,7 @@ window.SFX=[[0.05,'hit',.5],[2.25,'swish',.7],
  ...[0,1,2,3].map(i=>[12.2+i*.75,'pop',.6]),
  ...NT.map(x=>[x-.6,'pop',.6]),
  ...[0,1,2].map(i=>[22.7+i*.35,'tick',.6]),
- ...[...Array(12)].map((_,i)=>[24.7+i*.06,'tick',.3]),[25.6,'hit',.6],
+ ...[...Array(12)].map((_,i)=>[24.7+i*.06,'tick',.3]),[25.6,'hit',.6],[29.4,'swish',.8],[29.9,'pop',.7],
  ...[...Array(11)].map((_,i)=>[26.9+i*.12,'tick',.45])];
 window.render=function(t){
  // site scene 0-9.6
@@ -150,12 +153,14 @@ window.render=function(t){
  $('twL').style.opacity=eo(seg(t,24.6,25.0));
  [...$('grid').children].forEach((c,i)=>{const a=eo(seg(t,24.7+i*.06,25.1+i*.06));c.style.opacity=a;c.style.transform=`translateY(${(1-a)*30}px)`;
   if(i<11){const k=eo(seg(t,26.9+i*.12,27.2+i*.12));c.querySelector('.ck').style.opacity=k;c.querySelector('span').style.opacity=1-k;c.style.background=k>.5?'#232326':'#18181A'}
-  else{const r=eo(seg(t,25.6,26.2));c.style.borderColor=r>.5?'#E3342F':'#2A2A2D';c.style.color=r>.5?'#FF5A4F':'#4A4A4F';const p=t>26.2?1+.06*Math.sin((t-26.2)*5):1;c.style.transform+=` scale(${p})`;c.style.boxShadow=r>.5?`0 0 ${40+20*Math.sin(t*5)}px rgba(227,52,47,.45)`:'none'}});
- $('costly').style.opacity=eo(seg(t,25.9,26.5));
+  else{const r=eo(seg(t,25.6,26.2));c.style.borderColor=r>.5?'#E3342F':'#2A2A2D';c.style.color=r>.5?'#FF5A4F':'#4A4A4F';const p=t>26.2?1+.06*Math.sin((t-26.2)*5):1;c.style.transform+=` scale(${p})`;c.style.boxShadow=r>.5?`0 0 ${40+20*Math.sin(t*5)}px rgba(227,52,47,.45)`:'none';
+  const k2=eo(seg(t,29.9,30.2));c.querySelector('.ck').style.opacity=k2;c.querySelector('span').style.opacity=1-k2;c.style.background=k2>.5?'#E3342F':'#18181A'}});
+ $('costly').style.opacity=eo(seg(t,25.9,26.5))*(1-seg(t,29.3,29.6));
+ $('ckl').style.opacity=eo(seg(t,29.5,29.9));$('ckl').style.transform=`translateY(${20*(1-eo(seg(t,29.5,30)))}px)`;
  // wipe + next 29.0-30
- const w=eio(seg(t,28.9,29.45));$('wipe').style.width=(1920*w)+'px';
- $('next').style.opacity=eo(seg(t,29.35,29.75));$('next').style.transform=`translateX(${40*(1-eo(seg(t,29.35,29.9)))}px)`;
- $('cn').textContent=t>29.4?'1':'0';
+ const w=eio(seg(t,WIPE,WIPE+.55));$('wipe').style.width=(1920*w)+'px';
+ $('next').style.opacity=eo(seg(t,WIPE+.45,WIPE+.85));$('next').style.transform=`translateX(${40*(1-eo(seg(t,WIPE+.45,WIPE+1)))}px)`;
+ $('cn').textContent=t>WIPE+.5?'1':'0';
  // subs
  const s=SUBS.find(s=>t>=s[0]&&t<s[1]);$('st').textContent=s?s[2]:'';$('sub').style.opacity=s?1:0;
 };
