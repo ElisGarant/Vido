@@ -3,3 +3,4 @@ check/
 out/*.mp4
 out/list.txt
 __pycache__/
+out/*.wav
