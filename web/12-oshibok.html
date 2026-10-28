@@ -1,0 +1,939 @@
+<title>12 ошибок сайта</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Макет: слева липкая панель-счёт (12 клеток, как в ролике), справа 12 разделов по пути клиента; на телефоне панель — полоса сверху */
+:root{
+ --bg:#0E0E10; --surf:#17171A; --surf2:#202024; --line:#2C2C31; --ink:#F2F2F0; --mut:#909097;
+ --red:#E3342F; --red2:#FF5A4F; --redbg:rgba(227,52,47,.13); --ok:#3DB874; --okbg:rgba(61,184,116,.14); --warn:#E9A23B;
+ --on-red:#FFFFFF;
+ --display:'Noto Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+ --body:'Noto Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+ --mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
+ color-scheme:dark;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
+ --bg:#F2F2F3; --surf:#FFFFFF; --surf2:#F0F0F2; --line:#DCDCE1; --ink:#141416; --mut:#5F5F68;
+ --red:#D42A25; --red2:#C4231F; --redbg:rgba(212,42,37,.09); --ok:#1F8F52; --okbg:rgba(31,143,82,.11); --warn:#B9740F; color-scheme:light}}
+:root[data-theme="light"]{
+ --bg:#F2F2F3; --surf:#FFFFFF; --surf2:#F0F0F2; --line:#DCDCE1; --ink:#141416; --mut:#5F5F68;
+ --red:#D42A25; --red2:#C4231F; --redbg:rgba(212,42,37,.09); --ok:#1F8F52; --okbg:rgba(31,143,82,.11); --warn:#B9740F; color-scheme:light}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;margin:0;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:-.015em}
+p{margin:0}
+a{color:var(--red2)}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--red2);outline-offset:2px;border-radius:6px}
+.mono{font-family:var(--mono)}
+.mut{color:var(--mut)}
+.num{font-variant-numeric:tabular-nums}
+
+/* шапка */
+.hero{padding-block:56px 34px}
+.brand{font-weight:900;font-size:22px;letter-spacing:-.01em}
+.brand span{color:var(--red)}
+.hero h1{font-size:clamp(34px,5.6vw,64px);font-weight:900;line-height:1.04;margin-top:26px;max-width:15ch}
+.hero h1 em{font-style:normal;color:var(--red)}
+.hero .lead{font-size:clamp(17px,1.6vw,20px);color:var(--mut);max-width:60ch;margin-top:18px}
+.path{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;padding:0;list-style:none}
+.path a{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--ink);background:var(--surf);border:1px solid var(--line);border-radius:999px;padding:9px 18px 9px 16px;font-weight:700;font-size:16px}
+.path a small{font-family:var(--mono);font-weight:400;font-size:13px;color:var(--mut)}
+.path a:hover{border-color:var(--red)}
+.path .arrow{align-self:center;color:var(--mut)}
+
+/* общий макет */
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:44px;align-items:start;padding-bottom:80px}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px);background:var(--surf);border:1px solid var(--line);border-radius:18px;padding:20px}
+.rail h3{font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);font-weight:700}
+.score{display:flex;align-items:baseline;gap:8px;margin-top:10px}
+.score b{font-size:46px;font-weight:900;line-height:1}
+.score span{color:var(--mut)}
+.grid12{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:16px}
+.cell{aspect-ratio:1;max-width:100%;border-radius:10px;border:1.5px solid var(--line);background:var(--surf2);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:var(--mut);text-decoration:none;transition:background .2s,border-color .2s,color .2s}
+.cell:hover{border-color:var(--mut)}
+.cell.ok{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
+.cell.bad{background:var(--red);border-color:var(--red);color:var(--on-red)}
+.cell.cur{box-shadow:0 0 0 2px var(--ink)}
+.legend{display:flex;flex-direction:column;gap:5px;margin-top:16px;font-size:14px;color:var(--mut)}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:8px;vertical-align:-1px}
+.rail .go{display:block;margin-top:18px;text-align:center;background:var(--red);color:var(--on-red);font-weight:700;border-radius:12px;padding:11px;text-decoration:none}
+
+/* раздел ошибки */
+.stepband{display:flex;align-items:center;gap:14px;margin:54px 0 6px;color:var(--mut);font-size:14px;text-transform:uppercase;letter-spacing:.09em;font-weight:700}
+.stepband:first-child{margin-top:0}
+.stepband::after{content:"";flex:1;height:1px;background:var(--line)}
+.err{padding-block:30px;border-bottom:1px solid var(--line);scroll-margin-top:24px}
+.err:last-of-type{border-bottom:0}
+.err-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 22px;align-items:start}
+.err-no{font-family:var(--display);font-weight:900;font-size:68px;line-height:.9;color:var(--red);font-variant-numeric:tabular-nums;min-width:1.2ch}
+.err h2{font-size:clamp(25px,2.8vw,34px);font-weight:900;line-height:1.12}
+.err .why{color:var(--mut);margin-top:10px;max-width:64ch}
+.src{display:inline-flex;gap:8px;margin-top:12px;font-family:var(--mono);font-size:12.5px;color:var(--mut);border:1px solid var(--line);border-radius:8px;padding:4px 10px}
+.src b{color:var(--ink);font-weight:600}
+.err-body{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:20px;margin-top:24px;align-items:start}
+.demo{background:var(--surf);border:1px solid var(--line);border-radius:18px;padding:22px;min-width:0}
+.demo .label{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut)}
+.demo .big{font-family:var(--display);font-weight:900;font-size:clamp(34px,4vw,48px);line-height:1}
+.ask{border:1.5px dashed var(--line);border-radius:18px;padding:20px;min-width:0}
+.ask .q{font-weight:700;font-size:18px;line-height:1.35}
+.ask .hint{color:var(--mut);font-size:15px;margin-top:8px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.ans{flex:1 1 130px;border:1.5px solid var(--line);background:var(--surf);border-radius:12px;padding:11px 12px;font-weight:700;cursor:pointer;text-align:center;font-size:15.5px}
+.ans:hover{border-color:var(--mut)}
+.ans[aria-pressed="true"].yes{background:var(--ok);border-color:var(--ok);color:var(--on-red)}
+.ans[aria-pressed="true"].no{background:var(--red);border-color:var(--red);color:var(--on-red)}
+.ask.ok{border-style:solid;border-color:var(--ok);background:var(--okbg)}
+.ask.bad{border-style:solid;border-color:var(--red);background:var(--redbg)}
+.fix{display:none;margin-top:14px;font-size:15.5px}
+.ask.bad .fix{display:block}
+.fix b{color:var(--red2)}
+
+/* элементы управления */
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.ctrl{display:flex;flex-direction:column;gap:6px;margin-top:16px}
+.ctrl label{font-size:14px;color:var(--mut);display:flex;justify-content:space-between;gap:10px}
+.ctrl label output{color:var(--ink);font-family:var(--mono);font-weight:600}
+input[type=range]{width:100%;accent-color:var(--red);height:28px}
+.field{background:var(--surf2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;min-width:0}
+textarea.field{min-height:150px;resize:vertical;line-height:1.5}
+.seg{display:inline-flex;background:var(--surf2);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;border-radius:9px;padding:7px 14px;cursor:pointer;font-weight:700;font-size:15px;color:var(--mut)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.pbtn{border:0;background:var(--red);color:var(--on-red);font-weight:700;border-radius:11px;padding:10px 18px;cursor:pointer;font-size:15.5px}
+.pbtn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.note{font-size:13.5px;color:var(--mut);margin-top:12px}
+.verdict{margin-top:14px;font-weight:700;font-size:17px}
+.verdict.good{color:var(--ok)} .verdict.badv{color:var(--red2)} .verdict.mid{color:var(--warn)}
+
+/* 1: посетители */
+.dots{display:grid;grid-template-columns:repeat(20,1fr);gap:4px;margin-top:14px;max-width:440px}
+.dots i{aspect-ratio:1;border-radius:50%;background:var(--ink);opacity:.85;transition:background .35s,opacity .35s,transform .35s}
+.dots i.gone{background:var(--red);opacity:1;transform:scale(.7)}
+
+/* мини-сайты */
+.mini{border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#111113;color:#EDEDED;font-size:12px}
+.mini .bar{height:22px;background:#1E1E21;display:flex;align-items:center;gap:5px;padding:0 9px}
+.mini .bar b{width:7px;height:7px;border-radius:50%;background:#3A3A3E}
+.mini .pg{padding:14px 16px}
+.mini h4{margin:0;font-size:19px;line-height:1.15;font-weight:900}
+.mini .cta{display:inline-block;background:#E3342F;color:#fff;font-weight:700;border-radius:7px;padding:7px 12px;margin-top:10px}
+.mini.bad{background:linear-gradient(#FFF59A,#FFD84D);color:#222;font-family:'Times New Roman',Times,serif;text-align:center}
+.mini.bad .menu{background:#1B3FA6;color:#fff;font-family:Arial,sans-serif;font-size:10px;padding:4px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.mini.bad .promo{background:#E8222C;color:#FFF200;font-weight:700;font-family:Arial,sans-serif;font-size:11px;padding:3px}
+.mini.bad h4{color:#C4141C;font-size:18px;padding:10px 8px 4px}
+.mini.bad .pics{display:flex;gap:6px;justify-content:center;padding:6px}
+.mini.bad .pics i{width:58px;height:40px;border:3px ridge #999;background:#7EC8E3}
+.mini.bad .pics i:nth-child(2){background:#9BDB6E}.mini.bad .pics i:nth-child(3){background:#F2A2C0}
+.mini.bad .more{display:inline-block;background:linear-gradient(#6BD16B,#1E8A1E);color:#fff;font-family:Arial,sans-serif;font-weight:700;padding:5px 12px;border:2px outset #9f9;margin:6px 0 10px}
+
+/* 2: телефон */
+.phonebox{display:flex;justify-content:center;margin-top:16px}
+.phone{width:220px;max-width:100%;border-radius:30px;background:#2A2A2D;padding:8px}
+.phone .scr{border-radius:23px;overflow:hidden;background:#111113;color:#EDEDED;height:360px;position:relative}
+.phone .scr .in{position:absolute;top:0;left:0;padding:26px 14px 14px;transform-origin:0 0}
+.phone.badp .scr .in{width:420px}
+.phone.badp .scr .in .hero2{display:flex;gap:16px}
+.phone .hero2 h5{margin:0;font-size:19px;font-weight:900;line-height:1.15}
+.phone .hero2 p{font-size:11px;color:#9a9aa0;margin-top:6px}
+.phone .pic{width:150px;height:110px;border-radius:10px;background:linear-gradient(160deg,#2B2B2F,#1B1B1E);border:1px solid #333;flex:none}
+.phone .cta{display:inline-block;background:#E3342F;color:#fff;font-weight:700;border-radius:9px;padding:9px 14px;margin-top:12px;font-size:12px}
+.phone.goodp .cta{display:block;text-align:center;font-size:15px;padding:14px}
+.phone.goodp .pic{width:100%;height:120px;margin-top:12px}
+.phone .tiny{font-size:9px;color:#888;margin-top:14px;line-height:1.35}
+
+/* 3: 50 мс */
+.flash{position:relative;height:210px;border-radius:12px;background:var(--surf2);border:1px solid var(--line);overflow:hidden;margin-top:14px;display:flex;align-items:center;justify-content:center;text-align:center;padding:16px}
+.flash .mini{position:absolute;inset:0;border:0;border-radius:0;visibility:hidden}
+.flash .mini.on{visibility:visible}
+.flash .msg{max-width:36ch;color:var(--mut)}
+.flash .tag{position:absolute;top:8px;left:10px;font-family:var(--mono);font-size:11px;background:rgba(0,0,0,.6);color:#fff;border-radius:5px;padding:1px 6px}
+.myth{margin-top:18px;border-radius:14px;border:1px solid var(--line);padding:16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;align-items:center}
+.myth .big{color:var(--mut);text-decoration-color:var(--red);text-decoration-thickness:4px}
+.myth.open .big.m1{text-decoration-line:line-through}
+.myth .m2{display:none;color:var(--red2)}
+.myth.open .m2{display:block}
+.myth .t2{display:none}
+.myth.open .t2{display:block}
+
+/* 4: оффер */
+.offer-prev{margin-top:16px}
+.offer-prev .mini h4{font-size:22px}
+.offer-in{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin-top:14px}
+
+/* 5: кнопки и текст */
+.btnwall{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;min-height:40px}
+.btnwall span{background:var(--red);color:var(--on-red);font-weight:700;border-radius:8px;padding:7px 11px;font-size:14px}
+.btnwall span:nth-child(even){background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.meter{height:12px;border-radius:7px;background:var(--surf2);overflow:hidden;margin-top:12px}
+.meter i{display:block;height:100%;background:var(--red);border-radius:7px;transition:width .35s}
+.readtxt{margin-top:18px;font-size:15px;line-height:1.55;padding:14px;border-radius:12px;background:var(--surf2)}
+.readtxt.skim .w{filter:blur(3px);opacity:.45;transition:filter .3s,opacity .3s}
+.readtxt.skim .w.r{filter:none;opacity:1}
+
+/* 6: мы и вы */
+.mirror{margin-top:12px;padding:14px;border-radius:12px;background:var(--surf2);font-size:15.5px;line-height:1.6;max-height:220px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere}
+.mirror .we{background:var(--redbg);color:var(--red2);font-weight:700;border-radius:4px;padding:0 2px}
+.mirror .you{background:var(--okbg);color:var(--ok);font-weight:700;border-radius:4px;padding:0 2px}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.vs div{background:var(--surf2);border-radius:12px;padding:12px 14px}
+.vs .big{font-size:40px}
+.vs .we .big{color:var(--red2)} .vs .you .big{color:var(--ok)}
+
+/* 7: калькулятор */
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+.price{font-family:var(--display);font-weight:900;font-size:clamp(34px,4vw,46px);line-height:1;margin-top:8px}
+.lead-card{margin-top:14px;background:var(--surf2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:15px;display:none}
+.lead-card.on{display:block;animation:pop .35s ease-out}
+@keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+.bars2{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.bars2 .b{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);gap:10px;align-items:center;font-size:14px}
+.bars2 .tr{position:relative;height:22px;background:var(--surf2);border-radius:6px}
+.bars2 .fl{position:absolute;top:0;bottom:0;border-radius:6px}
+
+/* 8–9: отзывы и рейтинг */
+.prod{display:flex;gap:14px;align-items:center;margin-top:14px;flex-wrap:wrap}
+.prod .pic{width:84px;height:84px;border-radius:12px;background:var(--surf2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none}
+.prod .pic i{width:40px;height:54px;border:5px solid var(--ink);border-radius:3px;position:relative}
+.prod .pic i::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:4px;margin-left:-2px;background:var(--ink)}
+.stars{color:var(--red2);letter-spacing:2px;font-size:18px}
+.stars .off{color:var(--line)}
+svg text{font-family:var(--mono)}
+.curve{width:100%;height:auto;margin-top:12px;display:block}
+
+/* 10: опечатка */
+.typo{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;font-family:var(--display);font-weight:900;font-size:clamp(20px,2.4vw,27px);line-height:1.2}
+.typo button{border:0;background:transparent;padding:2px 4px;border-radius:7px;cursor:pointer;font-weight:900}
+.typo button:hover{background:var(--surf2)}
+.typo button.hit{background:var(--red);color:var(--on-red)}
+.typo button.miss{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.chk{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.chk label{display:flex;gap:10px;align-items:center;font-size:15.5px;cursor:pointer}
+.chk input{width:19px;height:19px;accent-color:var(--ok);flex:none}
+
+/* 11: форма */
+.formbuild{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+.fakeform{background:var(--surf2);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:7px}
+.fakeform span{display:block;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:13.5px;color:var(--mut);background:var(--surf)}
+.fakeform b{background:var(--red);color:var(--on-red);text-align:center;border-radius:8px;padding:9px;font-size:14px;margin-top:4px}
+.bill{margin-top:16px;background:var(--surf2);border-radius:12px;padding:14px;font-size:15px}
+.bill .ln{display:flex;justify-content:space-between;gap:10px;padding:3px 0}
+.bill .ln .num{white-space:nowrap}
+.bill .ln.add{color:var(--red2)}
+.bill .tot{border-top:1px solid var(--line);margin-top:6px;padding-top:8px;font-weight:900;font-size:19px}
+
+/* 12: задача и воронка */
+.task{margin-top:14px;background:var(--red);color:var(--on-red);border-radius:14px;padding:16px 18px}
+.task small{opacity:.8;font-size:13px}
+.task div{font-family:var(--display);font-weight:900;font-size:clamp(20px,2.4vw,27px);line-height:1.2;margin-top:2px}
+.taskin{display:grid;grid-template-columns:90px minmax(0,1fr) minmax(0,1fr);gap:10px;margin-top:14px}
+.funnel{display:flex;flex-direction:column;gap:9px;margin-top:16px}
+.funnel .st{display:grid;grid-template-columns:minmax(0,170px) 84px minmax(0,1fr) 54px;gap:10px;align-items:center;font-size:14px}
+.funnel input{padding:6px 8px;text-align:right;font-family:var(--mono)}
+.funnel .tr{height:24px;background:var(--surf2);border-radius:6px;overflow:hidden}
+.funnel .fl{height:100%;background:var(--ink);border-radius:6px;transition:width .3s}
+.funnel .st.worst .fl{background:var(--red)}
+.funnel .pct{font-family:var(--mono);font-size:13px;color:var(--mut);text-align:right}
+.funnel .st.worst .pct{color:var(--red2);font-weight:600}
+
+/* отчёт */
+.report{margin-top:60px;background:var(--surf);border:1px solid var(--line);border-radius:22px;padding:30px;scroll-margin-top:24px}
+.report h2{font-size:clamp(28px,3.4vw,40px);font-weight:900}
+.rlist{list-style:none;padding:0;margin:20px 0 0;display:flex;flex-direction:column;gap:10px}
+.rlist li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;align-items:start;background:var(--surf2);border-radius:14px;padding:14px 16px}
+.rlist .n{width:44px;height:44px;border-radius:10px;background:var(--red);color:var(--on-red);font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
+.rlist .t{font-weight:700}
+.rlist .f{color:var(--mut);font-size:15.5px;margin-top:2px}
+.rlist .top{grid-column:1/-1;font-family:var(--mono);font-size:12px;color:var(--red2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:-6px}
+.rempty{margin-top:16px;color:var(--mut)}
+.ractions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;align-items:center}
+.cta-tg{margin-top:28px;border-top:1px solid var(--line);padding-top:24px;display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;justify-content:space-between}
+.cta-tg p{max-width:52ch}
+.cta-tg strong{display:block;font-size:20px}
+.foot{padding-block:30px 50px;color:var(--mut);font-size:14px}
+#copybox{position:absolute;left:-9999px;top:0}
+
+@media (max-width:1000px){
+ .layout{grid-template-columns:minmax(0,1fr);gap:0}
+ .rail{top:env(safe-area-inset-top,0px);z-index:5;border-radius:0 0 16px 16px;border-top:0;padding:8px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:6px;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)))}
+ .rail h3,.legend,.rail .go{display:none}
+ .score{margin:0}.score b{font-size:22px}.score span{font-size:13px}
+ .grid12{grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;margin:0}
+ .cell{font-size:12px;border-radius:6px;border-width:1px;aspect-ratio:auto;height:26px}
+ .err-body,.calc,.formbuild{grid-template-columns:minmax(0,1fr)}
+ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surf)}
+}
+@media (max-width:560px){
+ .err-no{font-size:48px}
+ .err-head{gap:4px 14px}
+ .offer-in,.taskin{grid-template-columns:minmax(0,1fr)}
+ .funnel .st{grid-template-columns:minmax(0,1fr) 76px 46px}
+ .funnel .tr{grid-column:1/-1;order:5}
+ .dots{gap:3px}
+ .report{padding:20px}
+ .demo,.ask{padding:16px}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="wrap hero">
+ <div class="brand">Eli<span>'</span>s</div>
+ <h1>12 ошибок, из&#8209;за которых сайт <em>не&nbsp;продаёт</em></h1>
+ <p class="lead">Клиент проходит четыре шага: заходит, понимает, верит и покупает. На каждом шаге сайт может его потерять. Пройдите 12 пунктов, ответьте честно, и внизу соберётся список того, что чинить в первую очередь. Займёт минут десять.</p>
+ <ul class="path">
+  <li><a href="#e1">Зашёл <small>1–3</small></a></li><li class="arrow" aria-hidden="true">→</li>
+  <li><a href="#e4">Понял <small>4–7</small></a></li><li class="arrow" aria-hidden="true">→</li>
+  <li><a href="#e8">Поверил <small>8–10</small></a></li><li class="arrow" aria-hidden="true">→</li>
+  <li><a href="#e11">Купил <small>11–12</small></a></li>
+ </ul>
+</header>
+
+<div class="wrap layout">
+ <aside class="rail" aria-label="Ваш результат">
+  <h3>Ваш сайт</h3>
+  <div class="score"><b class="num" id="scoreOk">0</b><span id="scoreTxt">из 12 в порядке</span></div>
+  <nav class="grid12" id="grid12" aria-label="Переход к ошибке"></nav>
+  <div class="legend"><span><i style="background:var(--ok)"></i>в порядке</span><span><i style="background:var(--red)"></i>нужно чинить</span><span><i style="background:var(--surf2);border:1px solid var(--line)"></i>ещё не проверено</span></div>
+  <a class="go" href="#report">Смотреть итог</a>
+ </aside>
+
+ <main id="main">
+  <div class="stepband">Шаг 1 · Зашёл</div>
+
+  <section class="err" id="e1" data-n="1">
+   <div class="err-head"><div class="err-no">1</div><div>
+    <h2>Медленная загрузка</h2>
+    <p class="why">Человек ещё ничего не прочитал, а уже ушёл. Чаще всего сайт тормозят тяжёлые картинки, лишние скрипты и слабый хостинг.</p>
+    <span class="src">Источник: <b>Google, The Need for Mobile Speed, 2016</b></span></div></div>
+   <div class="err-body">
+    <div class="demo">
+     <div class="label">Сколько посетителей дождутся</div>
+     <div class="ctrl"><label for="lt">Сайт грузится на телефоне <output id="ltOut">2,4 с</output></label><input type="range" id="lt" min="0.5" max="8" step="0.1" value="2.4"></div>
+     <div class="dots" id="dots" aria-hidden="true"></div>
+     <p class="verdict" id="ltVerdict"></p>
+     <div class="ctrl"><label for="budget">Рекламный бюджет в месяц, ₽</label><input class="field num" id="budget" type="number" min="0" step="1000" value="50000" inputmode="numeric"></div>
+     <p class="note" id="budgetOut"></p>
+    </div>
+    <div class="ask" data-q="1"><p class="q">Главная страница грузится на телефоне быстрее 3 секунд?</p>
+     <p class="hint">Проверьте бесплатно в <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a>, вкладка «Мобильные». Это займёт минуту.</p></div>
+   </div>
+  </section>
+
+  <section class="err" id="e2" data-n="2">
+   <div class="err-head"><div class="err-no">2</div><div>
+    <h2>Неудобно на телефоне</h2>
+    <p class="why">Больше половины трафика приходит с телефонов, а конверсия там ниже. Сайт делают и проверяют на большом мониторе, а на телефоне кнопка уезжает за край и текст не прочитать.</p>
+    <span class="src">Источник: <b>Think with Google</b></span></div></div>
+   <div class="err-body">
+    <div class="demo">
+     <div class="row" style="justify-content:space-between"><div class="label">Тот же сайт на телефоне</div>
+      <div class="seg" role="group" aria-label="Вариант"><button type="button" id="phBad" aria-pressed="true">Как часто бывает</button><button type="button" id="phGood" aria-pressed="false">Как надо</button></div></div>
+     <div class="phonebox"><div class="phone badp" id="phone"><div class="scr"><div class="in" id="phIn">
+      <div class="hero2"><div><h5>Пластиковые окна с установкой за 3 дня</h5><p>Замер бесплатно. Цена фиксируется в договоре.</p><span class="cta">Рассчитать стоимость</span></div><div class="pic"></div></div>
+      <div class="tiny">Компания «Тёплый дом» работает на рынке с 2014 года и предлагает широкий ассортимент оконных конструкций из ПВХ, алюминия и дерева.</div>
+     </div></div></div></div>
+     <p class="note" id="phNote">Вёрстка под компьютер просто сжата: кнопка за краем экрана, текст мелкий.</p>
+    </div>
+    <div class="ask" data-q="2"><p class="q">На телефоне главная кнопка видна сразу и легко нажимается пальцем, а страница не листается вбок?</p>
+     <p class="hint">Откройте сайт со своего телефона и попробуйте оставить заявку одной рукой.</p></div>
+   </div>
+  </section>
+
+  <section class="err" id="e3" data-n="3">
+   <div class="err-head"><div class="err-no">3</div><div>
+    <h2>Дизайн, который убивает доверие</h2>
+    <p class="why">Впечатление о сайте складывается за 50 миллисекунд, раньше, чем человек прочтёт хоть слово. Устаревший дизайн сразу говорит «здесь всё запущено».</p>
+    <span class="src">Источник: <b>Lindgaard et al., 2006; Fogg et al., Stanford, 2002</b></span></div></div>
+   <div class="err-body">
+    <div class="demo">
+     <div class="label">Опыт на 50 миллисекунд</div>
+     <div class="flash" id="flash">
+      <div class="mini bad" id="fA"><span class="tag">Сайт А</span><div class="menu"><u>Главная</u><u>О компании</u><u>Новости</u><u>Прайс</u><u>Контакты</u></div><div class="promo">!!! АКЦИЯ !!! СКИДКИ ДО 50% !!!</div><h4>Добро пожаловать на официальный сайт ООО «ТеплоДомСтройСервис»!!!</h4><div class="pics"><i></i><i></i><i></i></div><span class="more">ПОДРОБНЕЕ &gt;&gt;</span></div>
+      <div class="mini" id="fB"><span class="tag">Сайт Б</span><div class="bar"><b></b><b></b><b></b></div><div class="pg"><h4>Пластиковые окна<br>с установкой за 3 дня</h4><p style="color:#9a9aa0;margin-top:6px">Замер бесплатно, цена в договоре</p><span class="cta">Рассчитать стоимость</span></div></div>
+      <p class="msg" id="flashMsg">Нажмите кнопку: покажу два сайта по 50 мс каждый. Читать не успеете, просто выберите, какому доверяете больше.</p>
+     </div>
+     <div class="row" style="margin-top:12px"><button class="pbtn" type="button" id="flashGo">Показать на 50 мс</button><span id="flashPick" hidden><button class="pbtn ghost" type="button" data-pick="A">Сайт А</button> <button class="pbtn ghost" type="button" data-pick="B">Сайт Б</button></span></div>
+     <div class="myth" id="myth">
+      <div class="big m1">75%</div><div><b>«75% людей судят о компании по дизайну сайта»</b><p class="note" style="margin-top:2px">Эту цифру повторяют везде со ссылкой на Стэнфорд.</p></div>
+      <div class="big m2">46%</div><div class="t2">В оригинальном исследовании Фогга (2684 участника, 100 сайтов) о дизайне было <b>46% комментариев</b>. Цифра скромнее, но дизайн всё равно оказался на первом месте.</div>
+     </div>
+     <button class="pbtn ghost" type="button" id="mythBtn" style="margin-top:10px">Проверить первоисточник</button>
+    </div>
+    <div class="ask" data-q="3"><p class="q">Сайт выглядит аккуратно и современно, если взглянуть на него мельком?</p>
+     <p class="hint">Покажите главную знакомому на секунду и спросите: «Стал бы ты тут заказывать?»</p></div>
+   </div>
+  </section>
+
+  <div class="stepband">Шаг 2 · Понял</div>
+
+  <section class="err" id="e4" data-n="4">
+   <div class="err-head"><div class="err-no">4</div><div>
+    <h2>Нет оффера на первом экране</h2>
+    <p class="why">Больше всего людей уходит в первые 10 секунд. Если за это время непонятно, что вы делаете и зачем это человеку, нескольких минут внимания у вас не будет.</p>
+    <span class="src">Источник: <b>Nielsen Norman Group, How Long Do Users Stay on Web Pages, 2011</b></span></div></div>
+   <div class="err-body">
+    <div class="demo">
+     <div class="label">Соберите свой оффер: что вы делаете, для кого и с каким результатом</div>
+     <div class="offer-in">
+      <input class="field" id="ofWhat" value="Пластиковые окна" aria-label="Что вы делаете">
+      <input class="field" id="ofWho" value="для частных домов" aria-label="Для кого">
+      <input class="field" id="ofRes" value="с установкой за 3 дня" aria-label="Какой результат">
+     </div>
+     <div class="offer-prev"><div class="mini"><div class="bar"><b></b><b></b><b></b></div><div class="pg"><h4 id="ofOut"></h4><span class="cta">Рассчитать стоимость</span></div></div></div>
+     <p class="note">Вместо «Добро пожаловать!» и «Мы команда профессионалов». Пример: «Сайты для стоматологий с онлайн-записью за 14 дней».</p>
+    </div>
+    <div class="ask" data-q="4"><p class="q">Человек за 10 секунд на первом экране понимает, что вы делаете, для кого и какой будет результат?</p>
+     <p class="hint">Закройте всё, кроме первого экрана, и прочитайте его глазами клиента.</p></div>
+   </div>
+  </section>
+
+  <section class="err" id="e5" data-n="5">
+   <div class="err-head"><div class="err-no">5</div><div>
+    <h2>Стена текста и пять кнопок</h2>
+    <p class="why">Люди успевают прочитать примерно четверть текста на странице, остальное пролистывают. А чем больше кнопок на одном экране, тем дольше человек выбирает, и тем выше шанс, что он закроет вкладку.</p>
+    <span class="src">Источник: <b>Nielsen Norman Group; закон Хика (Hick, 1952; Hyman, 1953)</b></span></div></div>
+   <div class="err-body">
+    <div class="demo">
+     <div class="ctrl" style="margin-top:0"><label for="nb">Кнопок на первом экране <output id="nbOut">5</output></label><input type="range" id="nb" min="1" max="8" step="1" value="5"></div>
+     <div class="btnwall" id="btnwall"></div>
+     <div class="row" style="justify-content:space-between;margin-top:14px"><span class="label">Время на решение, T = b·log₂(n+1)</span><b class="num mono" id="hickX"></b></div>
+     <div class="meter"><i id="hickBar"></i></div>
+     <div class="row" style="justify-content:space-between;margin-top:22px"><span class="label">Абзац «О компании»</span><button class="pbtn ghost" type="button" id="skimBtn" aria-pressed="false">Показать, что прочитают</button></div>
+     <p class="readtxt" id="readtxt"></p>
+    </div>
+    <div class="ask" data-q="5"><p class="q">На первом экране одно главное действие, а текст разбит на короткие блоки с подзаголовками?</p>
+     <p class="hint">Посчитайте кнопки на первом экране. Если их больше двух, выберите главную.</p></div>
+   </div>
+  </section>
+
+  <section class="err" id="e6" data-n="6">
+   <div class="err-head"><div class="err-no">6</div><div>
+    <h2>Сайт о вас, а клиент ищет себя</h2>
+    <p class="why">Клиент пришёл со своей задачей, например «тёплое окно на кухню до холодов», и ищет её на странице. А находит вашу историю, миссию и ценности.</p></div></div>
+   <div class="err-body">
+    <div class="demo">
+     <div class="label">Тест «мы» против «вы»: вставьте текст со своего сайта</div>
+     <textarea class="field" id="weText" aria-label="Текст для проверки" style="margin-top:12px"></textarea>
+     <div class="vs"><div class="we"><span class="label">«мы», «наш»</span><div class="big num" id="weN">0</div></div><div class="you"><span class="label">«вы», «ваш»</span><div class="big num" id="youN">0</div></div></div>
+     <p class="verdict" id="weVerdict"></p>
+     <div class="mirror" id="weMirror" aria-label="Текст с подсветкой"></div>
+    </div>
+    <div class="ask" data-q="6"><p class="q">В текстах сайта «вы» встречается чаще, чем «мы», и блоки отвечают на вопросы клиента?</p>
+     <p class="hint">Что он получит, сколько это займёт и что будет после заявки.</p></div>
+   </div>
+  </section>
+
+  <section class="err" id="e7" data-n="7">
+   <div class="err-head"><div class="err-no">7</div><div>
+    <h2>Сайт-визитка без калькулятора</h2>
+    <p class="why">Картинки, текст, телефон, и больше ничего. А человек хочет сразу понять, подходит ли ему и сколько это стоит. Калькулятор, фильтры или подбор отвечают на это без звонка.</p>
+    <span class="src">Источник: <b>Baymard Institute, Product Lists &amp; Filtering</b></span></div></div>
+   <div class="err-body">
+    <div class="demo">
+     <div class="calc">
+      <div>
+       <div class="label">Калькулятор окна (цены условные)</div>
+       <div class="ctrl"><label for="cw">Ширина <output id="cwOut"></output></label><input type="range" id="cw" min="600" max="2400" step="50" value="1300"></div>
+       <div class="ctrl"><label for="ch">Высота <output id="chOut"></output></label><input type="range" id="ch" min="600" max="2000" step="50" value="1400"></div>
+       <div class="ctrl"><span class="label" style="text-transform:none;letter-spacing:0;font-family:var(--body);font-size:14px">Створки</span>
+        <div class="seg" role="group" aria-label="Створки"><button type="button" data-s="1" aria-pressed="false">1</button><button type="button" data-s="2" aria-pressed="true">2</button><button type="button" data-s="3" aria-pressed="false">3</button></div></div>
+      </div>
+      <div>
+       <div class="label">Примерная цена</div>
+       <div class="price num" id="cPrice"></div>
+       <button class="pbtn" type="button" id="cLead" style="margin-top:14px">Отправить заявку с расчётом</button>
+       <div class="lead-card" id="cCard"><span class="label">Так выглядит заявка у вас</span><div id="cCardTxt" style="font-weight:700;margin-top:4px"></div><div class="mut" style="font-size:14px;margin-top:4px">«Когда сможете приехать на замер?» Разговор начинается с дела.</div></div>
+      </div>
+     </div>
+     <div class="label" style="margin-top:22px">Бросали поиск товара, % пользователей</div>
+     <div class="bars2">
+      <div class="b"><span>Слабые списки и фильтры</span><div class="tr"><div class="fl" style="left:67%;width:23%;background:var(--red)"></div></div></div>
+      <div class="b"><span>Немного доработанные</span><div class="tr"><div class="fl" style="left:17%;width:16%;background:var(--ink)"></div></div></div>
+     </div>
+     <p class="note">67–90% против 17–33%. По оценке Baymard, это до четырёх раз больше заявок.</p>
+    </div>
+    <div class="ask" data-q="7"><p class="q">Клиент может сам прикинуть цену или подобрать вариант: калькулятор, фильтры, подбор по параметрам?</p>
+     <p class="hint">Даже «от 9 500 ₽ за окно 1150×890» лучше, чем «цену уточняйте по телефону».</p></div>
+   </div>
+  </section>
+
+  <div class="stepband">Шаг 3 · Поверил</div>
+
+  <section class="err" id="e8" data-n="8">
+   <div class="err-head"><div class="err-no">8</div><div>
+    <h2>Нет отзывов</h2>
+    <p class="why">Человеку нужно увидеть, что до него кто-то уже рискнул и остался доволен. Для услуг это кейсы с цифрами, скриншоты переписок и видеоотзывы.</p>
+    <span class="src">Источник: <b>Spiegel Research Center, Northwestern University, 2017</b></span></div></div>
+   <div class="err-body">
+    <div class="demo">
+     <div class="row" style="justify-content:space-between"><div class="label">Карточка товара</div>
+      <div class="seg" role="group" aria-label="Отзывы"><button type="button" data-rv="0" aria-pressed="true">Нет отзывов</button><button type="button" data-rv="5" aria-pressed="false">5 отзывов</button></div></div>
+     <div class="prod"><div class="pic"><i></i></div><div><b>Окно ПВХ, 2 створки</b><div class="stars" id="rvStars"></div><div class="mut" style="font-size:14px" id="rvCount"></div></div></div>
+     <label class="chk" style="margin-top:14px"><span style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="rvExp"> Дорогой товар</span></label>
+     <div class="label" style="margin-top:16px">Вероятность покупки против карточки без отзывов</div>
+     <div class="big num" id="rvBig" style="margin-top:6px"></div>
+     <div class="meter"><i id="rvBar"></i></div>
+     <p class="note">По данным PowerReviews о более чем 100 000 товаров.</p>
+    </div>
+    <div class="ask" data-q="8"><p class="q">На сайте есть отзывы, кейсы с цифрами или скриншоты переписок с клиентами?</p></div>
+   </div>
+  </section>
+
+  <section class="err" id="e9" data-n="9">
+   <div class="err-head"><div class="err-no">9</div><div>
+    <h2>Слишком идеальные отзывы</h2>
+    <p class="why">Вероятность покупки выше всего при рейтинге от 4,2 до 4,7. Выше 4,7 она немного снижается: слишком хорошим отзывам люди не верят. Двадцать отзывов по пять звёзд, написанных одним стилем, выглядят как реклама.</p>
+    <span class="src">Источник: <b>Spiegel Research Center, Northwestern University, 2017</b></span></div></div>
+   <div class="err-body">
+    <div class="demo">
+     <div class="ctrl" style="margin-top:0"><label for="rt">Средний рейтинг <output id="rtOut"></output></label><input type="range" id="rt" min="3" max="5" step="0.1" value="5"></div>
+     <svg class="curve" viewBox="0 0 600 250" role="img" aria-label="Вероятность покупки в зависимости от рейтинга" id="rtSvg"></svg>
+     <p class="verdict" id="rtVerdict"></p>
+     <p class="note">Форма кривой условная, по описанию исследования, без точных значений.</p>
+    </div>
+    <div class="ask" data-q="9"><p class="q">Отзывы живые: с деталями, именами, датами и даже небольшими минусами?</p>
+     <p class="hint">«Монтажники опоздали на час, но сделали аккуратно» убеждает лучше, чем «Отличная компания, всё супер».</p></div>
+   </div>
+  </section>
+
+  <section class="err" id="e10" data-n="10">
+   <div class="err-head"><div class="err-no">10</div><div>
+    <h2>Не видно людей, есть опечатки</h2>
+    <p class="why">Стэнфордские рекомендации по доверию к сайтам: покажите реальную организацию за сайтом и избегайте ошибок любого рода, даже мелких. Фото команды со стока и опечатка в заголовке заставляют сомневаться.</p>
+    <span class="src">Источник: <b>Stanford Guidelines for Web Credibility</b></span></div></div>
+   <div class="err-body">
+    <div class="demo">
+     <div class="label">Найдите опечатку: нажмите на слово</div>
+     <div class="typo" id="typo"></div>
+     <p class="verdict" id="typoMsg" aria-live="polite"></p>
+     <div class="label" style="margin-top:18px">Что есть на вашем сайте</div>
+     <div class="chk" id="trust">
+      <label><input type="checkbox"> Настоящие фото команды, не сток</label>
+      <label><input type="checkbox"> Адрес офиса или производства</label>
+      <label><input type="checkbox"> Реквизиты: ИНН, ОГРН</label>
+      <label><input type="checkbox"> Имя человека, который отвечает на заявки</label>
+     </div>
+     <div class="meter"><i id="trustBar" style="background:var(--ok)"></i></div>
+    </div>
+    <div class="ask" data-q="10"><p class="q">На сайте видно реальных людей, адрес и реквизиты, а опечаток нет?</p>
+     <p class="hint">Прогоните тексты через проверку орфографии и дайте прочитать свежему человеку.</p></div>
+   </div>
+  </section>
+
+  <div class="stepband">Шаг 4 · Купил</div>
+
+  <section class="err" id="e11" data-n="11">
+   <div class="err-head"><div class="err-no">11</div><div>
+    <h2>Сложная форма и сюрпризы в цене</h2>
+    <p class="why">В интернет-магазинах бросают около 70% корзин. 40% ушедших называют причиной неожиданные платежи в конце, 17% — слишком длинное оформление. По заявкам на услуги такой статистики нет, но логика та же.</p>
+    <span class="src">Источник: <b>Baymard Institute, Cart Abandonment Rate</b></span></div></div>
+   <div class="err-body">
+    <div class="demo">
+     <div class="formbuild">
+      <div><div class="label">Поля в форме заявки</div><div class="chk" id="fFields"></div></div>
+      <div><div class="label">Как видит клиент</div><div class="fakeform" id="fForm" style="margin-top:10px"></div><p class="verdict" id="fVerdict"></p></div>
+     </div>
+     <div class="row" style="justify-content:space-between;margin-top:20px"><div class="label">Цена в заказе</div>
+      <div class="seg" role="group" aria-label="Цена"><button type="button" data-bill="late" aria-pressed="true">Доплаты в конце</button><button type="button" data-bill="early" aria-pressed="false">Всё сразу</button></div></div>
+     <div class="bill" id="bill"></div>
+    </div>
+    <div class="ask" data-q="11"><p class="q">В форме заявки 2–3 поля, а итоговая цена не растёт на последнем шаге?</p>
+     <p class="hint">Имя и телефон, остальное уточните в разговоре. Доставку и монтаж показывайте сразу.</p></div>
+   </div>
+  </section>
+
+  <section class="err" id="e12" data-n="12">
+   <div class="err-head"><div class="err-no">12</div><div>
+    <h2>Шаблон вместо задачи</h2>
+    <p class="why">Самая дорогая ошибка. Покупают красивый шаблон, вставляют свои тексты и подгоняют под него бизнес. Работать нужно в обратном порядке: сначала задача в цифрах, потом сайт. Пока задачи нет, остальные одиннадцать пунктов приходится исправлять наугад.</p></div></div>
+   <div class="err-body">
+    <div class="demo">
+     <div class="label">Сформулируйте задачу сайта</div>
+     <div class="taskin">
+      <input class="field num" id="tN" type="number" min="1" value="30" aria-label="Сколько заявок в месяц">
+      <input class="field" id="tWhat" value="на установку окон" aria-label="На что">
+      <input class="field" id="tFrom" value="с рекламы" aria-label="Откуда">
+     </div>
+     <div class="task"><small>Задача сайта</small><div id="tOut"></div></div>
+     <div class="label" style="margin-top:22px">Воронка в аналитике: впишите свои цифры за месяц</div>
+     <div class="funnel" id="funnel"></div>
+     <p class="verdict" id="fnVerdict"></p>
+     <p class="note">Цифры в полях для примера. Без аналитики вы не узнаете, на каком экране уходят люди.</p>
+    </div>
+    <div class="ask" data-q="12"><p class="q">У сайта есть задача в цифрах (сколько заявок, на что, откуда), а аналитика показывает, где уходят люди?</p></div>
+   </div>
+  </section>
+
+  <section class="report" id="report" aria-live="polite">
+   <span class="label mono" style="font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em">Итог</span>
+   <h2 id="rTitle">Что чинить в первую очередь</h2>
+   <p class="mut" id="rSub" style="margin-top:8px"></p>
+   <ol class="rlist" id="rList"></ol>
+   <div class="ractions">
+    <button class="pbtn" type="button" id="rCopy">Скопировать список</button>
+    <button class="pbtn ghost" type="button" id="rReset">Начать заново</button>
+    <span class="mut" id="rCopied" aria-live="polite"></span>
+   </div>
+   <div class="cta-tg">
+    <p><strong>Чек-лист и шаблон задачи сайта</strong><span class="mut">Все 12 пунктов одним файлом и шаблон, как сформулировать задачу сайта до разработки. Лежат в Telegram-канале Eli's.</span></p>
+    <a class="pbtn" id="tgLink" href="#" target="_blank" rel="noopener" hidden>Открыть канал</a>
+    <span class="mut" id="tgNote">Ссылка в описании под видео на YouTube-канале @zybyv</span>
+   </div>
+  </section>
+ </main>
+</div>
+
+<footer class="wrap foot">Eli's · разработчик сайтов · @zybyv. Пример «Тёплый дом» вымышленный, цены и воронка нарисованы для иллюстрации. Реальные цифры только там, где указан источник.</footer>
+<textarea id="copybox" aria-hidden="true" tabindex="-1"></textarea>
+
+<script>
+// Ссылка на Telegram-канал. Пока пустая, вместо кнопки показывается подсказка.
+const TG_URL = '';
+
+const $ = id => document.getElementById(id);
+const fmt = n => Math.round(n).toLocaleString('ru-RU');
+const store = {
+ get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d }catch(e){ return d } },
+ set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)) }catch(e){} }
+};
+
+/* ---------- самопроверка и счёт ---------- */
+const TITLES = ['Медленная загрузка','Неудобно на телефоне','Дизайн, который убивает доверие','Нет оффера на первом экране','Стена текста и пять кнопок','Сайт о вас, а клиент ищет себя','Сайт-визитка без калькулятора','Нет отзывов','Слишком идеальные отзывы','Не видно людей, есть опечатки','Сложная форма и сюрпризы в цене','Шаблон вместо задачи'];
+const FIXES = [
+ 'Сожмите картинки (WebP, до 200 КБ), уберите лишние скрипты и виджеты, проверьте хостинг. Цель: меньше 3 секунд на мобильном.',
+ 'Сверстайте мобильную версию отдельно: одна колонка, кнопка на всю ширину на первом экране, текст от 16 px.',
+ 'Уберите мигающие баннеры и пёстрые цвета, оставьте 1–2 шрифта и один акцентный цвет, замените устаревшие фото.',
+ 'Первый экран по формуле: что вы делаете, для кого и какой результат. Плюс одна кнопка.',
+ 'Оставьте одно главное действие на экране. Длинные тексты разбейте на короткие блоки с подзаголовками.',
+ 'Перепишите блоки с точки зрения клиента: что он получит, сколько это займёт, что будет после заявки.',
+ 'Добавьте калькулятор стоимости, фильтры или подбор по параметрам. Хотя бы «цена от…» с примером.',
+ 'Соберите 5+ отзывов: кейсы с цифрами, скриншоты переписок, видеоотзывы.',
+ 'Оставьте живые отзывы с деталями и именами, не прячьте мелкие минусы. Рейтинг 4,2–4,7 вызывает больше доверия, чем 5,0.',
+ 'Покажите настоящую команду, адрес и реквизиты. Вычитайте тексты на опечатки.',
+ 'Сократите форму до имени и телефона. Показывайте доставку, монтаж и доплаты сразу, а не на последнем шаге.',
+ 'Запишите задачу сайта в цифрах («30 заявок в месяц на установку окон с рекламы») и настройте аналитику по шагам воронки.'
+];
+let answers = store.get('e12-answers', {});
+
+function renderScore(){
+ const okN = Object.values(answers).filter(v => v === 'ok').length;
+ const done = Object.keys(answers).length;
+ $('scoreOk').textContent = okN;
+ $('scoreTxt').textContent = done ? `из 12 в порядке · проверено ${done}` : 'из 12 в порядке';
+ document.querySelectorAll('#grid12 .cell').forEach((c, i) => {
+  const a = answers[i + 1]; c.classList.toggle('ok', a === 'ok'); c.classList.toggle('bad', a === 'bad');
+  c.setAttribute('aria-label', `Ошибка ${i + 1}: ${a === 'ok' ? 'в порядке' : a === 'bad' ? 'нужно чинить' : 'не проверено'}`);
+ });
+ document.querySelectorAll('.ask').forEach(box => {
+  const n = +box.dataset.q, a = answers[n];
+  box.classList.toggle('ok', a === 'ok'); box.classList.toggle('bad', a === 'bad');
+  box.querySelectorAll('.ans').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === a)));
+ });
+ renderReport();
+}
+
+function initAsk(){
+ const g = $('grid12');
+ for (let i = 1; i <= 12; i++){ const a = document.createElement('a'); a.className = 'cell num'; a.href = '#e' + i; a.textContent = i; g.appendChild(a) }
+ document.querySelectorAll('.ask').forEach(box => {
+  const n = +box.dataset.q;
+  const btns = document.createElement('div'); btns.className = 'btns';
+  btns.innerHTML = '<button type="button" class="ans yes" data-v="ok" aria-pressed="false">Да, всё в порядке</button><button type="button" class="ans no" data-v="bad" aria-pressed="false">Нет, есть проблема</button>';
+  const fix = document.createElement('p'); fix.className = 'fix'; fix.innerHTML = '<b>Что сделать:</b> ' + FIXES[n - 1];
+  box.appendChild(btns); box.appendChild(fix);
+  btns.addEventListener('click', e => {
+   const b = e.target.closest('.ans'); if (!b) return;
+   if (answers[n] === b.dataset.v) delete answers[n]; else answers[n] = b.dataset.v;
+   store.set('e12-answers', answers); renderScore();
+  });
+ });
+ // подсветка текущего раздела в сетке
+ const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ const n = +e.target.dataset.n; document.querySelectorAll('#grid12 .cell').forEach((c, i) => c.classList.toggle('cur', i + 1 === n)) }
+ }), {rootMargin: '-40% 0px -55% 0px'});
+ document.querySelectorAll('.err').forEach(s => io.observe(s));
+}
+
+function reportItems(){
+ // самая дорогая ошибка первой, остальные по пути клиента
+ const bad = Object.keys(answers).filter(k => answers[k] === 'bad').map(Number).sort((a, b) => a - b);
+ if (bad.includes(12)) bad.splice(bad.indexOf(12), 1), bad.unshift(12);
+ return bad;
+}
+function renderReport(){
+ const bad = reportItems(), done = Object.keys(answers).length, left = 12 - done;
+ const list = $('rList'); list.innerHTML = '';
+ if (!done){ $('rSub').textContent = 'Ответьте на вопросы в разделах выше. Здесь появится список проблем вашего сайта по приоритету.'; $('rTitle').textContent = 'Что чинить в первую очередь'; return }
+ $('rTitle').textContent = bad.length ? `Нашлось проблем: ${bad.length}` : 'Проблем не нашлось';
+ $('rSub').textContent = left ? `Проверено ${done} из 12. Осталось ответить на ${left}.` : bad.length ? 'Все 12 пунктов проверены. Начните сверху: порядок важен.' : 'Все 12 пунктов в порядке. Теперь смотрите на цифры в аналитике.';
+ bad.forEach((n, i) => {
+  const li = document.createElement('li');
+  li.innerHTML = (i === 0 && n === 12 ? '<span class="top">Начните с этого: без задачи остальное чинится наугад</span>' : '') +
+   `<span class="n num">${n}</span><div><div class="t">${TITLES[n - 1]}</div><div class="f">${FIXES[n - 1]}</div></div>`;
+  list.appendChild(li);
+ });
+}
+function reportText(){
+ const bad = reportItems();
+ if (!bad.length) return 'Проверка сайта по 12 пунктам: проблем не нашлось.';
+ return 'Проверка сайта по 12 пунктам (Eli\'s)\nЧто чинить, по порядку:\n\n' + bad.map((n, i) => `${i + 1}. ${TITLES[n - 1]}\n   ${FIXES[n - 1]}`).join('\n');
+}
+$('rCopy').addEventListener('click', () => {
+ const txt = reportText(), done = m => { $('rCopied').textContent = m; setTimeout(() => $('rCopied').textContent = '', 2500) };
+ const fallback = () => { const c = $('copybox'); c.value = txt; c.select(); try{ document.execCommand('copy'); done('Скопировано') }catch(e){ done('Выделите текст и скопируйте вручную') } };
+ if (navigator.clipboard) navigator.clipboard.writeText(txt).then(() => done('Скопировано'), fallback); else fallback();
+});
+$('rReset').addEventListener('click', () => { answers = {}; store.set('e12-answers', answers); renderScore(); $('e1').scrollIntoView({behavior: 'smooth'}) });
+if (TG_URL){ $('tgLink').href = TG_URL; $('tgLink').hidden = false; $('tgNote').hidden = true }
+
+/* ---------- 1: загрузка ---------- */
+(function(){
+ const dots = $('dots'), order = [...Array(100).keys()];
+ let s = 11; const rnd = () => (s = s * 16807 % 2147483647) / 2147483647;
+ for (let i = 99; i > 0; i--){ const j = Math.floor(rnd() * (i + 1)); [order[i], order[j]] = [order[j], order[i]] }
+ const lost = new Set(order.slice(0, 53));
+ for (let i = 0; i < 100; i++) dots.appendChild(document.createElement('i'));
+ const upd = () => {
+  const t = +$('lt').value, slow = t > 3;
+  $('ltOut').textContent = t.toFixed(1).replace('.', ',') + ' с';
+  [...dots.children].forEach((d, i) => d.classList.toggle('gone', slow && lost.has(i)));
+  $('ltVerdict').className = 'verdict ' + (slow ? 'badv' : 'good');
+  $('ltVerdict').textContent = slow ? '53 из 100 мобильных визитов оборвутся до загрузки' : 'Укладываетесь в 3 секунды';
+  const b = Math.max(0, +$('budget').value || 0);
+  $('budgetOut').textContent = slow ? `Около ${fmt(b * .53)} ₽ из ${fmt(b)} ₽ в месяц уходит на людей, которые не увидели первый экран. Оценка по данным Google: 53% визитов обрываются, если страница грузится дольше 3 секунд.` : 'При загрузке до 3 секунд рекламный бюджет не теряется на ожидании.';
+ };
+ $('lt').addEventListener('input', upd); $('budget').addEventListener('input', upd); upd();
+})();
+
+/* ---------- 2: телефон ---------- */
+(function(){
+ const ph = $('phone'), inn = $('phIn');
+ const set = good => {
+  ph.className = 'phone ' + (good ? 'goodp' : 'badp');
+  inn.style.transform = good ? 'none' : 'scale(.48)';
+  inn.style.width = good ? '100%' : '';
+  $('phBad').setAttribute('aria-pressed', String(!good)); $('phGood').setAttribute('aria-pressed', String(good));
+  $('phNote').textContent = good ? 'Одна колонка, крупный заголовок и кнопка на всю ширину прямо на первом экране.' : 'Вёрстка под компьютер просто сжата: кнопка мелкая, текст не прочитать.';
+ };
+ $('phBad').addEventListener('click', () => set(false)); $('phGood').addEventListener('click', () => set(true)); set(false);
+})();
+
+/* ---------- 3: 50 мс и миф ---------- */
+(function(){
+ const A = $('fA'), B = $('fB'), msg = $('flashMsg'), pick = $('flashPick');
+ const wait = ms => new Promise(r => setTimeout(r, ms));
+ const frame = () => new Promise(r => requestAnimationFrame(() => r()));
+ const show = async el => { el.classList.add('on'); await frame(); await wait(50); el.classList.remove('on') };
+ $('flashGo').addEventListener('click', async () => {
+  $('flashGo').disabled = true; pick.hidden = true; msg.textContent = 'Смотрите…';
+  await wait(600); msg.textContent = ''; await show(A);
+  await wait(700); await show(B);
+  msg.textContent = 'Какому сайту вы доверяете больше?'; pick.hidden = false; $('flashGo').disabled = false; $('flashGo').textContent = 'Показать ещё раз';
+ });
+ pick.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return; pick.hidden = true;
+  msg.textContent = (b.dataset.pick === 'B' ? 'Большинство выбирает Б. ' : 'Интересный выбор, обычно выбирают Б. ') + 'Вы составили мнение за 50 мс, не прочитав ни слова. Так и клиент решает, остаться ли на сайте.';
+ });
+ $('mythBtn').addEventListener('click', () => { const o = $('myth').classList.toggle('open'); $('mythBtn').textContent = o ? 'Скрыть' : 'Проверить первоисточник' });
+})();
+
+/* ---------- 4: оффер ---------- */
+(function(){
+ const upd = () => {
+  const parts = ['ofWhat', 'ofWho', 'ofRes'].map(id => $(id).value.trim()).filter(Boolean);
+  $('ofOut').textContent = parts.length ? parts.join(' ').replace(/^./, c => c.toUpperCase()) : 'Добро пожаловать!';
+ };
+ ['ofWhat', 'ofWho', 'ofRes'].forEach(id => $(id).addEventListener('input', upd)); upd();
+})();
+
+/* ---------- 5: кнопки и чтение ---------- */
+(function(){
+ const NAMES = ['Рассчитать стоимость', 'Позвонить', 'Написать', 'Скачать прайс', 'Подписаться', 'Узнать больше', 'Каталог', 'Акции'];
+ const upd = () => {
+  const n = +$('nb').value; $('nbOut').textContent = n;
+  $('btnwall').innerHTML = NAMES.slice(0, n).map(x => `<span>${x}</span>`).join('');
+  const k = Math.log2(n + 1) / Math.log2(2), max = Math.log2(9);
+  $('hickX').textContent = n === 1 ? 'базовое время' : `×${k.toFixed(1).replace('.', ',')} к одной кнопке`;
+  $('hickBar').style.width = (Math.log2(n + 1) / max * 100) + '%';
+ };
+ $('nb').addEventListener('input', upd); upd();
+ const TXT = 'Компания «Тёплый дом» более десяти лет работает на рынке светопрозрачных конструкций и за это время зарекомендовала себя как надёжный партнёр для частных и корпоративных клиентов. Мы используем профильные системы ведущих европейских производителей, стеклопакеты с энергосберегающим напылением и фурнитуру, прошедшую сертификацию. Каждый проект начинается с консультации и выезда замерщика, который учитывает особенности проёма, стен и откосов. После согласования спецификации изделие изготавливается на собственном производстве с контролем качества на каждом этапе. Монтаж выполняется бригадой с опытом по ГОСТ, с использованием пароизоляционных лент и качественной монтажной пены.';
+ const words = TXT.split(' '), cut = Math.round(words.length / 4);
+ $('readtxt').innerHTML = words.map((w, i) => `<span class="w${i < cut ? ' r' : ''}">${w}</span>`).join(' ');
+ $('skimBtn').addEventListener('click', () => {
+  const on = $('readtxt').classList.toggle('skim');
+  $('skimBtn').setAttribute('aria-pressed', String(on)); $('skimBtn').textContent = on ? 'Показать весь текст' : 'Показать, что прочитают';
+ });
+})();
+
+/* ---------- 6: мы и вы ---------- */
+(function(){
+ const WE = new Set('мы нас нам нами наш наша наше наши нашего нашей нашему нашим нашими наших нашу'.split(' '));
+ const YOU = new Set('вы вас вам вами ваш ваша ваше ваши вашего вашей вашему вашим вашими ваших вашу'.split(' '));
+ const ta = $('weText');
+ ta.value = store.get('e12-text', 'Мы работаем с 2014 года. Мы используем лучшие профили, и мы гордимся нашей командой. Наши мастера знают своё дело, а мы контролируем каждый этап. Мы ценим доверие клиентов, поэтому мы даём гарантию. Если вам нужно окно, мы будем рады помочь.');
+ const esc = s => s.replace(/[&<>]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[c]));
+ const upd = () => {
+  let we = 0, you = 0;
+  const html = ta.value.split(/([А-Яа-яЁё]+)/).map(part => {
+   const w = part.toLowerCase();
+   if (WE.has(w)){ we++; return `<span class="we">${esc(part)}</span>` }
+   if (YOU.has(w)){ you++; return `<span class="you">${esc(part)}</span>` }
+   return esc(part);
+  }).join('');
+  $('weMirror').innerHTML = html || '<span class="mut">Здесь появится текст с подсветкой.</span>';
+  $('weN').textContent = we; $('youN').textContent = you;
+  const v = $('weVerdict');
+  if (!we && !you){ v.className = 'verdict mid'; v.textContent = 'Нет ни «мы», ни «вы». Вставьте текст со своего сайта.' }
+  else if (we > you){ v.className = 'verdict badv'; v.textContent = (you ? `«Мы» встречается в ${(we / you).toFixed(1).replace('.', ',')} раза чаще, чем «вы».` : `«Мы» встречается ${we} раз, а «вы» ни разу.`) + ' Перепишите блоки с точки зрения клиента.' }
+  else { v.className = 'verdict good'; v.textContent = 'Текст говорит с клиентом, а не о себе. Так держать.' }
+  store.set('e12-text', ta.value);
+ };
+ ta.addEventListener('input', upd); upd();
+})();
+
+/* ---------- 7: калькулятор ---------- */
+(function(){
+ // условная формула: площадь × 6840 ₽/м² + надбавка за створки
+ const SASH = {1: 2500, 2: 5850, 3: 9000}; let sash = 2;
+ const price = () => Math.round(((+$('cw').value) * (+$('ch').value) / 1e6 * 6840 + SASH[sash]) / 100) * 100;
+ const upd = () => {
+  $('cwOut').textContent = $('cw').value + ' мм'; $('chOut').textContent = $('ch').value + ' мм';
+  $('cPrice').textContent = fmt(price()) + ' ₽';
+  $('cCardTxt').textContent = `Окно ${$('cw').value}×${$('ch').value}, ${sash} ${sash === 1 ? 'створка' : 'створки'}, примерно ${fmt(price())} ₽`;
+ };
+ ['cw', 'ch'].forEach(id => $(id).addEventListener('input', upd));
+ document.querySelectorAll('[data-s]').forEach(b => b.addEventListener('click', () => {
+  sash = +b.dataset.s; document.querySelectorAll('[data-s]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); upd();
+ }));
+ $('cLead').addEventListener('click', () => { const c = $('cCard'); c.classList.remove('on'); void c.offsetWidth; c.classList.add('on') });
+ upd();
+})();
+
+/* ---------- 8: отзывы ---------- */
+(function(){
+ let rv = 0;
+ const upd = () => {
+  const exp = $('rvExp').checked, up = rv ? (exp ? 380 : 270) : 0;
+  $('rvStars').innerHTML = rv ? '★★★★<span class="off">★</span>' : '<span class="off">★★★★★</span>';
+  $('rvCount').textContent = rv ? '5 отзывов' : 'нет отзывов';
+  $('rvBig').textContent = rv ? `+${up}%` : 'исходная';
+  $('rvBig').style.color = rv ? 'var(--red2)' : 'var(--mut)';
+  $('rvBar').style.width = (100 + up) / 480 * 100 + '%';
+ };
+ document.querySelectorAll('[data-rv]').forEach(b => b.addEventListener('click', () => {
+  rv = +b.dataset.rv; document.querySelectorAll('[data-rv]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); upd();
+ }));
+ $('rvExp').addEventListener('change', upd); upd();
+})();
+
+/* ---------- 9: рейтинг ---------- */
+(function(){
+ const svg = $('rtSvg'), X0 = 50, X1 = 570, Y0 = 200, Y1 = 30;
+ const x = r => X0 + (r - 1) / 4 * (X1 - X0);
+ const f = r => r <= 4.45 ? Math.pow((r - 1) / 3.45, 2.2) : 1 - .55 * Math.pow((r - 4.45) / .55, 2) * .25; // условная форма
+ const y = r => Y0 - f(r) * (Y0 - Y1);
+ let d = ''; for (let r = 1; r <= 5.0001; r += .02) d += (d ? 'L' : 'M') + x(r).toFixed(1) + ' ' + y(r).toFixed(1);
+ svg.innerHTML = `
+  <rect x="${x(4.2)}" y="${Y1 - 10}" width="${x(4.7) - x(4.2)}" height="${Y0 - Y1 + 10}" fill="var(--redbg)"/>
+  <text x="${(x(4.2) + x(4.7)) / 2}" y="${Y1 - 16}" text-anchor="middle" font-size="13" fill="var(--red2)">4,2–4,7</text>
+  <line x1="${X0}" y1="${Y0}" x2="${X1}" y2="${Y0}" stroke="var(--line)" stroke-width="2"/>
+  ${[1, 2, 3, 4, 5].map(r => `<text x="${x(r)}" y="${Y0 + 26}" text-anchor="middle" font-size="13" fill="var(--mut)">${r}★</text>`).join('')}
+  <text x="${X0}" y="${Y1 - 16}" font-size="12" fill="var(--mut)">вероятность покупки</text>
+  <path d="${d}" fill="none" stroke="var(--ink)" stroke-width="3"/>
+  <line id="rtLine" y1="${Y0}" stroke="var(--red)" stroke-width="2" stroke-dasharray="4 4"/>
+  <circle id="rtDot" r="8" fill="var(--red)" stroke="var(--bg)" stroke-width="3"/>`;
+ const upd = () => {
+  const r = +$('rt').value; $('rtOut').textContent = r.toFixed(1).replace('.', ',');
+  const dot = $('rtDot'), ln = $('rtLine'); dot.setAttribute('cx', x(r)); dot.setAttribute('cy', y(r));
+  ln.setAttribute('x1', x(r)); ln.setAttribute('x2', x(r)); ln.setAttribute('y2', y(r));
+  const v = $('rtVerdict');
+  if (r < 4.2){ v.className = 'verdict mid'; v.textContent = 'Ниже пика: соберите больше довольных клиентов.' }
+  else if (r <= 4.7){ v.className = 'verdict good'; v.textContent = 'Зона максимального доверия.' }
+  else { v.className = 'verdict badv'; v.textContent = 'Слишком идеально: вероятность покупки уже немного ниже.' }
+ };
+ $('rt').addEventListener('input', upd); upd();
+})();
+
+/* ---------- 10: опечатка и доверие ---------- */
+(function(){
+ const W = 'Пластиковые окна с устоновкой за 3 дня'.split(' '), BAD = 3;
+ const box = $('typo'), msg = $('typoMsg');
+ W.forEach((w, i) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = w; b.dataset.i = i; box.appendChild(b) });
+ box.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (+b.dataset.i === BAD){ b.classList.add('hit'); msg.className = 'verdict good'; msg.textContent = 'Нашли: «установкой». Клиент тоже заметит, и доверие упадёт.' }
+  else { b.classList.remove('miss'); void b.offsetWidth; b.classList.add('miss'); msg.className = 'verdict mid'; msg.textContent = 'Здесь всё верно, ищите дальше.' }
+ });
+ const upd = () => { const c = $('trust').querySelectorAll('input:checked').length; $('trustBar').style.width = c / 4 * 100 + '%' };
+ $('trust').addEventListener('change', upd); upd();
+})();
+
+/* ---------- 11: форма и цена ---------- */
+(function(){
+ const F = [['Имя', 1], ['Телефон', 1], ['Фамилия', 1], ['Email', 1], ['Город', 1], ['Адрес', 1], ['Этаж', 0], ['Тип дома', 1], ['Как узнали о нас', 1], ['Комментарий', 0]];
+ const box = $('fFields');
+ F.forEach(([name, on], i) => { const l = document.createElement('label'); l.innerHTML = `<input type="checkbox" id="ff${i}" ${on ? 'checked' : ''}> ${name}`; box.appendChild(l) });
+ const upd = () => {
+  const on = F.filter((_, i) => $('ff' + i).checked).map(f => f[0]);
+  $('fForm').innerHTML = on.map(n => `<span>${n}</span>`).join('') + '<b>Отправить</b>';
+  const v = $('fVerdict'), n = on.length;
+  if (n <= 3){ v.className = 'verdict good'; v.textContent = `${n} ${n === 1 ? 'поле' : 'поля'}: заполнят за 10 секунд.` }
+  else if (n <= 5){ v.className = 'verdict mid'; v.textContent = `${n} полей. Уберите всё, что можно спросить по телефону.` }
+  else { v.className = 'verdict badv'; v.textContent = `${n} полей. Каждое лишнее поле отсеивает людей.` }
+ };
+ box.addEventListener('change', upd); upd();
+ let mode = 'late';
+ const bill = () => {
+  const early = mode === 'early';
+  $('bill').innerHTML = `
+   <div class="ln"><span>Окно 1300×1400</span><span class="num">18 300 ₽</span></div>
+   <div class="ln ${early ? '' : 'add'}"><span>Доставка ${early ? '' : '· появилась на последнем шаге'}</span><span class="num">+1 500 ₽</span></div>
+   <div class="ln ${early ? '' : 'add'}"><span>Подъём на этаж ${early ? '' : '· появился на последнем шаге'}</span><span class="num">+900 ₽</span></div>
+   <div class="ln tot"><span>Итого</span><span class="num">20 700 ₽</span></div>
+   <p class="note" style="margin-top:8px">${early ? 'Клиент видит итог сразу и соглашается на понятную сумму.' : 'Клиент ждал 18 300 ₽, а увидел 20 700 ₽. 40% ушедших называют именно эту причину.'}</p>`;
+ };
+ document.querySelectorAll('[data-bill]').forEach(b => b.addEventListener('click', () => {
+  mode = b.dataset.bill; document.querySelectorAll('[data-bill]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); bill();
+ }));
+ bill();
+})();
+
+/* ---------- 12: задача и воронка ---------- */
+(function(){
+ const upd = () => {
+  const n = Math.max(0, +$('tN').value || 0);
+  const tail = n % 10 === 1 && n % 100 !== 11 ? 'заявка' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'заявки' : 'заявок';
+  $('tOut').textContent = `${n} ${tail} в месяц ${$('tWhat').value.trim()} ${$('tFrom').value.trim()}`.replace(/\s+/g, ' ').trim();
+ };
+ ['tN', 'tWhat', 'tFrom'].forEach(id => $(id).addEventListener('input', upd)); upd();
+
+ const ST = [['Зашли на сайт', 1000], ['Досмотрели первый экран', 640], ['Открыли калькулятор', 180], ['Начали заполнять форму', 120], ['Отправили заявку', 40]];
+ const box = $('funnel');
+ ST.forEach(([name, v], i) => {
+  const r = document.createElement('div'); r.className = 'st';
+  r.innerHTML = `<span>${name}</span><input class="field num" type="number" min="0" id="fn${i}" value="${v}" aria-label="${name}"><div class="tr"><div class="fl"></div></div><span class="pct"></span>`;
+  box.appendChild(r);
+ });
+ const calc = () => {
+  const vals = ST.map((_, i) => Math.max(0, +$('fn' + i).value || 0)), top = vals[0] || 1;
+  let worst = -1, worstRate = 2;
+  vals.forEach((v, i) => { if (i && vals[i - 1] > 0){ const rate = v / vals[i - 1]; if (rate < worstRate){ worstRate = rate; worst = i } } });
+  [...box.children].forEach((r, i) => {
+   r.querySelector('.fl').style.width = Math.min(100, vals[i] / top * 100) + '%';
+   r.querySelector('.pct').textContent = i ? (vals[i - 1] ? Math.round(vals[i] / vals[i - 1] * 100) + '%' : '—') : '';
+   r.classList.toggle('worst', i === worst);
+  });
+  $('fnVerdict').className = 'verdict badv';
+  $('fnVerdict').textContent = worst > 0 ? `Самый большой обрыв: «${ST[worst - 1][0]}» → «${ST[worst][0]}», доходит ${Math.round(worstRate * 100)}%. Чинить первым.` : '';
+ };
+ box.addEventListener('input', calc); calc();
+})();
+
+initAsk(); renderScore();
+</script>
