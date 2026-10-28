@@ -22,6 +22,7 @@
  --red:#D42A25; --red2:#C4231F; --redbg:rgba(212,42,37,.09); --ok:#1F8F52; --okbg:rgba(31,143,82,.11); --warn:#B9740F; color-scheme:light}
 
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;margin:0;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:-.015em}
@@ -258,10 +259,41 @@ svg text{font-family:var(--mono)}
 .foot{padding-block:30px 50px;color:var(--mut);font-size:14px}
 #copybox{position:absolute;left:-9999px;top:0}
 
+/* бонусы */
+.bonuses{margin-top:56px;scroll-margin-top:24px}
+.bonuses>h2{font-size:clamp(28px,3.4vw,40px);font-weight:900}
+.bonuses>p{color:var(--mut);margin-top:8px;max-width:62ch}
+.bgrid{display:flex;flex-direction:column;gap:18px;margin-top:22px}
+.bonus{background:var(--surf);border:1px solid var(--line);border-radius:20px;padding:24px;min-width:0}
+.bonus-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+.bonus-tag{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--on-red);background:var(--red);border-radius:6px;padding:2px 8px}
+.bonus h3{font-size:clamp(21px,2.2vw,26px);font-weight:900}
+.bonus .sub{color:var(--mut);margin-top:6px;max-width:64ch;font-size:16px}
+.bform{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}
+.bform .ctrl{margin-top:0}
+.bform .wide{grid-column:1/-1}
+.bout{margin-top:16px;background:var(--surf2);border:1px solid var(--line);border-radius:14px;padding:16px 18px;white-space:pre-wrap;font-size:15.5px;line-height:1.6;overflow-wrap:anywhere}
+.lock{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;margin-top:16px;border:1.5px dashed var(--line);border-radius:14px;padding:16px 18px}
+.lock .meter{flex:1 1 200px;margin:0}
+.lock b{font-size:16px}
+.money{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.money div{background:var(--surf2);border-radius:12px;padding:12px 14px;min-width:0}
+.money .big{font-size:clamp(22px,2.6vw,30px);overflow-wrap:anywhere}
+.money .up{color:var(--ok)}
+.heads{list-style:none;padding:0;margin:16px 0 0;display:flex;flex-direction:column;gap:8px}
+.heads li{display:flex;gap:12px;align-items:center;justify-content:space-between;background:var(--surf2);border-radius:12px;padding:12px 14px}
+.heads li span{font-weight:700;font-size:16.5px;min-width:0}
+.heads li button{flex:none}
+.sm{padding:7px 12px;font-size:14px;border-radius:9px}
+.copied{color:var(--ok);font-size:14px;margin-left:10px}
+.rail .bnote{margin-top:12px;font-size:14px;color:var(--mut)}
+.rail .bnote a{color:var(--ink);font-weight:700}
+
 @media (max-width:1000px){
  .layout{grid-template-columns:minmax(0,1fr);gap:0}
  .rail{top:env(safe-area-inset-top,0px);z-index:5;border-radius:0 0 16px 16px;border-top:0;padding:8px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:6px;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)))}
- .rail h3,.legend,.rail .go{display:none}
+ .rail h3,.legend,.rail .go,.rail .bnote{display:none}
+ .bform,.money{grid-template-columns:minmax(0,1fr)}
  .score{margin:0}.score b{font-size:22px}.score span{font-size:13px}
  .grid12{grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;margin:0}
  .cell{font-size:12px;border-radius:6px;border-width:1px;aspect-ratio:auto;height:26px}
@@ -300,6 +332,7 @@ svg text{font-family:var(--mono)}
   <nav class="grid12" id="grid12" aria-label="Переход к ошибке"></nav>
   <div class="legend"><span><i style="background:var(--ok)"></i>в порядке</span><span><i style="background:var(--red)"></i>нужно чинить</span><span><i style="background:var(--surf2);border:1px solid var(--line)"></i>ещё не проверено</span></div>
   <a class="go" href="#report">Смотреть итог</a>
+  <p class="bnote">Бонусы: открыто <b id="bOpenN">1</b> из 4 · <a href="#bonuses">смотреть</a></p>
  </aside>
 
  <main id="main">
@@ -585,6 +618,78 @@ svg text{font-family:var(--mono)}
     <span class="mut" id="tgNote">Ссылка в описании под видео на YouTube-канале @zybyv</span>
    </div>
   </section>
+
+  <section class="bonuses" id="bonuses">
+   <h2>Бонусы</h2>
+   <p>Четыре инструмента, чтобы сразу взяться за исправления. Первый открыт, остальные откроются, когда вы ответите на все 12 вопросов выше.</p>
+   <div class="bgrid">
+
+    <article class="bonus" id="b1">
+     <div class="bonus-head"><span class="bonus-tag">Бонус 1</span><h3>Шаблон задачи сайта до разработки</h3></div>
+     <p class="sub">Заполните и отдайте разработчику или дизайнеру до того, как выбирать шаблон. Из этого текста видно, что ставить на первый экран, нужен ли калькулятор и какую форму делать. Поля заполнены для примера.</p>
+     <div class="bform">
+      <div class="ctrl"><label for="bzWhat">Что вы продаёте</label><input class="field" id="bzWhat" value="Пластиковые окна с установкой"></div>
+      <div class="ctrl"><label for="bzWho">Кто ваш клиент</label><input class="field" id="bzWho" value="Владельцы частных домов в пригороде"></div>
+      <div class="ctrl"><label for="bzN">Сколько заявок в месяц нужно</label><input class="field num" id="bzN" type="number" min="1" value="30"></div>
+      <div class="ctrl"><label for="bzFrom">Откуда придут люди</label><input class="field" id="bzFrom" value="Реклама в Яндексе"></div>
+      <div class="ctrl"><label for="bzCheck">Средний чек, ₽</label><input class="field num" id="bzCheck" type="number" min="0" step="1000" value="45000"></div>
+      <div class="ctrl"><label for="bzAction">Одно главное действие на сайте</label><input class="field" id="bzAction" value="Рассчитать стоимость и оставить заявку на замер"></div>
+      <div class="ctrl wide"><label for="bzObj">Главные сомнения клиента, через запятую</label><input class="field" id="bzObj" value="дорого, будет ли тепло зимой, не испортят ли откосы"></div>
+      <div class="ctrl wide"><label for="bzProof">Чем докажете</label><input class="field" id="bzProof" value="кейсы с фото до и после, отзывы с адресами, гарантия в договоре"></div>
+     </div>
+     <div class="bout" id="bzOut"></div>
+     <div class="row" style="margin-top:12px"><button class="pbtn" type="button" id="bzCopy">Скопировать задачу</button><span class="copied" id="bzCopied" aria-live="polite"></span></div>
+    </article>
+
+    <article class="bonus" id="b2" data-lock>
+     <div class="bonus-head"><span class="bonus-tag">Бонус 2</span><h3>Сколько денег приносит каждый процент конверсии</h3></div>
+     <p class="sub">Подставьте свои цифры за месяц. Это арифметика на ваших данных, а не обещание роста: она показывает, сколько стоит каждая исправленная ошибка.</p>
+     <div class="lock"><b>Откроется после проверки всех 12 пунктов</b><div class="meter"><i class="lockbar"></i></div><span class="mut lockleft"></span></div>
+     <div class="bbody">
+      <div class="bform">
+       <div class="ctrl"><label for="mVis">Посетителей в месяц</label><input class="field num" id="mVis" type="number" min="0" step="100" value="3000"></div>
+       <div class="ctrl"><label for="mConv">Из посетителя в заявку, %</label><input class="field num" id="mConv" type="number" min="0" max="100" step="0.1" value="1"></div>
+       <div class="ctrl"><label for="mClose">Из заявки в продажу, %</label><input class="field num" id="mClose" type="number" min="0" max="100" step="1" value="30"></div>
+       <div class="ctrl"><label for="mCheck">Средний чек, ₽</label><input class="field num" id="mCheck" type="number" min="0" step="1000" value="25000"></div>
+       <div class="ctrl wide"><label for="mTarget">Если конверсия в заявку станет <output id="mTargetOut"></output></label><input type="range" id="mTarget" min="0.1" max="10" step="0.1" value="2"></div>
+      </div>
+      <div class="money">
+       <div><span class="label">Сейчас в месяц</span><div class="big num" id="mNow"></div><div class="mut" style="font-size:14px" id="mNowSub"></div></div>
+       <div><span class="label">С новой конверсией</span><div class="big num" id="mNew"></div><div class="mut" style="font-size:14px" id="mNewSub"></div></div>
+       <div><span class="label">Разница за год</span><div class="big num up" id="mYear"></div><div class="mut" style="font-size:14px" id="mYearSub"></div></div>
+      </div>
+     </div>
+    </article>
+
+    <article class="bonus" id="b3" data-lock>
+     <div class="bonus-head"><span class="bonus-tag">Бонус 3</span><h3>Сообщение, которое собирает живые отзывы</h3></div>
+     <p class="sub">Отзыв «Всё супер, рекомендую» не работает (ошибка 9). Эти вопросы вытаскивают детали: что было до, что понравилось, что можно лучше. Отправьте клиенту через неделю после работы.</p>
+     <div class="lock"><b>Откроется после проверки всех 12 пунктов</b><div class="meter"><i class="lockbar"></i></div><span class="mut lockleft"></span></div>
+     <div class="bbody">
+      <div class="bform">
+       <div class="ctrl"><label for="rvName">Имя клиента</label><input class="field" id="rvName" value="Ирина"></div>
+       <div class="ctrl"><label for="rvMe">Кто пишет</label><input class="field" id="rvMe" value="компания «Тёплый дом»"></div>
+       <div class="ctrl wide"><label for="rvDid">Что вы сделали для клиента</label><input class="field" id="rvDid" value="поставили окна в спальне и на кухне"></div>
+       <div class="ctrl wide"><span class="label" style="text-transform:none;letter-spacing:0;font-family:var(--body);font-size:14px">Как попросить</span>
+        <div class="seg" role="group" aria-label="Канал"><button type="button" data-ch="msg" aria-pressed="true">Сообщение</button><button type="button" data-ch="call" aria-pressed="false">Звонок</button></div></div>
+      </div>
+      <div class="bout" id="rvOut"></div>
+      <div class="row" style="margin-top:12px"><button class="pbtn" type="button" id="rvCopy">Скопировать текст</button><span class="copied" id="rvCopied" aria-live="polite"></span></div>
+     </div>
+    </article>
+
+    <article class="bonus" id="b4" data-lock>
+     <div class="bonus-head"><span class="bonus-tag">Бонус 4</span><h3>Заголовки первого экрана по формуле</h3></div>
+     <p class="sub">Что вы делаете, для кого и какой результат (ошибка 4). Выберите нишу, возьмите заголовок за основу и подставьте свои цифры: сроки, гарантии, район.</p>
+     <div class="lock"><b>Откроется после проверки всех 12 пунктов</b><div class="meter"><i class="lockbar"></i></div><span class="mut lockleft"></span></div>
+     <div class="bbody">
+      <div class="ctrl" style="max-width:340px"><label for="hdNiche">Ниша</label><select class="field" id="hdNiche"></select></div>
+      <ul class="heads" id="hdList"></ul>
+     </div>
+    </article>
+
+   </div>
+  </section>
  </main>
 </div>
 
@@ -634,7 +739,7 @@ function renderScore(){
   box.classList.toggle('ok', a === 'ok'); box.classList.toggle('bad', a === 'bad');
   box.querySelectorAll('.ans').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === a)));
  });
- renderReport();
+ renderReport(); renderBonus();
 }
 
 function initAsk(){
@@ -933,6 +1038,128 @@ if (TG_URL){ $('tgLink').href = TG_URL; $('tgLink').hidden = false; $('tgNote').
   $('fnVerdict').textContent = worst > 0 ? `Самый большой обрыв: «${ST[worst - 1][0]}» → «${ST[worst][0]}», доходит ${Math.round(worstRate * 100)}%. Чинить первым.` : '';
  };
  box.addEventListener('input', calc); calc();
+})();
+
+
+/* ---------- бонусы ---------- */
+function copyText(txt, out){
+ const done = m => { out.textContent = m; setTimeout(() => out.textContent = '', 2500) };
+ const fallback = () => { const c = $('copybox'); c.value = txt; c.select(); try{ document.execCommand('copy'); done('Скопировано') }catch(e){ done('Выделите текст и скопируйте вручную') } };
+ if (navigator.clipboard) navigator.clipboard.writeText(txt).then(() => done('Скопировано'), fallback); else fallback();
+}
+function renderBonus(){
+ const done = Object.keys(answers).length, open = done >= 12;
+ document.querySelectorAll('.bonus[data-lock]').forEach(b => {
+  b.querySelector('.lock').hidden = open; b.querySelector('.bbody').hidden = !open;
+  b.querySelector('.lockbar').style.width = done / 12 * 100 + '%';
+  b.querySelector('.lockleft').textContent = `Проверено ${done} из 12`;
+ });
+ $('bOpenN').textContent = open ? 4 : 1;
+}
+const plural = (n, a, b, c) => { const m = n % 10, h = n % 100; return m === 1 && h !== 11 ? a : m >= 2 && m <= 4 && (h < 12 || h > 14) ? b : c };
+
+// 1: шаблон задачи
+(function(){
+ const ids = ['bzWhat', 'bzWho', 'bzN', 'bzFrom', 'bzCheck', 'bzAction', 'bzObj', 'bzProof'], v = id => $(id).value.trim();
+ // строчной делаем только первую букву, имена вроде «Яндекс» не трогаем
+ const low = x => x && x[1] && x[1] === x[1].toLowerCase() ? x[0].toLowerCase() + x.slice(1) : x;
+ const txt = () => {
+  const n = Math.max(0, +v('bzN') || 0), ch = +v('bzCheck') || 0;
+  const obj = v('bzObj').split(',').map(x => x.trim()).filter(Boolean);
+  return `ЗАДАЧА САЙТА
+${n} ${plural(n, 'заявка', 'заявки', 'заявок')} в месяц: ${low(v('bzWhat'))}. Трафик: ${low(v('bzFrom'))}.${ch ? `\nСредний чек ${fmt(ch)} ₽, то есть сайт должен приводить заявки на ${fmt(n * ch)} ₽ в месяц до закрытия сделок.` : ''}
+
+КЛИЕНТ
+${v('bzWho')}.
+
+ПЕРВЫЙ ЭКРАН
+Что делаем, для кого и какой результат + одна кнопка: «${v('bzAction')}».
+
+СОМНЕНИЯ, НА КОТОРЫЕ ОТВЕЧАЕТ САЙТ
+${obj.length ? obj.map((o, i) => `${i + 1}. ${o[0].toUpperCase() + o.slice(1)}`).join('\n') : '—'}
+
+ДОКАЗАТЕЛЬСТВА
+${v('bzProof')}.
+
+ФОРМА
+Имя и телефон. Цена и доплаты видны до заявки.
+
+АНАЛИТИКА
+Считаем по шагам: зашли → досмотрели первый экран → ${/рассчит|калькул/i.test(v('bzAction')) ? 'открыли калькулятор' : 'дошли до предложения'} → начали форму → отправили заявку. Цель: ${n} ${plural(n, 'заявка', 'заявки', 'заявок')} в месяц.`;
+ };
+ const upd = () => { $('bzOut').textContent = txt() };
+ ids.forEach(id => $(id).addEventListener('input', upd)); upd();
+ $('bzCopy').addEventListener('click', () => copyText(txt(), $('bzCopied')));
+})();
+
+// 2: деньги
+(function(){
+ const ids = ['mVis', 'mConv', 'mClose', 'mCheck', 'mTarget'];
+ const upd = () => {
+  const vis = Math.max(0, +$('mVis').value || 0), conv = Math.max(0, +$('mConv').value || 0) / 100, close = Math.max(0, +$('mClose').value || 0) / 100, check = Math.max(0, +$('mCheck').value || 0), tgt = +$('mTarget').value / 100;
+  $('mTargetOut').textContent = (tgt * 100).toFixed(1).replace('.', ',') + '%';
+  const leads = vis * conv, rev = leads * close * check, leads2 = vis * tgt, rev2 = leads2 * close * check, diff = rev2 - rev;
+  $('mNow').textContent = fmt(rev) + ' ₽'; $('mNowSub').textContent = `${fmt(leads)} заявок, ${fmt(leads * close)} продаж`;
+  $('mNew').textContent = fmt(rev2) + ' ₽'; $('mNewSub').textContent = `${fmt(leads2)} заявок, ${fmt(leads2 * close)} продаж`;
+  $('mYear').textContent = (diff >= 0 ? '+' : '−') + fmt(Math.abs(diff * 12)) + ' ₽';
+  $('mYear').className = 'big num ' + (diff >= 0 ? 'up' : '');
+  $('mYearSub').textContent = `${diff >= 0 ? '+' : '−'}${fmt(Math.abs(diff))} ₽ в месяц при том же трафике`;
+ };
+ ids.forEach(id => $(id).addEventListener('input', upd)); upd();
+})();
+
+// 3: просьба об отзыве
+(function(){
+ let ch = 'msg';
+ const txt = () => {
+  const name = $('rvName').value.trim() || 'Здравствуйте', me = $('rvMe').value.trim(), did = $('rvDid').value.trim();
+  if (ch === 'msg') return `${name}, здравствуйте! Это ${me}. Недавно мы ${did}. Можно попросить у вас короткий отзыв? Он очень поможет другим людям решиться.
+
+Ответьте, пожалуйста, на три вопроса, можно голосовым:
+1. Что было до того, как вы к нам обратились? Что не устраивало?
+2. Что понравилось в работе, а что можно было сделать лучше? Честно, нам это важно.
+3. Что изменилось после?
+
+Я оформлю текст и пришлю вам на согласование перед публикацией. Если можно, приложите фото.`;
+  return `Звонок через неделю после работы
+
+— ${name}, здравствуйте! Это ${me}. Удобно пару минут? Хотим узнать, как вам результат: мы ${did}.
+— (выслушать)
+— Можно я задам три вопроса для отзыва? Запишу с ваших слов и пришлю текст на согласование.
+1. Что было до того, как вы к нам обратились?
+2. Что понравилось, а что можно было сделать лучше?
+3. Что изменилось после?
+— Спасибо! Можно указать ваше имя и район? А сфотографировать результат?`;
+ };
+ const upd = () => { $('rvOut').textContent = txt() };
+ ['rvName', 'rvMe', 'rvDid'].forEach(id => $(id).addEventListener('input', upd));
+ document.querySelectorAll('[data-ch]').forEach(b => b.addEventListener('click', () => { ch = b.dataset.ch; document.querySelectorAll('[data-ch]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); upd() }));
+ upd();
+ $('rvCopy').addEventListener('click', () => copyText(txt(), $('rvCopied')));
+})();
+
+// 4: заголовки
+(function(){
+ const H = {
+  'Окна и двери': ['Пластиковые окна для частных домов с установкой за 3 дня', 'Замена окон в квартире за один день, без грязи и с вывозом старых рам', 'Тёплые окна на дачу: бесплатный замер завтра, цена фиксируется в договоре'],
+  'Ремонт квартир': ['Ремонт квартир в новостройках под ключ с фиксированной сметой', 'Ремонт ванной комнаты за 10 дней с гарантией 3 года', 'Косметический ремонт без переезда: работаем по комнатам'],
+  'Стоматология': ['Имплантация зубов для тех, кто откладывал из-за страха', 'Лечение зубов под микроскопом без повторных визитов', 'Детская стоматология: первый визит знакомство, без лечения'],
+  'Юридические услуги': ['Возврат денег за некачественный ремонт: претензия за 2 дня', 'Юрист для малого бизнеса по подписке: договоры и споры без штатного юриста', 'Раздел имущества при разводе: план действий на первой консультации'],
+  'Онлайн-школа': ['Английский для созвонов с иностранными коллегами за 4 месяца', 'Курс Excel для бухгалтеров: сводные таблицы и отчёты за 3 недели', 'Подготовка к ЕГЭ по математике в группах до 6 человек'],
+  'Веб-разработка': ['Сайты для стоматологий с онлайн-записью за 14 дней', 'Лендинги для оконных компаний с калькулятором стоимости', 'Сайт для эксперта, который приводит заявки, а не просто визитка'],
+  'Фитнес и здоровье': ['Персональные тренировки для новичков без травм и перегрузок', 'Групповые занятия для спины: утром до работы, 3 раза в неделю', 'Тренер онлайн: план питания и тренировки под ваш график']
+ };
+ const sel = $('hdNiche'); Object.keys(H).forEach(k => sel.add(new Option(k, k)));
+ const upd = () => {
+  $('hdList').innerHTML = H[sel.value].map((h, i) => `<li><span>${h}</span><button class="pbtn ghost sm" type="button" data-h="${i}">Копировать</button></li>`).join('');
+ };
+ $('hdList').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const t = H[sel.value][+b.dataset.h];
+  const out = document.createElement('span'); out.className = 'copied'; b.after(out);
+  copyText(t, out); setTimeout(() => out.remove(), 2600);
+ });
+ sel.addEventListener('change', upd); upd();
 })();
 
 initAsk(); renderScore();
