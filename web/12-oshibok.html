@@ -268,9 +268,6 @@ svg text{font-family:var(--mono)}
 .rlist .top{grid-column:1/-1;font-family:var(--mono);font-size:12px;color:var(--red2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:-6px}
 .rempty{margin-top:16px;color:var(--mut)}
 .ractions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;align-items:center}
-.cta-tg{margin-top:28px;border-top:1px solid var(--line);padding-top:24px;display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;justify-content:space-between}
-.cta-tg p{max-width:52ch}
-.cta-tg strong{display:block;font-size:20px}
 .foot{padding-block:30px 50px;color:var(--mut);font-size:14px}
 #copybox{position:absolute;left:-9999px;top:0}
 
@@ -302,13 +299,25 @@ svg text{font-family:var(--mono)}
 .sm{padding:7px 12px;font-size:14px;border-radius:9px}
 .copied{color:var(--ok);font-size:14px;margin-left:10px}
 .rail .bnote{margin-top:12px;font-size:14px;color:var(--mut)}
+.handoff{margin-top:18px;border-top:1px solid var(--line);padding-top:16px;display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;justify-content:space-between}
+.handoff p{max-width:56ch;font-size:16px}
+.rnext{margin-top:20px;border:1.5px solid var(--line);border-radius:16px;padding:18px 20px}
+.rnext.b{border-color:var(--red)}
+.rnext h3{font-size:20px;font-weight:900}
+.rnext p{margin-top:6px;max-width:62ch;color:var(--mut)}
+.rnext .row{margin-top:14px}
+.rnext a.pbtn{text-decoration:none}
+.offers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:28px;border-top:1px solid var(--line);padding-top:24px}
+.offer{display:flex;flex-direction:column;gap:12px;align-items:flex-start;min-width:0}
+.offer strong{display:block;font-size:20px}
+.offer a.pbtn{text-decoration:none}
 .rail .bnote a{color:var(--ink);font-weight:700}
 
 @media (max-width:1000px){
  .layout{grid-template-columns:minmax(0,1fr);gap:0}
  .rail{top:env(safe-area-inset-top,0px);z-index:5;border-radius:0 0 16px 16px;border-top:0;padding:8px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:6px;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)))}
  .rail h3,.legend,.rail .go,.rail .bnote{display:none}
- .bform,.money{grid-template-columns:minmax(0,1fr)}
+ .bform,.money,.offers{grid-template-columns:minmax(0,1fr)}
  .score{margin:0}.score b{font-size:22px}.score span{font-size:13px}
  .grid12{grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;margin:0}
  .cell{font-size:12px;border-radius:6px;border-width:1px;aspect-ratio:auto;height:26px}
@@ -626,15 +635,18 @@ svg text{font-family:var(--mono)}
    <p class="mut" id="rSub" style="margin-top:8px"></p>
    <span class="grade" id="rGrade" hidden></span>
    <ol class="rlist" id="rList"></ol>
+   <div class="rnext" id="rNext" hidden></div>
    <div class="ractions">
     <button class="pbtn" type="button" id="rCopy">Скопировать список</button>
     <button class="pbtn ghost" type="button" id="rReset">Начать заново</button>
     <span class="mut" id="rCopied" aria-live="polite"></span>
    </div>
-   <div class="cta-tg">
-    <p><strong>Чек-лист и шаблон задачи сайта</strong><span class="mut">Все 12 пунктов одним файлом и шаблон, как сформулировать задачу сайта до разработки. Лежат в Telegram-канале Eli's.</span></p>
+   <div class="offers">
+    <div class="offer"><p><strong>Чек-лист и шаблон задачи сайта</strong><span class="mut">Все 12 пунктов одним файлом и шаблон, как сформулировать задачу сайта до разработки. Лежат в Telegram-канале Eli's.</span></p>
     <a class="pbtn" id="tgLink" href="#" target="_blank" rel="noopener" hidden>Открыть канал</a>
-    <span class="mut" id="tgNote" hidden>Ссылка в описании под видео на YouTube-канале @zybyv</span>
+    <span class="mut" id="tgNote" hidden>Ссылка в описании под видео на YouTube-канале @zybyv</span></div>
+    <div class="offer"><p><strong>Бесплатный разбор вашего сайта</strong><span class="mut">Пришлите ссылку, и я назову 3 ошибки, которые стоят вам дороже всего. Коротко и по делу, без обязательств.</span></p>
+    <a class="pbtn ghost contact" href="#" target="_blank" rel="noopener">Прислать сайт на разбор</a></div>
    </div>
   </section>
 
@@ -658,6 +670,8 @@ svg text{font-family:var(--mono)}
      </div>
      <div class="bout" id="bzOut"></div>
      <div class="row" style="margin-top:12px"><button class="pbtn" type="button" id="bzCopy">Скопировать задачу</button><span class="copied" id="bzCopied" aria-live="polite"></span></div>
+     <div class="handoff"><p>Это готовое задание для разработчика. Отправьте его своему или мне: по нему отвечу, сколько будет стоить сайт и сколько займёт.</p>
+      <a class="pbtn ghost" id="bzSend" href="#" target="_blank" rel="noopener">Отправить задачу мне</a></div>
     </article>
 
     <article class="bonus" id="b2" data-lock>
@@ -714,11 +728,13 @@ svg text{font-family:var(--mono)}
 
 <footer class="wrap foot">Eli's · разработчик сайтов · <a href="https://t.me/+65C4cbRmbwU3OGJi" target="_blank" rel="noopener">Telegram-канал</a> · YouTube @zybyv. Пример «Тёплый дом» вымышленный, цены и воронка нарисованы для иллюстрации. Реальные цифры только там, где указан источник.</footer>
 <textarea id="copybox" aria-hidden="true" tabindex="-1"></textarea>
-<div class="toast" id="toast" role="status"><span>Все 12 пунктов проверены. Бонусы открыты</span><a href="#bonuses">Смотреть</a></div>
+<div class="toast" id="toast" role="status"><span>Бонусы открыты</span><a href="#bonuses">Смотреть</a></div>
 
 <script>
 // Ссылка на Telegram-канал. Если пустая, вместо кнопки показывается подсказка.
 const TG_URL = 'https://t.me/+65C4cbRmbwU3OGJi';
+// Куда писать лично (разбор, задача на сайт). Замените на свой контакт, например https://t.me/username
+const CONTACT_URL = TG_URL;
 
 const $ = id => document.getElementById(id);
 const fmt = n => Math.round(n).toLocaleString('ru-RU');
@@ -811,12 +827,22 @@ function reportItems(){
 function renderReport(){
  const bad = reportItems(), done = Object.keys(answers).length, left = 12 - done;
  const list = $('rList'); list.innerHTML = '';
- if (!done){ $('rGrade').hidden = true; $('rSub').textContent = 'Ответьте на вопросы в разделах выше. Здесь появится список проблем вашего сайта по приоритету.'; $('rTitle').textContent = 'Что чинить в первую очередь'; return }
+ if (!done){ $('rGrade').hidden = true; $('rNext').hidden = true; $('rSub').textContent = 'Ответьте на вопросы в разделах выше. Здесь появится список проблем вашего сайта по приоритету.'; $('rTitle').textContent = 'Что чинить в первую очередь'; return }
  $('rTitle').textContent = bad.length ? `Нашлось проблем: ${bad.length}` : 'Проблем не нашлось';
  const okN = done - bad.length, g = $('rGrade'); g.hidden = done < 12;
  if (done === 12){ g.className = 'grade ' + (okN >= 10 ? 'g' : okN >= 7 ? 'm' : 'b');
   g.textContent = `${okN} из 12 в порядке · ` + (okN >= 10 ? 'сайт в хорошей форме, дальше смотрите на аналитику' : okN >= 7 ? 'основа есть, клиентов теряете на нескольких шагах' : 'сайт теряет клиентов почти на каждом шаге') }
  $('rSub').textContent = left ? `Проверено ${done} из 12. Осталось ответить на ${left}.` : bad.length ? 'Все 12 пунктов проверены. Начните сверху: порядок важен.' : 'Все 12 пунктов в порядке. Теперь смотрите на цифры в аналитике.';
+ const nx = $('rNext'); nx.hidden = done < 12;
+ if (done === 12){
+  const okN = 12 - bad.length;
+  nx.className = 'rnext' + (okN <= 6 ? ' b' : '');
+  nx.innerHTML = okN >= 10
+   ? `<h3>Что дальше</h3><p>Сайт в хорошей форме. Сверяйтесь с чек-листом раз в полгода и следите за воронкой в аналитике: она первой покажет, если что-то сломается.</p><div class="row"><a class="pbtn ghost" href="${TG_URL}" target="_blank" rel="noopener">Забрать чек-лист</a></div>`
+   : okN >= 7
+   ? `<h3>Что дальше</h3><p>Основа есть, но клиентов вы теряете на нескольких шагах. Пришлите ссылку на сайт, и я бесплатно назову 3 ошибки, которые стоят вам дороже всего.</p><div class="row"><a class="pbtn" href="${CONTACT_URL}" target="_blank" rel="noopener">Прислать сайт на разбор</a></div>`
+   : `<h3>Что дальше</h3><p>Сайт теряет клиентов почти на каждом шаге. В таком случае новый сайт под задачу часто обходится дешевле, чем исправлять старый по пунктам. Я делаю сайты именно так: сначала задача в цифрах, потом дизайн. Заполните шаблон задачи, и по нему я скажу сроки и цену.</p><div class="row"><a class="pbtn" href="#b1">Заполнить шаблон задачи</a><a class="pbtn ghost" href="${CONTACT_URL}" target="_blank" rel="noopener">Сначала бесплатный разбор</a></div>`;
+ }
  bad.forEach((n, i) => {
   const li = document.createElement('li');
   li.innerHTML = (i === 0 && n === 12 ? '<span class="top">Начните с этого: без задачи остальное чинится наугад</span>' : '') +
@@ -836,6 +862,7 @@ $('rCopy').addEventListener('click', () => {
 });
 $('rReset').addEventListener('click', () => { answers = {}; store.set('e12-answers', answers); renderScore(); $('e1').scrollIntoView({behavior: 'smooth'}) });
 if (TG_URL){ $('tgLink').href = TG_URL; $('tgLink').hidden = false; $('tgNote').hidden = true }
+document.querySelectorAll('a.contact, #bzSend').forEach(a => a.href = CONTACT_URL);
 
 /* ---------- 1: загрузка ---------- */
 (function(){
@@ -1131,6 +1158,8 @@ ${v('bzProof')}.
  const upd = () => { $('bzOut').textContent = txt() };
  ids.forEach(id => $(id).addEventListener('input', upd)); upd();
  $('bzCopy').addEventListener('click', () => copyText(txt(), $('bzCopied')));
+ // перед переходом кладём задачу в буфер, чтобы её осталось вставить в сообщение
+ $('bzSend').addEventListener('click', () => copyText(txt(), $('bzCopied')));
 })();
 
 // 2: деньги
