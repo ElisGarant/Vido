@@ -1,0 +1,27 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<!-- Аватар 800×800 для YouTube и Telegram (оба обрезают в круг). Вариант по хэшу: #a, #b, #c -->
+<style>
+:root{--bg:#0C0C0D;--red:#E3342F;--ink:#F3F3F3}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:800px;height:800px;overflow:hidden;font-family:'Noto Sans CJK SC',sans-serif;font-weight:900}
+.v{position:absolute;inset:0;display:none;align-items:center;justify-content:center}
+/* A: тёмный фон, слово целиком */
+#a{background:radial-gradient(circle at 50% 38%,#26262A 0,#0C0C0D 70%);color:var(--ink)}
+#a .w{font-size:250px;letter-spacing:-.04em;line-height:1;transform:translateY(-14px)}
+#a .w span{color:var(--red)}
+/* B: монограмма E' */
+#b{background:var(--bg);color:var(--ink)}
+#b .w{font-size:520px;letter-spacing:-.04em;line-height:1;transform:translate(10px,-34px)}
+#b .w span{color:var(--red);margin-left:-.02em}
+/* C: красный фон, белое слово */
+#c{background:radial-gradient(circle at 50% 35%,#F0443E 0,#D42A25 75%);color:#fff}
+#c .w{font-size:250px;letter-spacing:-.04em;line-height:1;transform:translateY(-14px)}
+#c .w span{color:#0C0C0D}
+</style></head><body>
+<div class="v" id="a"><div class="w">Eli<span>'</span>s</div></div>
+<div class="v" id="b"><div class="w">E<span>'</span></div></div>
+<div class="v" id="c"><div class="w">Eli<span>'</span>s</div></div>
+<script>
+const show=()=>{const k=(location.hash||'#a').slice(1);document.querySelectorAll('.v').forEach(v=>v.style.display=v.id===k?'flex':'none')};
+addEventListener('hashchange',show);show();
+</script></body></html>
