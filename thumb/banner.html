@@ -1,5 +1,6 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8">
-<!-- #yt — баннер YouTube 2560×1440 (текст в безопасной зоне 1546×423 по центру); #tg — обложка закреплённого поста Telegram 1280×720 -->
+<!-- #yt, #yt2 — баннер YouTube 2560×1440 (текст в безопасной зоне 1546×423 по центру); #tg, #tg2 — обложка поста Telegram 1280×720.
+     yt/tg — про 12 ошибок сайта, yt2/tg2 — общий профиль: сайты, боты, приложения, автоматизация -->
 <style>
 :root{--bg:#0C0C0D;--surf:#18181A;--line:#2C2C31;--red:#E3342F;--red2:#FF5A4F;--ink:#F3F3F3;--mut:#9A9AA0}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -47,6 +48,38 @@ body{background:var(--bg);color:var(--ink);font-family:'Noto Sans CJK SC',sans-s
 #tg .pills{position:absolute;right:72px;top:78px;gap:10px}
 #tg .pills b{font-size:22px;padding:7px 18px}
 #tg .pills i{font-size:22px}
+
+/* общий профиль: сайты, боты, приложения, автоматизация */
+.svc{display:flex;align-items:center;gap:.5em;font-weight:700;white-space:nowrap;background:#18181A;border:2px solid var(--line);border-radius:.6em;padding:.45em .8em .45em .6em}
+.svc svg{width:1.25em;height:1.25em;flex:none}
+.bubble{border-radius:22px;padding:14px 20px;font-size:24px;font-weight:500;max-width:360px;line-height:1.3}
+.bubble.in{background:#202024;color:#D8D8DC;border-bottom-left-radius:6px}
+.bubble.out{background:var(--red);color:#fff;border-bottom-right-radius:6px;align-self:flex-end}
+.node{background:#18181A;border:2px solid var(--line);border-radius:14px;padding:12px 18px;font-size:22px;font-weight:700;white-space:nowrap}
+.node.r{border-color:var(--red);color:var(--red2)}
+#yt2,#tg2{}
+#yt2{width:2560px;height:1440px}
+#yt2 .grid{background-size:96px 96px}
+#yt2 .safe{position:absolute;left:507px;top:508px;width:1546px;height:423px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;gap:60px}
+#yt2 .logo{font-size:190px}
+#yt2 .txt{display:flex;flex-direction:column;align-items:flex-end;gap:26px;text-align:right}
+#yt2 .txt h1{font-size:56px;font-weight:900;letter-spacing:-.02em;line-height:1.08}
+#yt2 .txt h1 em{font-style:normal;color:var(--red2)}
+#yt2 .row{display:flex;gap:14px;font-size:27px}
+#yt2 .chat{position:absolute;left:70px;top:540px;width:400px;display:flex;flex-direction:column;gap:14px}
+#yt2 .flowcol{position:absolute;right:70px;top:548px;display:flex;flex-direction:column;align-items:flex-end;gap:14px}
+#yt2 .flowcol i{font-style:normal;color:#55555B;font-size:30px;line-height:1;margin-right:110px}
+#tg2{width:1280px;height:720px}
+#tg2 .grid{background-size:64px 64px}
+#tg2 .logo{position:absolute;left:72px;top:64px;font-size:64px}
+#tg2 h1{position:absolute;left:72px;top:168px;font-size:70px;font-weight:900;letter-spacing:-.025em;line-height:1.04;width:1100px}
+#tg2 h1 em{font-style:normal;color:var(--red2)}
+#tg2 .tiles{position:absolute;left:72px;right:72px;top:400px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+#tg2 .tile{background:#18181A;border:2px solid var(--line);border-radius:20px;padding:22px 22px 24px;display:flex;flex-direction:column;gap:14px}
+#tg2 .tile svg{width:44px;height:44px}
+#tg2 .tile b{font-size:28px;font-weight:900;letter-spacing:-.01em}
+#tg2 .tile span{font-size:19px;color:var(--mut);line-height:1.3}
+#tg2 .sub{position:absolute;right:72px;top:84px;font-size:24px;color:var(--mut);font-weight:500}
 </style></head><body>
 
 <div class="v" id="yt">
@@ -77,6 +110,38 @@ body{background:var(--bg);color:var(--ink);font-family:'Noto Sans CJK SC',sans-s
  <div class="pills"><b>Зашёл</b><i>→</i><b>Понял</b><i>→</i><b>Поверил</b><i>→</i><b class="on">Купил</b></div>
 </div>
 
+
+<div class="v" id="yt2">
+ <div class="grid"></div>
+ <div class="glow" style="width:1800px;height:1800px;left:380px;top:-200px"></div>
+ <div class="chat">
+  <div class="bubble in">Хочу записаться на замер</div>
+  <div class="bubble out">Выберите удобное время: завтра 10:00 или 15:00</div>
+  <div class="bubble in">15:00</div>
+ </div>
+ <div class="flowcol"><div class="node">Заявка с сайта</div><div class="node">Сообщение в боте</div><i>↓</i><div class="node r">CRM + уведомление</div></div>
+ <div class="safe">
+  <div class="logo">Eli<span>'</span>s</div>
+  <div class="txt">
+   <h1>Разработка, которая<br><em>работает на бизнес</em></h1>
+   <div class="row"><span class="svc"><svg viewBox="0 0 24 24" fill="none" stroke="#FF5A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6" fill="#FF5A4F"/><circle cx="9" cy="6.5" r=".6" fill="#FF5A4F"/></svg>Сайты</span><span class="svc"><svg viewBox="0 0 24 24" fill="none" stroke="#FF5A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H10l-5 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg>Боты</span><span class="svc"><svg viewBox="0 0 24 24" fill="none" stroke="#FF5A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg>Приложения</span><span class="svc"><svg viewBox="0 0 24 24" fill="none" stroke="#FF5A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="2.2"/><circle cx="19" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M7.2 6h9.6M6.2 7.9l4.6 8.2M17.8 7.9l-4.6 8.2"/></svg>Автоматизация</span></div>
+  </div>
+ </div>
+</div>
+
+<div class="v" id="tg2">
+ <div class="grid"></div>
+ <div class="glow" style="width:1100px;height:1100px;left:560px;top:-420px"></div>
+ <div class="logo">Eli<span>'</span>s</div>
+ <div class="sub">разработка под задачу бизнеса</div>
+ <h1>Сайты, боты, приложения<br>и <em>автоматизация</em></h1>
+ <div class="tiles">
+  <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#FF5A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6" fill="#FF5A4F"/><circle cx="9" cy="6.5" r=".6" fill="#FF5A4F"/></svg><b>Сайты</b><span>которые приносят заявки</span></div>
+  <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#FF5A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H10l-5 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg><b>Боты</b><span>заявки, запись и оплата в Telegram</span></div>
+  <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#FF5A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg><b>Приложения</b><span>под процессы вашего бизнеса</span></div>
+  <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="#FF5A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="2.2"/><circle cx="19" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M7.2 6h9.6M6.2 7.9l4.6 8.2M17.8 7.9l-4.6 8.2"/></svg><b>Автоматизация</b><span>убираю ручную рутину</span></div>
+ </div>
+</div>
 <script>
 // сетка из 12 клеток, как в ролике: часть отмечена галочками, 12-я красная
 const ck='<svg width="55%" height="55%" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#F3F3F3" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
