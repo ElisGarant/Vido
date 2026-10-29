@@ -26,7 +26,7 @@
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;margin:0;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:-.015em}
-p{margin:0}
+p{margin:0;text-wrap:pretty}
 a{color:var(--red2)}
 button,input,textarea,select{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--red2);outline-offset:2px;border-radius:6px}
@@ -46,6 +46,21 @@ button,input,textarea,select{font:inherit;color:inherit}
 .path a small{font-family:var(--mono);font-weight:400;font-size:13px;color:var(--mut)}
 .path a:hover{border-color:var(--red)}
 .path .arrow{align-self:center;color:var(--mut)}
+.path a .pp{font-family:var(--mono);font-size:12px;font-weight:600;border-radius:6px;padding:1px 6px;background:var(--surf2);color:var(--mut)}
+.path a .pp.full{background:var(--ok);color:var(--on-red)}
+.start{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin-top:30px}
+.start .pbtn{font-size:17px;padding:14px 26px;text-decoration:none}
+.start span{color:var(--mut);font-size:15px}
+.next{display:none;margin-top:12px;font-weight:700;font-size:15.5px;text-decoration:none;color:var(--ink)}
+.next:hover{color:var(--red2)}
+.ask.ok .next,.ask.bad .next{display:inline-block}
+.grade{display:inline-block;margin-top:14px;border-radius:10px;padding:6px 12px;font-weight:700;font-size:15px}
+.grade.g{background:var(--okbg);color:var(--ok)} .grade.m{background:rgba(233,162,59,.15);color:var(--warn)} .grade.b{background:var(--redbg);color:var(--red2)}
+.rprog{height:6px;border-radius:4px;background:var(--surf2);margin-top:14px;overflow:hidden}
+.rprog i{display:block;height:100%;background:var(--ink);transition:width .3s}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:20;background:var(--ink);color:var(--bg);border-radius:14px;padding:12px 18px;font-weight:700;display:flex;gap:14px;align-items:center;box-shadow:0 20px 60px rgba(0,0,0,.4);transition:opacity .3s,transform .3s;max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast a{color:var(--bg);background:var(--red);color:var(--on-red);border-radius:9px;padding:6px 12px;text-decoration:none;white-space:nowrap}
 
 /* общий макет */
 .layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:44px;align-items:start;padding-bottom:80px}
@@ -307,6 +322,7 @@ svg text{font-family:var(--mono)}
  .funnel .st{grid-template-columns:minmax(0,1fr) 76px 46px}
  .funnel .tr{grid-column:1/-1;order:5}
  .dots{gap:3px}
+ .path .arrow{display:none}
  .report{padding:20px}
  .demo,.ask{padding:16px}
 }
@@ -318,17 +334,19 @@ svg text{font-family:var(--mono)}
  <h1>12 ошибок, из&#8209;за которых сайт <em>не&nbsp;продаёт</em></h1>
  <p class="lead">Клиент проходит четыре шага: заходит, понимает, верит и покупает. На каждом шаге сайт может его потерять. Пройдите 12 пунктов, ответьте честно, и внизу соберётся список того, что чинить в первую очередь. Займёт минут десять.</p>
  <ul class="path">
-  <li><a href="#e1">Зашёл <small>1–3</small></a></li><li class="arrow" aria-hidden="true">→</li>
-  <li><a href="#e4">Понял <small>4–7</small></a></li><li class="arrow" aria-hidden="true">→</li>
-  <li><a href="#e8">Поверил <small>8–10</small></a></li><li class="arrow" aria-hidden="true">→</li>
-  <li><a href="#e11">Купил <small>11–12</small></a></li>
+  <li><a href="#e1">Зашёл <small>1–3</small> <span class="pp" data-pp="1,2,3"></span></a></li><li class="arrow" aria-hidden="true">→</li>
+  <li><a href="#e4">Понял <small>4–7</small> <span class="pp" data-pp="4,5,6,7"></span></a></li><li class="arrow" aria-hidden="true">→</li>
+  <li><a href="#e8">Поверил <small>8–10</small> <span class="pp" data-pp="8,9,10"></span></a></li><li class="arrow" aria-hidden="true">→</li>
+  <li><a href="#e11">Купил <small>11–12</small> <span class="pp" data-pp="11,12"></span></a></li>
  </ul>
+ <div class="start"><a class="pbtn" href="#e1">Начать проверку</a><span>12 вопросов · около 10 минут · ответы сохраняются в этом браузере</span></div>
 </header>
 
 <div class="wrap layout">
  <aside class="rail" aria-label="Ваш результат">
   <h3>Ваш сайт</h3>
   <div class="score"><b class="num" id="scoreOk">0</b><span id="scoreTxt">из 12 в порядке</span></div>
+  <div class="rprog"><i id="railBar"></i></div>
   <nav class="grid12" id="grid12" aria-label="Переход к ошибке"></nav>
   <div class="legend"><span><i style="background:var(--ok)"></i>в порядке</span><span><i style="background:var(--red)"></i>нужно чинить</span><span><i style="background:var(--surf2);border:1px solid var(--line)"></i>ещё не проверено</span></div>
   <a class="go" href="#report">Смотреть итог</a>
@@ -370,7 +388,7 @@ svg text{font-family:var(--mono)}
       <div class="hero2"><div><h5>Пластиковые окна с установкой за 3 дня</h5><p>Замер бесплатно. Цена фиксируется в договоре.</p><span class="cta">Рассчитать стоимость</span></div><div class="pic"></div></div>
       <div class="tiny">Компания «Тёплый дом» работает на рынке с 2014 года и предлагает широкий ассортимент оконных конструкций из ПВХ, алюминия и дерева.</div>
      </div></div></div></div>
-     <p class="note" id="phNote">Вёрстка под компьютер просто сжата: кнопка за краем экрана, текст мелкий.</p>
+     <p class="note" id="phNote"></p>
     </div>
     <div class="ask" data-q="2"><p class="q">На телефоне главная кнопка видна сразу и легко нажимается пальцем, а страница не листается вбок?</p>
      <p class="hint">Откройте сайт со своего телефона и попробуйте оставить заявку одной рукой.</p></div>
@@ -606,6 +624,7 @@ svg text{font-family:var(--mono)}
    <span class="label mono" style="font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em">Итог</span>
    <h2 id="rTitle">Что чинить в первую очередь</h2>
    <p class="mut" id="rSub" style="margin-top:8px"></p>
+   <span class="grade" id="rGrade" hidden></span>
    <ol class="rlist" id="rList"></ol>
    <div class="ractions">
     <button class="pbtn" type="button" id="rCopy">Скопировать список</button>
@@ -693,8 +712,9 @@ svg text{font-family:var(--mono)}
  </main>
 </div>
 
-<footer class="wrap foot">Eli's · разработчик сайтов · @zybyv. Пример «Тёплый дом» вымышленный, цены и воронка нарисованы для иллюстрации. Реальные цифры только там, где указан источник.</footer>
+<footer class="wrap foot">Eli's · разработчик сайтов · <a href="https://t.me/+65C4cbRmbwU3OGJi" target="_blank" rel="noopener">Telegram-канал</a> · YouTube @zybyv. Пример «Тёплый дом» вымышленный, цены и воронка нарисованы для иллюстрации. Реальные цифры только там, где указан источник.</footer>
 <textarea id="copybox" aria-hidden="true" tabindex="-1"></textarea>
+<div class="toast" id="toast" role="status"><span>Все 12 пунктов проверены. Бонусы открыты</span><a href="#bonuses">Смотреть</a></div>
 
 <script>
 // Ссылка на Telegram-канал. Если пустая, вместо кнопки показывается подсказка.
@@ -702,10 +722,18 @@ const TG_URL = 'https://t.me/+65C4cbRmbwU3OGJi';
 
 const $ = id => document.getElementById(id);
 const fmt = n => Math.round(n).toLocaleString('ru-RU');
+const plural = (n, a, b, c) => { const m = n % 10, h = n % 100; return m === 1 && h !== 11 ? a : m >= 2 && m <= 4 && (h < 12 || h > 14) ? b : c };
 const store = {
  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d }catch(e){ return d } },
  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)) }catch(e){} }
 };
+
+/* ---------- заполненные поля сохраняются в браузере ---------- */
+const KEEP = document.querySelectorAll('input.field[id], select.field[id]');
+const kept = store.get('e12-fields', {});
+KEEP.forEach(el => { if (kept[el.id] != null) el.value = kept[el.id] });
+document.addEventListener('input', e => { const el = e.target; if (el.matches && el.matches('input.field[id], select.field[id]')){ kept[el.id] = el.value; store.set('e12-fields', kept) } });
+document.addEventListener('change', e => { const el = e.target; if (el.matches && el.matches('select.field[id]')){ kept[el.id] = el.value; store.set('e12-fields', kept) } });
 
 /* ---------- самопроверка и счёт ---------- */
 const TITLES = ['Медленная загрузка','Неудобно на телефоне','Дизайн, который убивает доверие','Нет оффера на первом экране','Стена текста и пять кнопок','Сайт о вас, а клиент ищет себя','Сайт-визитка без калькулятора','Нет отзывов','Слишком идеальные отзывы','Не видно людей, есть опечатки','Сложная форма и сюрпризы в цене','Шаблон вместо задачи'];
@@ -739,8 +767,16 @@ function renderScore(){
   box.classList.toggle('ok', a === 'ok'); box.classList.toggle('bad', a === 'bad');
   box.querySelectorAll('.ans').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === a)));
  });
+ document.querySelectorAll('[data-pp]').forEach(el => {
+  const ns = el.dataset.pp.split(','), k = ns.filter(n => answers[n]).length;
+  el.textContent = k ? `${k}/${ns.length}` : ''; el.classList.toggle('full', k === ns.length);
+ });
+ $('railBar').style.width = done / 12 * 100 + '%';
+ if (done === 12 && prevDone === 11){ const t = $('toast'); t.classList.add('on'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), 6000) }
+ prevDone = done;
  renderReport(); renderBonus();
 }
+let prevDone = -1;
 
 function initAsk(){
  const g = $('grid12');
@@ -750,7 +786,9 @@ function initAsk(){
   const btns = document.createElement('div'); btns.className = 'btns';
   btns.innerHTML = '<button type="button" class="ans yes" data-v="ok" aria-pressed="false">Да, всё в порядке</button><button type="button" class="ans no" data-v="bad" aria-pressed="false">Нет, есть проблема</button>';
   const fix = document.createElement('p'); fix.className = 'fix'; fix.innerHTML = '<b>Что сделать:</b> ' + FIXES[n - 1];
-  box.appendChild(btns); box.appendChild(fix);
+  const nx = document.createElement('a'); nx.className = 'next';
+  nx.href = n < 12 ? '#e' + (n + 1) : '#report'; nx.textContent = n < 12 ? `Дальше: ${n + 1}. ${TITLES[n]} →` : 'Смотреть итог →';
+  box.appendChild(btns); box.appendChild(fix); box.appendChild(nx);
   btns.addEventListener('click', e => {
    const b = e.target.closest('.ans'); if (!b) return;
    if (answers[n] === b.dataset.v) delete answers[n]; else answers[n] = b.dataset.v;
@@ -773,8 +811,11 @@ function reportItems(){
 function renderReport(){
  const bad = reportItems(), done = Object.keys(answers).length, left = 12 - done;
  const list = $('rList'); list.innerHTML = '';
- if (!done){ $('rSub').textContent = 'Ответьте на вопросы в разделах выше. Здесь появится список проблем вашего сайта по приоритету.'; $('rTitle').textContent = 'Что чинить в первую очередь'; return }
+ if (!done){ $('rGrade').hidden = true; $('rSub').textContent = 'Ответьте на вопросы в разделах выше. Здесь появится список проблем вашего сайта по приоритету.'; $('rTitle').textContent = 'Что чинить в первую очередь'; return }
  $('rTitle').textContent = bad.length ? `Нашлось проблем: ${bad.length}` : 'Проблем не нашлось';
+ const okN = done - bad.length, g = $('rGrade'); g.hidden = done < 12;
+ if (done === 12){ g.className = 'grade ' + (okN >= 10 ? 'g' : okN >= 7 ? 'm' : 'b');
+  g.textContent = `${okN} из 12 в порядке · ` + (okN >= 10 ? 'сайт в хорошей форме, дальше смотрите на аналитику' : okN >= 7 ? 'основа есть, клиентов теряете на нескольких шагах' : 'сайт теряет клиентов почти на каждом шаге') }
  $('rSub').textContent = left ? `Проверено ${done} из 12. Осталось ответить на ${left}.` : bad.length ? 'Все 12 пунктов проверены. Начните сверху: порядок важен.' : 'Все 12 пунктов в порядке. Теперь смотрите на цифры в аналитике.';
  bad.forEach((n, i) => {
   const li = document.createElement('li');
@@ -785,8 +826,8 @@ function renderReport(){
 }
 function reportText(){
  const bad = reportItems();
- if (!bad.length) return 'Проверка сайта по 12 пунктам: проблем не нашлось.';
- return 'Проверка сайта по 12 пунктам (Eli\'s)\nЧто чинить, по порядку:\n\n' + bad.map((n, i) => `${i + 1}. ${TITLES[n - 1]}\n   ${FIXES[n - 1]}`).join('\n');
+ if (!bad.length) return 'Проверка сайта по 12 пунктам: проблем не нашлось.' + (TG_URL ? `\nЧек-лист: ${TG_URL}` : '');
+ return 'Проверка сайта по 12 пунктам (Eli\'s)\nЧто чинить, по порядку:\n\n' + bad.map((n, i) => `${i + 1}. ${TITLES[n - 1]}\n   ${FIXES[n - 1]}`).join('\n') + (TG_URL ? `\n\nЧек-лист и шаблон задачи сайта: ${TG_URL}` : '');
 }
 $('rCopy').addEventListener('click', () => {
  const txt = reportText(), done = m => { $('rCopied').textContent = m; setTimeout(() => $('rCopied').textContent = '', 2500) };
@@ -820,10 +861,10 @@ if (TG_URL){ $('tgLink').href = TG_URL; $('tgLink').hidden = false; $('tgNote').
  const ph = $('phone'), inn = $('phIn');
  const set = good => {
   ph.className = 'phone ' + (good ? 'goodp' : 'badp');
-  inn.style.transform = good ? 'none' : 'scale(.48)';
+  inn.style.transform = good ? 'none' : 'scale(.62)';
   inn.style.width = good ? '100%' : '';
   $('phBad').setAttribute('aria-pressed', String(!good)); $('phGood').setAttribute('aria-pressed', String(good));
-  $('phNote').textContent = good ? 'Одна колонка, крупный заголовок и кнопка на всю ширину прямо на первом экране.' : 'Вёрстка под компьютер просто сжата: кнопка мелкая, текст не прочитать.';
+  $('phNote').textContent = good ? 'Одна колонка, крупный заголовок и кнопка на всю ширину прямо на первом экране.' : 'Вёрстка под компьютер не помещается: картинка уехала за край, текст и кнопка мелкие, страница листается вбок.';
  };
  $('phBad').addEventListener('click', () => set(false)); $('phGood').addEventListener('click', () => set(true)); set(false);
 })();
@@ -988,7 +1029,8 @@ if (TG_URL){ $('tgLink').href = TG_URL; $('tgLink').hidden = false; $('tgNote').
   const on = F.filter((_, i) => $('ff' + i).checked).map(f => f[0]);
   $('fForm').innerHTML = on.map(n => `<span>${n}</span>`).join('') + '<b>Отправить</b>';
   const v = $('fVerdict'), n = on.length;
-  if (n <= 3){ v.className = 'verdict good'; v.textContent = `${n} ${n === 1 ? 'поле' : 'поля'}: заполнят за 10 секунд.` }
+  if (!n){ v.className = 'verdict mid'; v.textContent = 'Без полей заявку не отправить: оставьте хотя бы телефон.' }
+  else if (n <= 3){ v.className = 'verdict good'; v.textContent = `${n} ${plural(n, 'поле', 'поля', 'полей')}: заполнят за 10 секунд.` }
   else if (n <= 5){ v.className = 'verdict mid'; v.textContent = `${n} полей. Уберите всё, что можно спросить по телефону.` }
   else { v.className = 'verdict badv'; v.textContent = `${n} полей. Каждое лишнее поле отсеивает людей.` }
  };
@@ -1022,7 +1064,7 @@ if (TG_URL){ $('tgLink').href = TG_URL; $('tgLink').hidden = false; $('tgNote').
  const box = $('funnel');
  ST.forEach(([name, v], i) => {
   const r = document.createElement('div'); r.className = 'st';
-  r.innerHTML = `<span>${name}</span><input class="field num" type="number" min="0" id="fn${i}" value="${v}" aria-label="${name}"><div class="tr"><div class="fl"></div></div><span class="pct"></span>`;
+  r.innerHTML = `<span>${name}</span><input class="field num" type="number" min="0" id="fn${i}" value="${kept['fn' + i] ?? v}" aria-label="${name}"><div class="tr"><div class="fl"></div></div><span class="pct"></span>`;
   box.appendChild(r);
  });
  const calc = () => {
@@ -1056,7 +1098,6 @@ function renderBonus(){
  });
  $('bOpenN').textContent = open ? 4 : 1;
 }
-const plural = (n, a, b, c) => { const m = n % 10, h = n % 100; return m === 1 && h !== 11 ? a : m >= 2 && m <= 4 && (h < 12 || h > 14) ? b : c };
 
 // 1: шаблон задачи
 (function(){
@@ -1150,6 +1191,7 @@ ${v('bzProof')}.
   'Фитнес и здоровье': ['Персональные тренировки для новичков без травм и перегрузок', 'Групповые занятия для спины: утром до работы, 3 раза в неделю', 'Тренер онлайн: план питания и тренировки под ваш график']
  };
  const sel = $('hdNiche'); Object.keys(H).forEach(k => sel.add(new Option(k, k)));
+ if (H[kept.hdNiche]) sel.value = kept.hdNiche;
  const upd = () => {
   $('hdList').innerHTML = H[sel.value].map((h, i) => `<li><span>${h}</span><button class="pbtn ghost sm" type="button" data-h="${i}">Копировать</button></li>`).join('');
  };

@@ -1,0 +1,95 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<!-- Обложка YouTube 1280×720. Вариант выбирается хэшем: #a, #b, #c. Снимок: python build.py --cover -->
+<style>
+:root{--bg:#0C0C0D;--surf:#18181A;--line:#2A2A2D;--red:#E3342F;--red2:#FF5A4F;--ink:#F3F3F3;--mut:#8C8C90}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1280px;height:720px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:'Noto Sans CJK SC',sans-serif;position:relative}
+.v{position:absolute;inset:0;display:none}
+.glow{position:absolute;width:1100px;height:1100px;border-radius:50%;background:radial-gradient(closest-side,rgba(227,52,47,.28),rgba(227,52,47,0))}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:64px 64px}
+.logo{position:absolute;left:52px;top:40px;font-weight:900;font-size:34px;letter-spacing:-.01em}
+.logo span{color:var(--red)}
+/* браузер с хорошим сайтом */
+.br{position:absolute;border-radius:20px;overflow:hidden;background:#141416;border:2px solid #2E2E33;box-shadow:0 40px 120px rgba(0,0,0,.7)}
+.br .bar{height:40px;background:#1E1E21;display:flex;align-items:center;gap:9px;padding:0 18px}
+.br .bar b{width:12px;height:12px;border-radius:50%;background:#3A3A3E}
+.br .url{margin-left:12px;flex:1;height:22px;border-radius:7px;background:#121214}
+.site{padding:26px 34px;position:relative;height:100%}
+.site nav{display:flex;justify-content:space-between;font-size:15px;color:#BDBDC2}
+.site nav b{color:#fff;font-weight:900;font-size:18px}
+.site .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:26px;margin-top:26px}
+.site h2{font-size:40px;line-height:1.05;font-weight:900;letter-spacing:-.015em}
+.site p{font-size:15px;color:#8E8E94;margin-top:12px;line-height:1.4}
+.site .cta{display:inline-block;background:var(--red);color:#fff;font-weight:700;font-size:17px;padding:12px 22px;border-radius:9px;margin-top:18px}
+.site .img{height:250px;border-radius:14px;background:linear-gradient(160deg,#2B2B2F,#1B1B1E);border:1px solid #2E2E33;position:relative}
+.site .img i{position:absolute;left:24%;top:14%;width:52%;height:72%;border:11px solid #E9E9EC;border-radius:5px;background:linear-gradient(180deg,#3A3F48,#20232A)}
+.site .img u{position:absolute;left:calc(50% - 5px);top:14%;width:10px;height:72%;background:#E9E9EC}
+.mk{position:absolute;width:54px;height:54px;border-radius:50%;background:var(--red);color:#fff;font-weight:900;font-size:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 8px rgba(227,52,47,.3)}
+.zero{position:absolute;background:var(--surf);border:2px solid #34343A;border-radius:22px;padding:22px 30px 26px;box-shadow:0 30px 90px rgba(0,0,0,.7)}
+.zero .t{font-size:26px;color:#A6A6AC;font-weight:700}
+.zero .n{font-size:190px;line-height:.9;font-weight:900;color:var(--red2);letter-spacing:-.04em}
+.zero .ln{height:7px;background:var(--red);border-radius:4px;margin-top:6px}
+.title{position:absolute;font-weight:900;letter-spacing:-.035em;line-height:.88}
+.pill{display:inline-block;background:var(--red);color:#fff;font-weight:900;border-radius:16px;letter-spacing:-.01em}
+/* плохой сайт */
+.bs{background:linear-gradient(#FFF59A,#FFD84D);color:#222;font-family:'Liberation Serif',serif;text-align:center;height:100%}
+.bs .menu{background:#1B3FA6;color:#fff;font-family:'Liberation Sans';font-size:15px;padding:7px;display:flex;gap:14px;justify-content:center}
+.bs .promo{background:#E8222C;color:#FFF200;font-weight:700;font-family:'Liberation Sans';font-size:18px;padding:6px}
+.bs h4{color:#C4141C;font-size:36px;font-weight:700;padding:22px 20px 6px;line-height:1.1}
+.bs .it{font-family:'Lora';font-style:italic;font-size:20px;color:#2B5E1E}
+.bs .pics{display:flex;gap:16px;justify-content:center;margin-top:20px}
+.bs .pics i{width:150px;height:100px;border:5px ridge #999;background:#7EC8E3}
+.bs .pics i:nth-child(2){background:#9BDB6E}.bs .pics i:nth-child(3){background:#F2A2C0}
+.bs .more{display:inline-block;margin-top:20px;background:linear-gradient(#6BD16B,#1E8A1E);color:#fff;font-family:'Liberation Sans';font-weight:700;padding:9px 22px;border:2px outset #9f9;font-size:17px}
+.ring{position:absolute;border:7px solid var(--red);border-radius:50%;box-shadow:0 0 0 4px rgba(0,0,0,.25)}
+</style></head><body>
+
+<!-- A: «12 ошибок» + сайт с маркерами -->
+<div class="v" id="a">
+ <div class="grid"></div><div class="glow" style="left:420px;top:-260px"></div>
+ <div class="br" style="left:560px;top:150px;width:820px;height:520px;transform:rotate(-4deg)">
+  <div class="bar"><b></b><b></b><b></b><div class="url"></div></div>
+  <div class="site"><nav><b>Тёплый дом</b><span>Окна &nbsp; Балконы &nbsp; Отзывы</span></nav>
+   <div class="hero"><div><h2>Окна, в которых тихо и тепло</h2><p>Премиальные профили и внимание к каждой детали</p><span class="cta">Узнать больше</span></div><div class="img"><i></i><u></u></div></div></div>
+ </div>
+ <div class="mk" style="left:600px;top:250px">1</div><div class="mk" style="left:930px;top:205px">4</div><div class="mk" style="left:790px;top:470px">7</div><div class="mk" style="left:1150px;top:300px">12</div>
+ <div class="title" style="left:52px;top:150px;font-size:250px"><span style="color:var(--red)">12</span></div>
+ <div class="title" style="left:52px;top:370px;font-size:118px">ошибок</div>
+ <div style="position:absolute;left:52px;top:505px"><span class="pill" style="font-size:52px;padding:6px 22px 10px">сайт не продаёт</span></div>
+ <div class="logo">Eli<span>'</span>s</div>
+</div>
+
+<!-- B: «0 заявок» на красивом сайте -->
+<div class="v" id="b">
+ <div class="grid"></div><div class="glow" style="left:-200px;top:-300px"></div>
+ <div class="br" style="left:640px;top:110px;width:780px;height:560px">
+  <div class="bar"><b></b><b></b><b></b><div class="url"></div></div>
+  <div class="site"><nav><b>Тёплый дом</b><span>Окна &nbsp; Балконы &nbsp; Отзывы</span></nav>
+   <div class="hero"><div><h2>Окна, в которых тихо и тепло</h2><p>Премиальные профили и внимание к каждой детали</p><span class="cta">Узнать больше</span></div><div class="img"><i></i><u></u></div></div></div>
+ </div>
+ <div class="zero" style="left:440px;top:290px;width:380px;transform:rotate(-3deg)"><div class="t">Заявок за месяц</div><div class="n">0</div><div class="ln"></div></div>
+ <div class="title" style="left:52px;top:110px;font-size:104px;width:560px">Красивый сайт</div>
+ <div style="position:absolute;left:52px;top:372px"><span class="pill" style="font-size:50px;padding:6px 22px 10px">12 причин</span></div>
+ <div class="logo">Eli<span>'</span>s</div>
+</div>
+
+<!-- C: безвкусный сайт в красных кругах -->
+<div class="v" id="c">
+ <div class="glow" style="left:500px;top:-200px"></div>
+ <div class="br" style="left:660px;top:96px;width:700px;height:560px;transform:rotate(3deg);border-color:#555">
+  <div class="bar"><b></b><b></b><b></b><div class="url"></div></div>
+  <div class="bs"><div class="menu"><u>Главная</u><u>О компании</u><u>Новости</u><u>Прайс</u><u>Контакты</u></div><div class="promo">!!! АКЦИЯ !!! СКИДКИ ДО 50% !!!</div>
+   <h4>Добро пожаловать на официальный сайт ООО «ТеплоДомСтройСервис»!!!</h4><div class="it">Мы рады приветствовать Вас на нашем сайте</div>
+   <div class="pics"><i></i><i></i><i></i></div><span class="more">ПОДРОБНЕЕ &gt;&gt;</span></div>
+ </div>
+ <div class="ring" style="left:690px;top:195px;width:620px;height:190px;transform:rotate(3deg)"></div>
+ <div class="ring" style="left:870px;top:500px;width:230px;height:100px;transform:rotate(3deg)"></div>
+ <div class="title" style="left:52px;top:130px;font-size:104px;width:600px">Сайт<br>не&nbsp;продаёт?</div>
+ <div style="position:absolute;left:52px;top:400px"><span class="pill" style="font-size:58px;padding:6px 24px 12px">12 ошибок</span></div>
+ <div class="logo">Eli<span>'</span>s</div>
+</div>
+
+<script>
+const show=()=>{const k=(location.hash||'#a').slice(1);document.querySelectorAll('.v').forEach(v=>v.style.display=v.id===k?'block':'none')};
+addEventListener('hashchange',show);show();
+</script></body></html>
