@@ -1,0 +1,88 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<!-- #yt — баннер YouTube 2560×1440 (текст в безопасной зоне 1546×423 по центру); #tg — обложка закреплённого поста Telegram 1280×720 -->
+<style>
+:root{--bg:#0C0C0D;--surf:#18181A;--line:#2C2C31;--red:#E3342F;--red2:#FF5A4F;--ink:#F3F3F3;--mut:#9A9AA0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Noto Sans CJK SC',sans-serif;overflow:hidden;position:relative}
+.v{position:absolute;inset:0;display:none;overflow:hidden}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px)}
+.glow{position:absolute;border-radius:50%;background:radial-gradient(closest-side,rgba(227,52,47,.26),rgba(227,52,47,0))}
+.logo{font-weight:900;letter-spacing:-.04em;line-height:1}
+.logo span{color:var(--red)}
+.pills{display:flex;align-items:center;flex-wrap:nowrap}
+.pills b{font-weight:700;border-radius:999px;background:#1C1C1F;color:#8E8E94;white-space:nowrap}
+.pills b.on{background:var(--red);color:#fff}
+.pills i{font-style:normal;color:#55555B}
+.cells{display:grid;grid-template-columns:repeat(4,1fr)}
+.cells div{border-radius:18%;border:2px solid var(--line);background:var(--surf);display:flex;align-items:center;justify-content:center;font-weight:900;color:#4A4A50}
+.cells div.r{background:var(--red);border-color:var(--red);color:#fff}
+.cells div.k{color:var(--ink)}
+
+/* YouTube */
+#yt{width:2560px;height:1440px}
+#yt .grid{background-size:96px 96px}
+#yt .safe{position:absolute;left:507px;top:508px;width:1546px;height:423px;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+#yt .logo{font-size:200px}
+#yt .txt{display:flex;flex-direction:column;align-items:flex-end;gap:22px;text-align:right}
+#yt .txt h1{font-size:58px;font-weight:900;letter-spacing:-.02em;line-height:1.05}
+#yt .txt h1 em{font-style:normal;color:var(--red2)}
+#yt .pills{gap:14px}
+#yt .pills b{font-size:28px;padding:9px 24px}
+#yt .pills i{font-size:28px}
+#yt .side{position:absolute;top:548px}
+#yt .cells{gap:14px}
+#yt .cells div{width:78px;height:78px;font-size:34px}
+
+/* Telegram */
+#tg{width:1280px;height:720px}
+#tg .grid{background-size:64px 64px}
+#tg .logo{position:absolute;left:72px;top:64px;font-size:64px}
+#tg h1{position:absolute;left:72px;top:170px;font-size:78px;font-weight:900;letter-spacing:-.025em;line-height:1.02;width:760px}
+#tg h1 em{font-style:normal;color:var(--red2)}
+#tg ul{position:absolute;left:72px;top:440px;list-style:none;display:flex;flex-direction:column;gap:18px}
+#tg li{display:flex;align-items:center;gap:18px;font-size:32px;font-weight:700}
+#tg li span{width:40px;height:40px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;flex:none}
+#tg .cells{position:absolute;right:72px;top:150px;gap:14px}
+#tg .cells div{width:84px;height:84px;font-size:36px}
+#tg .pills{position:absolute;right:72px;top:78px;gap:10px}
+#tg .pills b{font-size:22px;padding:7px 18px}
+#tg .pills i{font-size:22px}
+</style></head><body>
+
+<div class="v" id="yt">
+ <div class="grid"></div>
+ <div class="glow" style="width:1800px;height:1800px;left:380px;top:-200px"></div>
+ <div class="side" style="left:96px"><div class="cells" id="cl"></div></div>
+ <div class="side" style="right:96px"><div class="cells" id="cr"></div></div>
+ <div class="safe">
+  <div class="logo">Eli<span>'</span>s</div>
+  <div class="txt">
+   <h1>Делаю сайты,<br>которые <em>приносят заявки</em></h1>
+   <div class="pills"><b>Зашёл</b><i>→</i><b>Понял</b><i>→</i><b>Поверил</b><i>→</i><b class="on">Купил</b></div>
+  </div>
+ </div>
+</div>
+
+<div class="v" id="tg">
+ <div class="grid"></div>
+ <div class="glow" style="width:1100px;height:1100px;left:520px;top:-380px"></div>
+ <div class="logo">Eli<span>'</span>s</div>
+ <h1>Сайты, которые <em>приносят заявки</em></h1>
+ <ul>
+  <li><span><svg width="24" height="24" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Чек-лист: 12 ошибок сайта</li>
+  <li><span><svg width="24" height="24" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Шаблон задачи сайта до разработки</li>
+  <li><span><svg width="24" height="24" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Бесплатный разбор вашего сайта</li>
+ </ul>
+ <div class="cells" id="ct"></div>
+ <div class="pills"><b>Зашёл</b><i>→</i><b>Понял</b><i>→</i><b>Поверил</b><i>→</i><b class="on">Купил</b></div>
+</div>
+
+<script>
+// сетка из 12 клеток, как в ролике: часть отмечена галочками, 12-я красная
+const ck='<svg width="55%" height="55%" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#F3F3F3" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const fill=(id,checked)=>{const g=document.getElementById(id);for(let i=1;i<=12;i++){const d=document.createElement('div');
+ if(i===12){d.className='r';d.textContent='12'}else if(checked.includes(i)){d.className='k';d.innerHTML=ck}else d.textContent=i;g.appendChild(d)}};
+fill('cl',[1,2,3,5,6,9]);fill('cr',[1,2,3,4,5,6,7,8,9,10,11]);fill('ct',[1,2,3,4,5,6,7,8,9,10,11]);
+const show=()=>{const k=(location.hash||'#yt').slice(1);document.querySelectorAll('.v').forEach(v=>v.style.display=v.id===k?'block':'none')};
+addEventListener('hashchange',show);show();
+</script></body></html>
