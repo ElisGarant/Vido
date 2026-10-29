@@ -4,6 +4,7 @@ Playwright снимает кадры 1920x1080 @30fps, ffmpeg собирает M
 
   python build.py              # все части + full.mp4 + full.srt
   python build.py block3       # одна часть
+  python build.py --join       # склеить готовые части, пересобрать full.srt и главы
   python build.py --check block2 12.5 40   # контрольные кадры в check/
 """
 import asyncio, base64, os, shutil, subprocess, sys, wave
@@ -122,13 +123,14 @@ async def main():
             for t in map(float, args[2:]):
                 await pg.evaluate(f"render({t})"); await pg.screenshot(path=f"check/{name}_{t:07.2f}.png")
             await br.close(); return
-        parts = args or PARTS
+        join_only = args[:1] == ["--join"]   # только склейка готовых частей и субтитры
+        parts = [] if join_only else (args or PARTS)
         # части рендерятся параллельно, по одной вкладке Chromium на часть
         sem = asyncio.Semaphore(int(os.environ.get("JOBS", 3)))
         async def one(name):
             async with sem: await render_part(p, name)
         await asyncio.gather(*(one(n) for n in parts))
-        if args: return
+        if args and not join_only: return
         # склейка + общие субтитры
         lst = os.path.join(ROOT, "out", "list.txt")
         open(lst, "w").write("".join(f"file '{os.path.join(ROOT, 'out', n + '.mp4')}'\n" for n in PARTS))
