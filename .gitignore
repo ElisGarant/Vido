@@ -6,3 +6,5 @@ __pycache__/
 out/*.wav
 out/eli-pack/
 out/*.zip
+out/voice/*.mp3
+out/voice/*.wav

@@ -75,7 +75,11 @@ async def open_page(p, name):
     return br, pg
 
 async def duration(pg):
-    return await pg.evaluate("typeof DUR!=='undefined'?DUR:30")
+    # с записью голоса длительность части задаёт она (window.VIDEO_DUR из motion.js)
+    return await pg.evaluate("window.VIDEO_DUR || (typeof DUR!=='undefined'?DUR:30)")
+
+async def pg_has_warp(name):
+    return os.path.exists(os.path.join(ROOT, "src", f"timing_{name}.js"))
 
 async def render_part(p, name):
     br, pg = await open_page(p, name)
@@ -91,8 +95,14 @@ async def render_part(p, name):
     await br.close()
     os.makedirs(os.path.join(ROOT, "out"), exist_ok=True)
     sfx = os.path.join(ROOT, "out", name + "_sfx.wav"); await asyncio.to_thread(write_sfx, events, n / FPS, sfx)
+    voice = os.path.join(ROOT, "out", "voice", f"voice_{name}.wav")
+    mix = ["-i", sfx, "-shortest"]
+    if os.path.exists(voice) and await pg_has_warp(name):
+        mix = ["-i", sfx, "-i", voice, "-filter_complex",
+               "[1:a]volume=0.5[s];[2:a]aresample=48000,pan=stereo|c0=c0|c1=c0[v];[s][v]amix=inputs=2:duration=first:normalize=0[a]",
+               "-map", "0:v", "-map", "[a]", "-shortest"]
     await asyncio.to_thread(subprocess.run, ["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", f"{out}/%05d.jpg",
-        "-i", sfx, "-shortest",
+        *mix,
         "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18", "-preset", "medium", "-r", str(FPS),
         "-c:a", "aac", "-movflags", "+faststart", os.path.join(ROOT, "out", name + ".mp4")], check=True)
 
@@ -104,12 +114,30 @@ async def subs(p, name):
     else:
         C, T, E = await pg.evaluate("[C,T,E]"); d = await duration(pg)
         rows = [[a, b + .1, c] for c, a, b in zip(C, T, E)]
-        ttl = await pg.evaluate("TTL")
+        ttl = await pg.evaluate("TTL.map(x=>[window.toVideoTime(x[0]),x[1]])")
+    warp = await pg.evaluate("window.WARP")
+    if warp:   # субтитры по записи голоса: фраза висит до следующей, но не дольше 0,4 с после слов
+        ph = warp["phrases"]
+        rows = [[s, min(e + .4, ph[i + 1][0] if i + 1 < len(ph) else e + .4), r[2]] for i, ((s, e), r) in enumerate(zip(ph, rows))]
     await br.close()
     return rows, d, ttl
 
 def mmss(x):
     x = int(x); return f"{x // 60}:{x % 60:02d}"
+
+def loudness(path, target=-14.0):
+    """Два прохода loudnorm: замер, затем линейное выравнивание всего ролика до target LUFS."""
+    import json as _j
+    flt = f"loudnorm=I={target}:TP=-1.5:LRA=11"
+    r = subprocess.run(["ffmpeg", "-hide_banner", "-i", path, "-af", flt + ":print_format=json", "-f", "null", "-"],
+                       capture_output=True, text=True).stderr
+    m = _j.loads(r[r.rindex("{"):r.rindex("}") + 1])
+    flt += (f":measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
+            f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true")
+    tmp = path + ".tmp.mp4"
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", path, "-c:v", "copy", "-af", flt, "-ar", "48000",
+                    "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", tmp], check=True)
+    os.replace(tmp, path)
 
 def ts(x):
     ms = int(round(x * 1000))
@@ -154,6 +182,7 @@ async def main():
             off += dur
         open(os.path.join(ROOT, "out", "full.srt"), "w", encoding="utf-8").write("\n".join(lines))
         open(os.path.join(ROOT, "out", "chapters.txt"), "w", encoding="utf-8").write("\n".join(chap) + "\n")
+        loudness(os.path.join(ROOT, "out", "full.mp4"))
         print("готово: out/full.mp4, out/full.srt")
 
 asyncio.run(main())

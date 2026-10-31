@@ -10,6 +10,13 @@ const sg=(t,a,b)=>clp((t-a)/Math.max(b-a,1e-6));
 const eOut=x=>x>=1?1:1-Math.pow(2,-10*x);
 const eIO=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
 const DURA=typeof DUR!=='undefined'?DUR:30;
+// подгонка под запись голоса (src/timing_<часть>.js, создаёт voice.py): опорные точки «новое время → время в коде»,
+// между ними время идёт линейно, поэтому каждая фраза в кадре начинается и заканчивается вместе с голосом
+const WARP=window.WARP||null;
+const lerp=(A,i,j,t)=>{let k=1;while(k<A.length-1&&t>A[k][i])k++;const a=A[k-1],b=A[k];return a[j]+(b[j]-a[j])*clp((t-a[i])/Math.max(b[i]-a[i],1e-6))};
+window.toCodeTime=t=>WARP?lerp(WARP.anchors,0,1,t):t;
+window.toVideoTime=t=>WARP?lerp(WARP.anchors,1,0,t):t;
+window.VIDEO_DUR=WARP?WARP.dur:DURA;
 
 // сцена: во вступлении слои лежат прямо в body, собираем их в #stage
 let stage=g('stage');
@@ -141,7 +148,8 @@ window.sfxEvents=function(){
  for(let t=0;t<DURA;t+=.1){base(t);layers.forEach((l,i)=>{const o=+getComputedStyle(l).opacity;if(o>.3&&was[i]<=.3&&t>.2&&!busy(t))ev.push([t-.15,'swish',.8]);was[i]=o})}
  if(window.SFX)window.SFX.forEach(e=>ev.push(e));
  window.render(0);
- return ev.sort((a,b)=>a[0]-b[0]);
+ return ev.map(e=>[window.toVideoTime(e[0]),e[1],e[2]]).sort((a,b)=>a[0]-b[0]);
 };
+if(WARP){const inner=window.render;window.render=t=>inner(window.toCodeTime(t))}
 window.render(0);
 })();
