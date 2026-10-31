@@ -54,7 +54,7 @@ const F1=add(`<div style="position:absolute;left:160px;top:200px;width:980px;bor
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 30px;margin-top:26px">`+items.map((x,i)=>`<div class="cli" style="display:flex;align-items:center;gap:14px;font-size:23px;font-weight:500"><span class="cb" style="flex:none;width:30px;height:30px;border-radius:7px;border:3px solid #111;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff"></span>${x}</div>`).join('')+`</div></div>
 <div id="tplc" style="position:absolute;left:1220px;top:330px;width:540px;border-radius:20px;background:var(--surf);border:1px solid var(--line);border-top:8px solid var(--red);padding:36px;opacity:0"><div class="lbl" style="font-size:24px">+ бонус</div><div style="font-size:40px;font-weight:900;line-height:1.2;margin-top:10px">Шаблон: задача сайта до разработки</div></div>`);
 const F2=add(`<div style="position:absolute;left:0;right:0;top:250px;text-align:center"><div class="big" style="font-size:200px">Eli<span style="color:var(--red)">'</span>s</div>
-<div style="font-size:52px;font-weight:700;margin-top:30px">@elis_dev</div>
+<div style="font-size:52px;font-weight:700;margin-top:30px">@MHEHEXBATAET</div>
 <div id="ec1" style="display:inline-block;margin-top:50px;background:var(--red);border-radius:16px;padding:20px 40px;font-size:44px;font-weight:900">Чек-лист в Telegram-канале</div>
 <div id="ec2" style="font-size:34px;color:#BDBDC2;margin-top:28px">Ссылка в шапке профиля и в описании под видео</div></div>`);
 
