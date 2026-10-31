@@ -1,0 +1,120 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<!-- Баннер к посту с услугами и ценами. #v — 1080×1350 (лента Telegram), #w — 1280×720 (горизонталь) -->
+<style>
+:root{--bg:#0B0B0C;--surf:#161618;--line:#2A2A2E;--red:#E3342F;--red2:#FF4A41;--ink:#F4F4F2;--mut:#9A9AA0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Noto Sans CJK SC',sans-serif;overflow:hidden;position:relative}
+.v{position:absolute;inset:0;display:none;overflow:hidden}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:60px 60px}
+.glow{position:absolute;border-radius:50%;background:radial-gradient(closest-side,rgba(227,52,47,.32),rgba(227,52,47,0))}
+.logo{font-weight:900;letter-spacing:-.04em;line-height:1}
+.logo span{color:var(--red)}
+h1{font-weight:900;letter-spacing:-.03em;line-height:1.02}
+h1 em{font-style:normal;color:var(--red2)}
+.lead{color:#C4C4C8;line-height:1.3}
+.list{display:flex;flex-direction:column}
+.it{display:grid;grid-template-columns:auto 1fr auto;align-items:center;background:var(--surf);border:2px solid var(--line)}
+.it svg{display:block}
+.it b{font-weight:900;letter-spacing:-.01em}
+.it small{display:block;color:var(--mut);font-weight:500}
+.it .p{font-weight:900;color:var(--red2);white-space:nowrap;text-align:right}
+.it .p i{font-style:normal;font-weight:500;color:var(--mut);margin-right:.25em}
+.steps{display:flex;flex-wrap:wrap;align-items:center}
+.steps span{background:var(--surf);border:2px solid var(--line);border-radius:999px;font-weight:700;white-space:nowrap}
+.steps span.on{background:var(--red);border-color:var(--red)}
+.steps i{font-style:normal;color:#5A5A60;font-weight:700}
+.badges{display:flex;flex-wrap:wrap}
+.bd{font-weight:700;border-radius:16px;display:flex;align-items:center;gap:.5em}
+.bd.o{border:2px solid var(--line);background:var(--surf)}
+.bd.r{background:var(--red);color:#fff}
+.cta{display:flex;align-items:center;justify-content:space-between;background:var(--red)}
+.cta .t{font-weight:700;color:#FFD9D6}
+.cta .h{font-weight:900;letter-spacing:-.02em}
+
+/* вертикальный: колонка, блоки идут друг за другом */
+#v{width:1080px;height:1350px;padding:50px 64px;flex-direction:column;gap:18px}
+#v>*{position:relative}
+#v>.grid,#v>.glow{position:absolute}
+#v .head{display:flex;justify-content:space-between;align-items:center}
+#v .logo{font-size:60px}
+#v .tag{font-size:23px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+#v h1{font-size:68px;margin-top:4px}
+#v .lead{font-size:28px;margin-top:-6px}
+#v .list{gap:10px;margin-top:6px}
+#v .it{border-radius:18px;padding:10px 24px;gap:20px}
+#v .it svg{width:42px;height:42px}
+#v .it b{font-size:30px}
+#v .it small{font-size:20px;margin-top:0}
+#v .it .p{font-size:38px}
+#v .it .p i{font-size:22px}
+#v .steps{gap:10px}
+#v .steps span{font-size:22px;padding:9px 18px}
+#v .steps i{font-size:24px}
+#v .badges{gap:10px}
+#v .bd{font-size:23px;padding:12px 18px}
+#v .cta{margin-top:auto;border-radius:22px;padding:22px 30px}
+#v .cta .t{font-size:26px}
+#v .cta .h{font-size:54px}
+
+/* горизонтальный */
+#w{width:1280px;height:720px}
+#w .logo{position:absolute;left:60px;top:48px;font-size:52px}
+#w h1{position:absolute;left:60px;top:132px;width:560px;font-size:64px}
+#w .lead{position:absolute;left:60px;top:362px;width:540px;font-size:24px}
+#w .badges{position:absolute;left:60px;top:470px;width:560px;gap:10px;flex-direction:column;align-items:flex-start}
+#w .bd{font-size:21px;padding:11px 16px}
+#w .list{position:absolute;left:660px;right:56px;top:48px;gap:10px}
+#w .it{border-radius:16px;padding:13px 18px;gap:16px}
+#w .it svg{width:34px;height:34px}
+#w .it b{font-size:24px}
+#w .it small{font-size:17px}
+#w .it .p{font-size:28px}
+#w .it .p i{font-size:18px}
+#w .cta{position:absolute;left:660px;right:56px;bottom:48px;border-radius:18px;padding:16px 22px}
+#w .cta .t{font-size:20px}
+#w .cta .h{font-size:38px}
+</style></head><body>
+
+<div class="v" id="v" data-d="flex">
+ <div class="grid"></div><div class="glow" style="width:1300px;height:1300px;left:240px;top:-560px"></div>
+ <div class="head"><div class="logo">Eli<span>'</span>s</div><div class="tag">разработка под ключ</div></div>
+ <h1>Сайты и Telegram-боты<br><em>для бизнеса</em></h1>
+ <div class="lead">Чтобы заявки не терялись, клиенты записывались сами, а рутина делалась без вас.</div>
+ <div class="list" data-list></div>
+ <div class="steps" data-steps></div>
+ <div class="badges" data-badges></div>
+ <div class="cta"><div><div class="t">Обсудить проект</div><div class="h" data-contact></div></div><svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+</div>
+
+<div class="v" id="w">
+ <div class="grid"></div><div class="glow" style="width:1100px;height:1100px;left:-260px;top:-420px"></div>
+ <div class="logo">Eli<span>'</span>s</div>
+ <h1>Сайты и Telegram-боты <em>для бизнеса</em></h1>
+ <div class="lead">Чтобы заявки не терялись, клиенты записывались сами, а рутина делалась без вас.</div>
+ <div class="badges" data-badges></div>
+ <div class="list" data-list></div>
+ <div class="cta"><div><div class="t">Обсудить проект</div><div class="h" data-contact></div></div><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+</div>
+
+<script>
+// данные из поста: правятся здесь
+const CONTACT='@zybyv';
+const ICON={
+ land:'<path d="M13 3L5 14h6l-1 7 8-11h-6l1-7z"/>',
+ site:'<rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 13h3M8 16h6"/>',
+ bot:'<path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H10l-5 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/>',
+ app:'<rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/>',
+ auto:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/>',
+};
+const SVC=[['land','Лендинг','3–4 дня','8 000'],['site','Сайт с онлайн-записью','5–7 дней','12 000'],['bot','Telegram-бот','3–5 дней','8 000'],['app','Mini App','7–10 дней','15 000'],['auto','Автоматизация и таблицы','срок по задаче','5 000']];
+const STEPS=['Заявка','Обсуждаем задачу','Предоплата 50%','Готово','Неделя правок бесплатно'];
+const svg=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="#FF4A41" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[k]}</svg>`;
+document.querySelectorAll('[data-list]').forEach(el=>el.innerHTML=SVC.map(s=>`<div class="it">${svg(s[0])}<div><b>${s[1]}</b><small>${s[2]}</small></div><div class="p"><i>от</i>${s[3]} ₽</div></div>`).join(''));
+document.querySelectorAll('[data-steps]').forEach(el=>el.innerHTML=STEPS.map((s,i)=>`<span class="${i===3?'on':''}">${s}</span>`).join('<i>→</i>'));
+const lock='<svg width="1.1em" height="1.1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>';
+const gift='<svg width="1.1em" height="1.1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4"/><path d="M12 8v13M5 12v9h14v-9M12 8C10 4 7 4 7 6s3 2 5 2c2 0 5 0 5-2s-3-2-5 2z"/></svg>';
+document.querySelectorAll('[data-badges]').forEach(el=>el.innerHTML=`<div class="bd o">${lock}Код и все доступы ваши</div><div class="bd r">${gift}3 проекта со скидкой за отзыв</div>`);
+document.querySelectorAll('[data-contact]').forEach(el=>el.textContent=CONTACT);
+const show=()=>{const k=(location.hash||'#v').slice(1);document.querySelectorAll('.v').forEach(v=>v.style.display=v.id===k?(v.dataset.d||'block'):'none')};
+addEventListener('hashchange',show);show();
+</script></body></html>
