@@ -185,4 +185,5 @@ async def main():
         loudness(os.path.join(ROOT, "out", "full.mp4"))
         print("готово: out/full.mp4, out/full.srt")
 
-asyncio.run(main())
+if __name__ == "__main__":   # функции звука и громкости используют и другие сборщики (shorts/)
+    asyncio.run(main())

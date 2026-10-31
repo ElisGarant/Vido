@@ -1,0 +1,116 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<!-- Вертикальный ролик 1080×1920 «Узнаёшь себя?». render(t) рисует кадр на момент t, sfxEvents() отдаёт звуки.
+     Текст держится в безопасной зоне Shorts/Reels: слева 70 px, справа 180 px (кнопки), снизу 380 px (подпись). -->
+<style>
+:root{--bg:#0C0C0D;--surf:#18181A;--line:#2C2C31;--red:#E3342F;--red2:#FF5A4F;--ink:#F3F3F3;--mut:#9A9AA0;--ok:#3DB874}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1080px;height:1920px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:'Noto Sans CJK SC',sans-serif;position:relative}
+.grid{position:absolute;inset:-80px;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:72px 72px}
+.glow{position:absolute;width:1500px;height:1500px;border-radius:50%;background:radial-gradient(closest-side,rgba(227,52,47,.22),rgba(227,52,47,0))}
+.logo{position:absolute;left:70px;top:150px;font-weight:900;font-size:56px;letter-spacing:-.03em}
+.logo span{color:var(--red)}
+.count{position:absolute;right:180px;top:158px;font-size:34px;font-weight:700;color:var(--mut);text-align:right}
+.count b{color:var(--ink);font-size:46px}
+/* вход */
+#hook{position:absolute;left:70px;right:180px;top:560px}
+#hook h1{font-size:118px;font-weight:900;line-height:1;letter-spacing:-.035em}
+#hook p{font-size:46px;color:var(--mut);margin-top:34px;line-height:1.25;display:flex;align-items:center;gap:22px}
+/* список отмеченного */
+#stack{position:absolute;left:70px;right:180px;top:270px;display:flex;flex-direction:column;gap:12px}
+.row{display:flex;align-items:center;gap:16px;font-size:30px;font-weight:700;color:#C9C9CE;opacity:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row i{flex:none}
+/* карточка проблемы */
+#card{position:absolute;left:70px;right:180px;top:860px;opacity:0}
+.q{display:flex;gap:30px;align-items:flex-start}
+.q h2{font-size:78px;font-weight:900;line-height:1.06;letter-spacing:-.025em}
+.box{flex:none;width:92px;height:92px;border-radius:20px;border:6px solid #4A4A50;display:flex;align-items:center;justify-content:center;margin-top:4px}
+.box svg{width:62px;height:62px;opacity:0}
+.me{font-size:32px;color:var(--red2);font-weight:700;margin:22px 0 0 122px;opacity:0}
+.a{margin-top:46px;display:flex;align-items:center;gap:20px;background:var(--surf);border:2px solid var(--line);border-radius:24px;padding:26px 30px;opacity:0}
+.a span{font-size:46px;font-weight:700;line-height:1.15}
+.a em{font-style:normal;color:var(--red2);font-size:52px;font-weight:900;flex:none}
+/* финал */
+#end{position:absolute;left:70px;right:180px;top:420px;opacity:0}
+#end h1{font-size:96px;font-weight:900;line-height:1.02;letter-spacing:-.03em}
+#end h1 em{font-style:normal;color:var(--red2)}
+#end .sub{font-size:46px;color:var(--mut);margin-top:30px;line-height:1.25}
+#cta{margin-top:70px;background:var(--red);border-radius:30px;padding:40px 44px}
+#cta .t{font-size:40px;font-weight:700;color:#FFD3CF}
+#cta .h{font-size:72px;font-weight:900;letter-spacing:-.02em;margin-top:6px}
+#cta .s{font-size:38px;margin-top:14px;line-height:1.25}
+#svc{margin-top:44px;font-size:36px;color:var(--mut);font-weight:700}
+</style></head><body>
+<div class="grid" id="grid"></div><div class="glow" id="glow"></div>
+<div class="logo">Eli<span>'</span>s</div>
+<div class="count" id="count">галочек<br><b id="cn">0</b> из 7</div>
+
+<div id="hook"><h1>Узнаёшь<br>себя?</h1><p><span class="box" style="width:64px;height:64px;border-width:5px;border-radius:14px"></span>Ставь галочку на каждом пункте</p></div>
+<div id="stack"></div>
+<div id="card"><div class="q"><div class="box" id="box"></div><h2 id="qt"></h2></div><div class="me" id="me">это про меня</div><div class="a" id="ans"><em>→</em><span id="at"></span></div></div>
+
+<div id="end">
+ <h1>Хотя бы одна<br><em>галочка?</em></h1>
+ <div class="sub">Значит, это можно отдать программе.</div>
+ <div id="cta"><div class="t">Напиши мне в Telegram</div><div class="h">@MHEHEXBATAET</div><div class="s">Расскажи, чем занимаешься. Идеи нет? Предложу сам.</div></div>
+ <div id="svc">Сайты · Боты · Приложения · Автоматизация</div>
+</div>
+
+<script>
+const P=[
+ ['Каждый день делаешь одно и то же руками','Бот сделает это за тебя'],
+ ['Сайт есть, а заявок с него нет','Сделаю сайт, который приносит заявки'],
+ ['Клиенты пишут ночью, а ты отвечаешь утром','Бот ответит сразу и запишет клиента'],
+ ['Заявки теряются в личке и чатах','Все заявки в одной таблице, тебе уведомление'],
+ ['Вечно забываешь оплатить или позвонить','Бот напомнит сам'],
+ ['Бесит чужое приложение','Сделаем своё, ровно под тебя'],
+ ['Есть идея, но непонятно, как сделать','Сделаю от идеи до запуска'],
+];
+const HOOK=2.8, STEP=4.4, END=HOOK+P.length*STEP, DUR=END+7.6;
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const seg=(t,a,b)=>cl((t-a)/Math.max(b-a,1e-6));
+const eo=x=>x>=1?1:1-Math.pow(2,-10*x);
+const eio=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+const CK=c=>`<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="${c}" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+$('box').innerHTML=CK('#fff');
+P.forEach(p=>{const r=document.createElement('div');r.className='row';r.innerHTML=`<i>${CK('#E3342F').replace('<svg','<svg width="34" height="34"')}</i>${p[0]}`;$('stack').appendChild(r)});
+
+window.render=function(t){
+ // фон живёт всегда
+ $('grid').style.transform=`translate(${(t*10)%72}px,${(t*6)%72}px)`;
+ $('glow').style.transform=`translate(${-300+500*(.5+.5*Math.sin(t/3))}px,${200+500*(.5+.5*Math.cos(t/4))}px)`;
+ // вход
+ const h=eo(seg(t,.1,.7))*(1-seg(t,HOOK-.35,HOOK));
+ $('hook').style.opacity=h;$('hook').style.transform=`translateY(${40*(1-eo(seg(t,.1,.8)))}px)`;
+ // текущая проблема
+ const k=Math.floor((t-HOOK)/STEP), s=HOOK+k*STEP, c=$('card');
+ if(k>=0&&k<P.length){
+  const inn=eo(seg(t,s,s+.45)), out=eio(seg(t,s+STEP-.45,s+STEP));
+  c.style.opacity=inn*(1-out);
+  c.style.transform=`translateY(${120*(1-inn)-260*out}px) scale(${1-.12*out})`;
+  $('qt').textContent=P[k][0];$('at').textContent=P[k][1];
+  const ck=eo(seg(t,s+1.3,s+1.55));
+  $('box').querySelector('svg').style.opacity=ck;
+  $('box').style.background=ck>.5?'#E3342F':'transparent';$('box').style.borderColor=ck>.5?'#E3342F':'#4A4A50';
+  $('box').style.transform=`scale(${1+.18*Math.sin(Math.PI*seg(t,s+1.3,s+1.7))})`;
+  $('me').style.opacity=eo(seg(t,s+1.45,s+1.8));
+  const a=eo(seg(t,s+2.1,s+2.55));$('ans').style.opacity=a;$('ans').style.transform=`translateY(${30*(1-a)}px)`;
+ } else c.style.opacity=0;
+ // список отмеченного растёт сверху
+ const done=P.filter((_,i)=>t>=HOOK+i*STEP+STEP-.3).length;
+ [...$('stack').children].forEach((r,i)=>{const a=eo(seg(t,HOOK+i*STEP+STEP-.35,HOOK+i*STEP+STEP+.1));r.style.opacity=a*(1-eio(seg(t,END,END+.5)));r.style.transform=`translateX(${-30*(1-a)}px)`});
+ const ticks=P.filter((_,i)=>t>=HOOK+i*STEP+1.35).length;
+ $('cn').textContent=ticks;$('count').style.opacity=cl(seg(t,HOOK,HOOK+.4))*(1-seg(t,END,END+.4));
+ // финал: список уходит вверх и тает, выезжает призыв
+ $('stack').style.transform=`translateY(${-120*eio(seg(t,END,END+.5))}px)`;
+ const e=eo(seg(t,END+.3,END+.9));$('end').style.opacity=e;$('end').style.transform=`translateY(${50*(1-e)}px)`;
+ const ct=eo(seg(t,END+1.4,END+1.9));$('cta').style.opacity=ct;$('cta').style.transform=`scale(${.94+.06*ct})`;
+ $('svc').style.opacity=eo(seg(t,END+2.2,END+2.7));
+ document.body.style.opacity=1-seg(t,DUR-.4,DUR);
+};
+// звуки: [время, тип, громкость]
+window.sfxEvents=()=>{const ev=[[.05,'hit',.6],[1.2,'pop',.5]];
+ P.forEach((_,i)=>{const s=HOOK+i*STEP;ev.push([s-.1,'swish',.9],[s+1.3,'tick',1],[s+2.1,'pop',.7])});
+ ev.push([END+.2,'whoosh',.9],[END+1.4,'hit',.9]);return ev};
+render(0);
+</script></body></html>
